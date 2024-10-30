@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fiveLink.linkOffice.mapper.NoficationMapper"> <!-- namespace 수정 -->
+    <!-- 현재 사용자의 안읽은 개수   -->
+    <select id="bellCount" resultType="int">
+        SELECT count(*) FROM fl_nofication
+        WHERE nofication_status = 0 AND nofication_receive_no = #{memberNo}
+    </select>
+    <!-- pk  -->
+    <select id="insertAlarmPk" resultType="Long">
+        SELECT nofication_no
+        FROM fl_nofication
+        ORDER BY nofication_no DESC
+        LIMIT 1
+    </select>
+    <!-- 현재 사용자의 안읽음 알림 목록-->
+    <select id="selectUnreadList" parameterType="Long" resultType="com.fiveLink.linkOffice.nofication.domain.NoficationDto">
+        SELECT *
+        FROM fl_nofication
+        WHERE nofication_status = 0 AND nofication_receive_no = #{memberNo}
+        ORDER BY nofication_create_date DESC
+    </select>
+
+    <update id="readNofication"  parameterType="java.util.Map">
+        UPDATE fl_nofication SET
+        nofication_status = 1
+        WHERE nofication_receive_no = #{memberNo}
+        AND nofication_no = #{notificationNo}
+    </update>
+
+    <!--타입 별 읽음-->
+    <update id="readTypeNotification"  parameterType="java.util.Map">
+        UPDATE fl_nofication SET
+        nofication_status = 1
+        WHERE nofication_receive_no = #{memberNo}
+        AND nofication_type = #{functionType}
+    </update>
+
+    <!-- 휴가 결재 pk   -->
+    <select id="getVacationApprovalPk" resultType="Long">
+        SELECT vacation_approval_no
+        FROM fl_vacation_approval
+        ORDER BY vacation_approval_no DESC
+        LIMIT 1
+    </select>
+
+    <!--휴가 결재 읽음 처리-->
+    <update id="readTypePkNotification"  parameterType="java.util.Map">
+        UPDATE fl_nofication SET
+        nofication_status = 1
+        WHERE nofication_receive_no = #{memberNo}
+        AND nofication_type = #{functionType}
+        AND nofication_type_pk = #{noficationTypePk}
+    </update>
+    
+    <select id="getApprovalPk" resultType="Long">
+        SELECT approval_no
+        FROM fl_approval
+        ORDER BY approval_no DESC
+        LIMIT 1
+    </select>    
+</mapper>

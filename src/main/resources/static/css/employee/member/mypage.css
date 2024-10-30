@@ -1,0 +1,96 @@
+@charset "UTF-8";
+
+.my_profile {
+    margin: auto;
+    height: 700px;
+    width: 1250px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 70px 30px 70px;
+    border-radius: 15px;
+}
+
+.profile_card {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 90px;
+    margin-right: 160px;
+    margin-bottom: 40px;
+}
+
+.profile_img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 55px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.profile-details li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+}
+
+#address {
+    display: flex;
+    gap: 50px;
+    margin-left: 280px;
+}
+
+.divider {
+    width: 70%;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+.profile_details.paired {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px 80px;
+    margin-left: 400px;
+}
+
+.profile_details.address {
+	margin-top:35px;
+    gap: 50px 80px;
+    width: 85%;
+    margin-left: 370px;
+}
+
+.profile_details.paired li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 50px;
+}
+
+#editAddress {
+    color: #ff0000;
+}

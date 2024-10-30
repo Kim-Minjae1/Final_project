@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+	<link th:href="@{/css/employee/survey/survey_end_list.css}"
+		rel="stylesheet" type="text/css">
+
+	<section>
+		<div class="list_survey_list">
+			<div class="search_sort_container">
+				<input type="hidden" id="memberNo"
+					th:value="${memberdto[0].member_no}">
+
+				<div class="search_container">
+					<form
+						th:action="@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no})}"
+						method="get">
+						<select name="search_type"
+							th:value="${searchDto != null ? searchDto.search_type : 1}">
+							<option th:value="1" th:selected="${searchDto != null && searchDto.search_type == 1}">전체</option>
+							<option th:value="2" th:selected="${searchDto != null && searchDto.search_type == 2}">제목</option>
+							<option th:value="3" th:selected="${searchDto != null && searchDto.search_type == 3}">내용</option>
+							<option th:value="4" th:selected="${searchDto != null && searchDto.search_type == 4}">작성자</option>
+						</select>
+						<input type="text" class="search_text" name="search_text"
+							th:value="${searchDto != null ? searchDto.search_text : ''}"
+							placeholder="검색어를 입력하세요.">
+						<input type="hidden" name="sort" th:value="${currentSort}">
+						<button type="submit" class="search_button">검색</button>
+					</form>
+				</div>
+
+				<div class="sort_container">
+					<form
+						th:action="@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no})}"
+						method="get">
+						<input type="hidden" name="search_type"
+							th:value="${searchDto != null ? searchDto.search_type : ''}">
+						<input type="hidden" name="search_text"
+							th:value="${searchDto != null ? searchDto.search_text : ''}">
+						<select name="sort" id="sort" onchange="this.form.submit()">
+							<option th:value="latest" th:selected="${currentSort == 'latest'}">최신순</option>
+							<option th:value="oldest" th:selected="${currentSort == 'oldest'}">과거순</option>
+						</select>
+					</form>
+				</div>
+			</div>
+
+			<table class="survey_table">
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>설문 제목</th>
+						<th>기간</th>
+						<th>작성자</th>
+						<th>상태</th> <!-- 상태 컬럼을 마지막으로 이동 -->
+					</tr>
+				</thead>
+
+				<tbody>
+					<th:block th:if="${#lists.isEmpty(surveyEndList)}">
+						<tr>
+							<td colspan="5">조회된 목록이 없습니다.</td>
+						</tr>
+					</th:block>
+
+					<th:block th:if="${!#lists.isEmpty(surveyEndList)}">
+						<tr th:each="survey, status : ${surveyEndList}"
+							th:data_survey_no="${survey.survey_no}" class="survey_row"
+							th:onclick="|location.href='@{/employee/survey/detail/{survey_no}(survey_no=${survey.survey_no})}'|">
+							<td th:text="${status.index + 1}"></td>
+							<td th:text="${survey.survey_title}"></td>
+							<td th:text="${survey.survey_start_date} + ' ~ ' + ${survey.survey_end_date}"></td>
+							<td th:text="${survey.member_name} + ' ' + ${survey.position_name}"></td>
+							<td th:text="${survey.survey_status == 0 ? '진행중' : '마감'}"></td> <!-- 상태 컬럼 -->
+						</tr>
+					</th:block>
+
+				</tbody>
+			</table>
+
+			<!-- Pagination -->
+			<div class="pagination">
+				<!-- totalElements가 1 이상인 경우에만 페이징 처리 -->
+				<th:block th:if="${page != null && page.totalElements > 1}">
+					<!-- First Page -->
+					<button th:if="${page.number > 0}"
+						th:onclick="|location.href='@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no}, page=0, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&lt;&lt;</button>
+
+					<!-- Previous Page -->
+					<button th:if="${page.hasPrevious()}"
+						th:onclick="|location.href='@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no}, page=${page.number - 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&lt;</button>
+
+					<!-- Page Numbers -->
+					<th:block th:with="totalPages=${page.totalPages}, currentPage=${page.number}">
+						<th:block
+							th:with="startPage=${currentPage >= totalPages - 1 ? totalPages - 3 : (currentPage <= 1 ? 0 : currentPage - 1)}, 
+                            endPage=${currentPage >= totalPages - 1 ? totalPages - 1 : (currentPage <= 1 ? 2 : currentPage + 1)}">
+							<span th:if="${totalPages != null && totalPages > 0}"
+								th:each="i : ${#numbers.sequence(startPage < 0 ? 0 : startPage, endPage >= totalPages ? totalPages - 1 : endPage)}">
+								<button th:classappend="${i == currentPage} ? 'active'"
+									th:onclick="|location.href='@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no}, page=${i}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|"
+									th:text="${i + 1}"></button>
+							</span>
+						</th:block>
+					</th:block>
+
+					<button th:if="${page.hasNext()}"
+						th:onclick="|location.href='@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no}, page=${page.number + 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&gt;</button>
+
+					<button th:if="${page.number < (page.totalPages != null ? page.totalPages : 1) - 1}"
+						th:onclick="|location.href='@{/employee/survey/endList/{member_no}(member_no=${memberdto[0].member_no}, page=${page.totalPages - 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&gt;&gt;</button>
+				</th:block>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		const location_text = document.getElementById('header_location_text');
+		location_text.innerHTML = '설문&emsp;&gt;&emsp;마감된 설문';
+	</script>
+</th:block>
+</html>

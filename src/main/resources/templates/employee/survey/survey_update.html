@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <link th:href="@{/css/admin/organization/organizationChart.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/employee/survey/survey_update.css}" rel="stylesheet" type="text/css">
+
+    <!-- 필요한 라이브러리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<th:block layout:fragment="content">
+    <section>
+        <br>
+        <form id="surveyForm">
+            <label for="surveyTitle">설문 제목</label>
+            <input type="hidden" id="memberNo" th:value="${memberdto[0].member_no}">
+            <input type="text" id="surveyTitle" name="survey_title" th:value="${dto.survey_title}" placeholder="설문 제목을 입력하세요." class="form-input"><br>
+			<input type="hidden" id="surveyNo" name="survey_no" th:value="${dto.survey_no}">
+            <!-- 설문 기간 -->
+            <label for="surveyPeriod">설문 기간</label>
+            <div class="date-inputs">
+                <input type="date" id="surveyStartDate" name="survey_start_date" th:value="${dto.survey_start_date}" class="form-input">
+                <span>~</span>
+                <input type="date" id="surveyEndDate" name="survey_end_date" th:value="${dto.survey_end_date}" class="form-input">
+            </div>
+
+            <label for="surveyTarget">설문 대상자</label>
+            <div></div>
+            <button type="button" id="openChart" class="btn btn-primary">조직도 열기</button>
+            <div id="selected-members-outside"></div>
+            <br>
+
+            <!-- 설문 설명 -->
+            <label for="surveyDescription">설문 설명</label>
+            <input type="text" id="surveyDescription" name="survey_description" th:value="${dto.survey_description}" placeholder="설문 설명을 입력하세요." class="form-input"><br>
+
+            <!-- 질문 리스트 출력 -->
+            <div id="questionList">
+                <div th:each="question, iterStat : ${questions}" class="question-item">
+                    <button type="button" class="remove-question">X</button>
+                    <label th:text="'질문 ' + ${iterStat.index + 1}"></label>
+                    <input type="text" name="questions[${iterStat.index}].survey_question_text" th:value="${question.survey_question_text}" placeholder="질문을 입력하세요" class="form-input"><br>
+
+                    <label>질문 유형 선택</label>
+                    <select name="questions[${iterStat.index}].survey_question_type" class="form-input question-type-select">
+                        <option value="" th:selected="${question.survey_question_type == ''}">선택하기</option>
+                        <option value="multiple" th:selected="${question.survey_question_type == 0}">선택형</option>
+                        <option value="text" th:selected="${question.survey_question_type == 1}">텍스트형</option>
+                    </select><br><br>
+
+                    <div class="options-container" th:if="${question.survey_question_type == 0}">
+                        
+                        <button type="button" class="add-option-btn btn btn-secondary">보기 추가</button>
+                        <div th:each="option, optionStat : ${question.survey_option_answer}" class="option-input">
+                            <input type="text" name="questions[${iterStat.index}].options[${optionStat.index}]" th:value="${option}" placeholder="보기를 입력하세요" class="form-input">
+                            <button type="button" class="remove-option">X</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="addQuestionButton" class="btn btn-secondary">질문 추가</button><br><br>
+            <div class="button-container">
+                <button type="submit" class="ok-btn">수정 완료</button>
+                <button type="button" class="cancel-btn" onclick="window.history.back()">목록</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- 조직도 모달 -->
+    <div class="modal" id="organizationChartModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <div class="organizationchart_title" id="organizationChartModalLabel">조직도</div>
+                        <span class="chart_close" data-dismiss="modal" aria-label="Close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="selected-members"></div>
+                        <input type="text" id="organization_search" placeholder="검색어를 입력하세요." class="organization_search">
+                        <div id="organization-chart"></div>
+                        <button id="confirmButton" type="button" class="modal_btn">확인</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const location_text = document.getElementById('header_location_text');
+    location_text.innerHTML = '설문&emsp;&gt;&emsp;설문 수정';
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        let selectedMembers = [];
+        let selectNames = [];
+
+        // 알림창을 띄우는 함수
+        function showAlert(message) {
+            Swal.fire({
+                text: message,
+                icon: 'warning',
+                confirmButtonColor: '#0056b3',
+                confirmButtonText: '확인'
+            });
+        }
+
+        // 성공 알림창을 띄우고 리다이렉트 처리
+        function showSuccessAlert(message) {
+            Swal.fire({
+                icon: 'success',
+                text: message,
+                confirmButtonText: '확인'
+            }).then(() => {
+                const memberNo = document.getElementById('memberNo').value;
+                location.href = '/employee/survey/myList/' + memberNo;
+            });
+        }
+
+        // 에러 알림창을 띄우는 함수
+        function showErrorAlert(message) {
+            Swal.fire({
+                icon: 'error',
+                text: message,
+                confirmButtonText: '확인'
+            });
+        }
+
+        // 보기 추가 버튼 이벤트 리스너
+        document.querySelectorAll('.add-option-btn').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const questionItem = button.closest('.question-item');
+                const optionsContainer = questionItem.querySelector('.options-container');
+
+                const optionInputWrapper = document.createElement("div");
+                optionInputWrapper.classList.add("option-input");
+
+                const optionInput = document.createElement("input");
+                optionInput.type = "text";
+                optionInput.placeholder = "보기를 입력하세요";
+                optionInput.name = `questions[${questionItem.querySelector('label').textContent.split(' ')[1] - 1}].options[]`;
+                optionInput.classList.add("form-input");
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.textContent = "X";
+                removeButton.classList.add("remove-option");
+                removeButton.addEventListener("click", function () {
+                    optionInputWrapper.remove();
+                });
+
+                optionInputWrapper.appendChild(optionInput);
+                optionInputWrapper.appendChild(removeButton);
+                optionsContainer.appendChild(optionInputWrapper);
+            });
+        });
+
+        // 질문 삭제 버튼 이벤트 리스너
+        document.querySelectorAll('.remove-question').forEach(function (button) {
+            button.addEventListener('click', function () {
+                button.closest('.question-item').remove();
+                updateQuestionNumbers();  // 질문 삭제 후 번호 재정렬
+            });
+        });
+
+        // 보기 삭제 버튼 이벤트 리스너
+        document.querySelectorAll('.remove-option').forEach(function (button) {
+            button.addEventListener('click', function () {
+                button.closest('.option-input').remove();
+            });
+        });
+
+        // 질문 유형 선택 변경 이벤트 리스너
+        document.querySelectorAll('select[name$="survey_question_type"]').forEach(function (select) {
+            select.addEventListener('change', function () {
+                const questionItem = select.closest('.question-item');
+                const optionsContainer = questionItem.querySelector('.options-container');
+
+                if (select.value === 'multiple') {
+                    if (!optionsContainer) {
+                        const newOptionsContainer = createOptionsContainer(questionItem);
+                        questionItem.appendChild(newOptionsContainer);
+                    } else {
+                        optionsContainer.style.display = 'block';
+                    }
+                } else {
+                    if (optionsContainer) {
+                        optionsContainer.style.display = 'none';
+                        optionsContainer.querySelectorAll('.option-input').forEach(function (option) {
+                            option.remove();
+                        });
+                    }
+                }
+            });
+        });
+
+        // 옵션 컨테이너 생성 함수
+        function createOptionsContainer(questionItem) {
+            const optionsContainer = document.createElement("div");
+            optionsContainer.classList.add("options-container");
+
+            const label = document.createElement("label");
+            optionsContainer.appendChild(label);
+
+            const addOptionButton = document.createElement("button");
+            addOptionButton.type = "button";
+            addOptionButton.textContent = "보기 추가";
+            addOptionButton.classList.add("btn", "btn-secondary");
+
+            addOptionButton.addEventListener("click", function () {
+                const optionInputWrapper = document.createElement("div");
+                optionInputWrapper.classList.add("option-input");
+
+                const optionInput = document.createElement("input");
+                optionInput.type = "text";
+                optionInput.placeholder = "보기를 입력하세요";
+                optionInput.name = `questions[].options[]`;
+                optionInput.classList.add("form-input");
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.textContent = "X";
+                removeButton.classList.add("remove-option");
+                removeButton.addEventListener("click", function () {
+                    optionInputWrapper.remove();
+                });
+
+                optionInputWrapper.appendChild(optionInput);
+                optionInputWrapper.appendChild(removeButton);
+                optionsContainer.appendChild(optionInputWrapper);
+            });
+
+            optionsContainer.appendChild(addOptionButton);
+            return optionsContainer;
+        }
+
+        // 질문 번호를 업데이트하는 함수
+        function updateQuestionNumbers() {
+            const questionItems = document.querySelectorAll(".question-item");
+            questionItems.forEach(function (item, index) {
+                const questionLabel = item.querySelector("label");
+                questionLabel.textContent = `질문 ${index + 1}`;
+            });
+        }
+
+        // 질문 추가 버튼 이벤트 리스너
+        document.getElementById("addQuestionButton").addEventListener("click", function () {
+            const questionList = document.getElementById("questionList");
+            const questionItems = questionList.getElementsByClassName("question-item");
+            const questionNumber = questionItems.length + 1;
+
+            const questionItem = document.createElement("div");
+            questionItem.classList.add("question-item");
+
+            const removeQuestionButton = document.createElement("button");
+            removeQuestionButton.type = "button";
+            removeQuestionButton.textContent = "X";
+            removeQuestionButton.classList.add("remove-question");
+            removeQuestionButton.addEventListener("click", function () {
+                questionItem.remove();
+                updateQuestionNumbers();  // 질문 삭제 후 번호 재정렬
+            });
+            questionItem.appendChild(removeQuestionButton);
+
+            const questionLabel = document.createElement("label");
+            questionLabel.textContent = `질문 ${questionNumber}`;
+            const questionInput = document.createElement("input");
+            questionInput.type = "text";
+            questionInput.placeholder = "질문을 입력하세요";
+            questionInput.name = `questions[${questionNumber - 1}].survey_question_text`;
+
+            const questionTypeLabel = document.createElement("label");
+            questionTypeLabel.textContent = "질문 유형 선택";
+            const questionTypeSelect = document.createElement("select");
+            questionTypeSelect.name = `questions[${questionNumber - 1}].survey_question_type`;
+
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "선택하기";
+
+            const option1 = document.createElement("option");
+            option1.value = "multiple";
+            option1.textContent = "선택형";
+            const option2 = document.createElement("option");
+            option2.value = "text";
+            option2.textContent = "텍스트형";
+
+            questionTypeSelect.appendChild(defaultOption);
+            questionTypeSelect.appendChild(option1);
+            questionTypeSelect.appendChild(option2);
+
+            const addOptionButton = document.createElement("button");
+            addOptionButton.type = "button";
+            addOptionButton.textContent = "보기 추가";
+            addOptionButton.classList.add("btn", "btn-primary");
+            addOptionButton.style.display = "none";
+
+            const optionList = document.createElement("div");
+
+            questionTypeSelect.addEventListener("change", function () {
+                if (questionTypeSelect.value === "multiple") {
+                    addOptionButton.style.display = "inline";
+                } else {
+                    addOptionButton.style.display = "none";
+                    optionList.innerHTML = '';
+                }
+            });
+
+            addOptionButton.addEventListener("click", function () {
+                const optionInputWrapper = document.createElement("div");
+                optionInputWrapper.classList.add("option-input");
+
+                const optionInput = document.createElement("input");
+                optionInput.type = "text";
+                optionInput.placeholder = "보기를 입력하세요";
+                optionInput.name = `questions[${questionNumber - 1}].options[]`;
+
+                const removeButton = document.createElement("button");
+                removeButton.type = "button";
+                removeButton.textContent = "X";
+                removeButton.classList.add("remove-option");
+                removeButton.addEventListener("click", function () {
+                    optionInputWrapper.remove();
+                });
+
+                optionInputWrapper.appendChild(optionInput);
+                optionInputWrapper.appendChild(removeButton);
+                optionList.appendChild(optionInputWrapper);
+            });
+
+            questionItem.appendChild(questionLabel);
+            questionItem.appendChild(questionInput);
+            questionItem.appendChild(questionTypeLabel);
+            questionItem.appendChild(questionTypeSelect);
+            questionItem.appendChild(addOptionButton);
+            questionItem.appendChild(optionList);
+            questionList.appendChild(questionItem);
+
+            updateQuestionNumbers();  // 질문 추가 후 번호 재정렬
+        });
+
+        // 설문 폼 제출 이벤트 리스너
+        document.getElementById("surveyForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const surveyTitle = document.getElementById("surveyTitle").value;
+            const surveyDescription = document.getElementById("surveyDescription").value;
+            const surveyStartDate = document.getElementById("surveyStartDate").value;
+            const surveyEndDate = document.getElementById("surveyEndDate").value;
+
+            if (!surveyTitle || !surveyDescription || !surveyStartDate || !surveyEndDate) {
+                showAlert('모든 필수 정보를 입력하세요.');
+                return;
+            }
+
+            const questionItems = document.querySelectorAll('.question-item');
+            if (questionItems.length === 0) {
+                showAlert('등록된 질문이 없습니다.');
+                return;
+            }
+
+            const questions = [];
+            let hasError = false;
+
+            questionItems.forEach(function (item, index) {
+                const questionText = item.querySelector('input[type="text"]').value;
+                const questionType = item.querySelector('select').value;
+                const options = [];
+
+                if (!questionText) {
+                    showAlert(`질문 ${index + 1}의 내용을 입력하세요.`);
+                    hasError = true;
+                    return;
+                }
+
+                if (questionType === 'multiple') {
+                    const optionInputs = item.querySelectorAll('.option-input input');
+                    if (optionInputs.length === 0) {
+                        showAlert(`질문 ${index + 1}에 보기를 추가해주세요.`);
+                        hasError = true;
+                        return;
+                    }
+                    optionInputs.forEach(function (opt) {
+                        if (!opt.value) {
+                            showAlert(`질문 ${index + 1}의 선택형 보기 내용을 입력하세요.`);
+                            hasError = true;
+                            return;
+                        }
+                        options.push(opt.value);
+                    });
+                }
+
+                questions.push({
+                    survey_question_text: questionText,
+                    survey_question_type: questionType === 'multiple' ? 0 : 1,
+                    options: options
+                });
+            });
+
+            if (hasError) return;
+
+            if (selectedMembers.length === 0) {
+                showAlert('설문 참여자를 선택하세요.');
+                return;
+            }
+
+            // 참여자 번호 가져오기
+            const participantMemberNos = selectedMembers.map(Number);
+            const surveyNo = document.getElementById("surveyNo").value;
+            const data = {
+                survey_title: surveyTitle,
+                survey_start_date: surveyStartDate,
+                survey_end_date: surveyEndDate,
+                survey_description: surveyDescription,
+                participantMemberNos: participantMemberNos,
+                questions: questions
+            };
+
+            console.log("전송할 데이터:", JSON.stringify(data));
+
+            $.ajax({
+                url: '/employee/survey/qupdate/' + surveyNo,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (response) {
+                    if (response.res_code === "200") {
+                        showSuccessAlert(response.res_msg);
+                    } else {
+                        showAlert(response.res_msg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showErrorAlert('오류 발생: ' + error);
+                }
+            });
+        });
+
+        // 조직도 로드 함수
+        function loadOrganizationChart() {
+            $.ajax({
+                url: '/organizationChart/chart',
+                method: 'GET',
+                success: function (data) {
+                    $('#organization-chart').jstree({
+                        'core': {
+                            'data': data,
+                            'themes': {
+                                'icons': true,
+                                'dots': false,
+                            }
+                        },
+                        'plugins': ['checkbox', 'types', 'search'],
+                        'types': {
+                            'default': {
+                                'icon': 'fa fa-users'
+                            },
+                            'department': {
+                                'icon': 'fa fa-users'
+                            },
+                            'member': {
+                                'icon': 'fa fa-user'
+                            }
+                        }
+                    });
+
+                    $('#organization-chart').on('changed.jstree', function (e, data) {
+                        updateSelectedMembers(data.selected, data.instance);
+                    });
+
+                    $('#organization_search').on('keyup', function () {
+                        const searchString = $(this).val();
+                        $('#organization-chart').jstree(true).search(searchString);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    showErrorAlert('조직도 로딩 중 오류가 발생했습니다.');
+                    console.error('조직도 로딩 오류:', error);
+                }
+            });
+        }
+
+        // 선택된 멤버를 업데이트하는 함수
+        function updateSelectedMembers(selectedIds, instance) {
+            const selectedMembersContainer = $('#selected-members');
+            selectedMembersContainer.empty();
+
+            const selectedNodes = instance.get_selected(true);
+            selectedMembers = [];
+            selectNames = [];
+
+            selectedNodes.forEach(function (node) {
+                if (node.original.type === 'member') {
+                    const memberId = node.id;
+                    const memberNumber = memberId.replace('member_', '');
+                    const memberName = node.text;
+
+                    const memberElement = $('<div class="selected-member"></div>');
+                    const nameElement = $('<span></span>').text(memberName);
+                    const removeButton = $('<button class="remove-member">&times;</button>');
+
+                    memberElement.append(nameElement).append(removeButton);
+                    selectedMembersContainer.append(memberElement);
+
+                    selectedMembers.push(memberNumber);
+                    selectNames.push(memberName);
+
+                    removeButton.click(function () {
+                        instance.uncheck_node(node);
+                        memberElement.remove();
+                        const index = selectedMembers.indexOf(memberNumber);
+                        if (index !== -1) {
+                            selectedMembers.splice(index, 1);
+                            selectNames.splice(index, 1);
+                        }
+                    });
+                }
+            });
+        }
+
+        $('#confirmButton').click(function () {
+            const selectedMembersContainerOutside = $('#selected-members-outside');
+            selectedMembersContainerOutside.empty();
+            selectNames.forEach(function (memberName) {
+                const memberElement = $('<div></div>').text(memberName);
+                selectedMembersContainerOutside.append(memberElement);
+            });
+
+            localStorage.setItem('selectedMembers', JSON.stringify(selectedMembers));
+            localStorage.setItem('selectNames', JSON.stringify(selectNames));
+
+            $('#organizationChartModal').modal('hide');
+        });
+
+        $('#openChart').click(function () {
+            $('#organizationChartModal').modal('show');
+            loadOrganizationChart();
+        });
+    });
+</script>
+
+
+
+</th:block>
+</html>

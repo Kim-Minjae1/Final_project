@@ -1,0 +1,284 @@
+.addVacation_content {
+  font-size: 1.2vw;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+.vacationForms { 
+    width: 1250px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    margin-top : 20px;
+    margin-bottom : 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.vacationForm {
+    margin-bottom : 20px;
+    padding: 30px;
+}
+.vacation_click {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.vacation_click_ele {
+    display: flex;
+    flex-direction: column;
+}
+.vacation_ele1 {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ .vacation_title {
+     width: 85%;
+      max-width: 1500px;
+     text-align: left;
+     margin-bottom: 20px;
+ }
+
+.addVacation_button {
+    display: flex;
+    gap: 10px;
+    padding-bottom : 1.5vw;
+    padding-top:1vw;
+    margin-left : 1vw;
+}
+
+button {
+  padding: 0.5vw 1vw;
+  border: none;
+  border-radius: 0.4vw;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  font-size: 1.2vw;
+}
+
+
+button:hover {
+  opacity: 0.8;
+}
+
+#vacationFormContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1vw;
+  max-width: 100%;
+  overflow-x: auto;
+}
+#vacationFormEle {
+
+}
+.input-group {
+   display: flex;
+  align-items: center;
+  width: 18%; /* 개별 아이템의 크기를 조정하여 한 줄에 5개씩 들어가도록 설정 */
+  box-sizing: border-box;
+  margin-bottom: 1vw;
+}
+
+.input-group label {
+  margin-right: 0.5vw;
+  font-size: 1vw;
+}
+
+.input-group input {
+  flex-grow: 1;
+  width: 5vw;
+  padding: 0.5vw;
+  border: 0.1vw solid #ccc;
+  border-radius: 0.4vw;
+}
+
+.addVacation_submit,
+ .addVacation_update{
+    text-align: center;
+}
+.custom-confirm-button {
+     background-color: #003a82;
+     color:white;
+}
+.custom-cancel-button {
+    background-color: #dc3545;
+    color: white;
+}
+.delete-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius : 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #EEB3B3;
+}
+
+button{
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius : 10px;
+    border: none;
+    cursor: pointer;
+    color:white;
+    background-color: #0056b3;
+}
+.vacationType_click {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom : 1vw;
+
+}
+.vacationTypeForm {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.vacationTypeFormContainer {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    gap: 1.2vw;
+}
+
+.vacationTypeFormContainer .input-group {
+    display: flex;
+    align-items: center;
+    width: calc(50% - 1vw);
+    box-sizing: border-box;
+    margin-bottom: 1vw;
+}
+
+.vacationTypeFormContainer .input-group input {
+    margin-right: 0.3vw;
+}
+
+.vacationTable {
+  width:100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+}
+.vacationTableArea{
+   max-height: 500px;
+   overflow-y: scroll;
+   margin-bottom: 20px;
+   padding-left: 30px;
+   padding-right: 30px;
+}
+.vacationTableArea::-webkit-scrollbar {
+    margin-left:2px;
+    display: block;
+    width: 12px;
+}
+.vacationTableArea::-webkit-scrollbar-thumb {
+    margin-left:2px;
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+.vacationTableArea::-webkit-scrollbar-thumb:hover {
+    margin-left:2px;
+    background-color: #ddd;
+}
+table,
+th,
+td {
+  border: 0.1vw solid #ccc;
+}
+
+th,
+td {
+  padding: 1vw;
+  text-align: center;
+  overflow: hidden;
+  font-size:1vw;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+
+.edit-btn {
+  border: none;
+  width: 5vw;
+  padding: 0.5vw;
+  border-radius: 10px;
+}
+.delete-btn {
+  border: none;
+  width: 5vw;
+  padding: 0.5vw;
+  border-radius: 10px;
+}
+
+.save-btn {
+  border: none;
+  width: 5vw;
+  padding: 0.5vw;
+  border-radius: 10px;
+}
+.cancel-btn {
+  background-color: #dc3545;
+  border: none;
+  width: 5vw;
+  padding: 0.5vw;
+  border-radius: 10px;
+}
+#editVacationTypeName {
+  border: 1px solid #ccc;
+ font-size: 1vw;
+  border-radius: 5px;
+}
+#editVacationTypeCalculate {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1vw;
+}
+
+.oneUnderForm {
+    margin-bottom : 2vw;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.delete-btn {
+   border: 0;
+   background-color: transparent;
+   color : #d85050;
+   font-weight: 500;
+} 
+
+.edit-btn {
+   border: 0;
+   background-color: transparent;
+   color : #587bb6;
+   font-weight: 500;
+}
+
+.delete-btn:hover, .edit-btn:hover {
+   border: 0;
+   background-color: transparent;
+   color : #000000;
+   font-weight: 500;
+   background-color : #d2d2d2;
+}
+
+input[type=checkbox] { 
+	transform : scale(1.2); 
+} 
+
+input, select, .search_text {
+    padding: 12px 18px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus, .search_text:focus {
+    outline: none;
+    border-color: #0056b3;
+}

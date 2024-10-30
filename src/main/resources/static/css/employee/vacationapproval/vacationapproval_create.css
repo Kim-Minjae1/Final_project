@@ -1,0 +1,221 @@
+@charset "UTF-8";
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.editor-container {
+    width: 1250px;
+    background-color: #ffffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 60px 80px 30px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+    margin: auto;
+}
+.title_button_container{
+    justify-content: center;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.vacation_title{
+    padding-right: 70px;
+    margin: auto;
+    font-size: 20px;
+}
+
+input, select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+
+.ck.ck-editor {
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.ck-editor__editable {
+    min-height: 500px;
+    max-height: 500px;
+}
+
+
+.approve_container {
+    display: flex; 
+    justify-content: right; 
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.approve_button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+  	color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.approve_button:hover {
+	background-color: #003a82;
+}
+
+.submit_button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+  	color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.submit_button:hover {
+	background-color: #003a82;
+}
+
+.cancel_button {
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.cancel_button:hover {
+	background-color: #e9ecef;
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+    position: relative;
+}
+
+
+.form-group div {
+    gap: 10px;
+
+}
+
+
+.form-group strong {
+    flex: 0 0 150px; 
+    text-align: right;
+    margin-right: 10px;
+}
+
+.form-group input, 
+.form-group select {
+    flex: 1; 
+    max-width: 300px; 
+}
+
+
+.app_con {
+    width: 120px;
+    height: 150px;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+}
+.app_nav {
+    width: 120px;
+    height: 50px;
+    border: 1px solid #000;
+    flex-direction: column;
+}
+
+.approval_line_section {
+    margin-top: 20px;
+}
+
+.approval_line_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.approval_line_table th, .approval_line_table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+.approval_line_table td {
+    min-height: 50px; 
+    width: 100px; 
+    vertical-align: top; 
+}
+.approval_line_table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    width: 100px;
+}
+
+#strong{
+    background-color: #f2f2f2;
+}
+
+.signature_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+}
+
+.preview_button {
+    padding: 10px 20px;
+    background-color: #04AA6D; 
+    color:white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    width:100px;
+}
+
+.button_container {
+	display: flex;
+    justify-content: flex-end; 	
+    gap: 10px;
+    position: relative;
+}
+
+
+.preview_button:hover {
+    opacity: 0.8;
+}
+
+.vacation_title{
+	display: flex;
+    justify-content: center;
+    font-size: 30px;
+}
+
+#vacationapproval_file{
+	margin-top:10px;
+}

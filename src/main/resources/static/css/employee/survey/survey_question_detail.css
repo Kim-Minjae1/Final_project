@@ -1,0 +1,129 @@
+.container {
+	position: relative;
+	width: 90%;
+	max-width: 1200px;
+	margin: 40px auto;
+	padding: 30px;
+	box-sizing: border-box;
+	background-color: #ffffff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.header h1, .header h3, .header p {
+	margin: 0;
+}
+
+.question {
+	margin: 20px 0;
+}
+
+input[type="radio"], input[type="text"] {
+	margin-right: 10px;
+}
+
+.submit-buttons {
+	display: flex;
+	justify-content: space-between;  /* 양쪽으로 버튼 배치 */
+	margin-top: 20px;
+	width: 100%;
+}
+
+/* 왼쪽에 취소 또는 목록 버튼 */
+.submit-buttons .left-buttons {
+	display: flex;
+	justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+/* 오른쪽에 수정 및 삭제 버튼 */
+.submit-buttons .right-buttons {
+	display: flex;
+	justify-content: flex-end; /* 오른쪽 정렬 */
+	gap: 10px; /* 버튼 간 간격 */
+}
+
+.submit-buttons button {
+	padding: 10px 20px;
+	background-color: #0056b3;
+	color: white;
+	cursor: pointer;
+	font-size: 16px;
+	border: 1px solid #ddd; 
+	border-radius: 6px;     
+}
+
+.submit-buttons button.cancel-btn {
+	background-color: #f8f9fa;
+	color: black;
+	border: 1px solid #ddd; 
+	border-radius: 4px;     
+}
+
+.submit-buttons button:hover {
+	background-color: #003a82;
+}
+
+.submit-buttons button.cancel-btn:hover {
+	background-color: #e9ecef;
+	color: black;
+}
+
+tbody tr:hover {
+	background-color: #003a82;
+	color: white;
+}
+
+table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+th, td {
+	padding: 18px 15px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+	font-size: 15px;
+}
+
+th {
+	background-color: #f8f9fa;
+	font-weight: bold;
+	color: #333;
+	text-transform: uppercase;
+	font-size: 17px;
+}
+
+tbody tr:last-child td {
+	border-bottom: none;
+}
+
+tbody tr {
+	transition: background-color 0.3s;
+}
+
+input[type="text"] {
+	width: 100%;
+	height: 50px;
+	padding: 12px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: 16px;
+	box-sizing: border-box;
+	transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+	outline: none;
+	border-color: #0056b3;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f2f5;
+	color: #333;
+	line-height: 1.6;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+    <link th:href="@{/css/employee/member/mypage.css}" rel="stylesheet" type="text/css">
+	    <section th:each="member : ${memberdto}">
+	        <div class="my_profile">
+	            <div class="profile_card">
+	                <div class="profile-header">
+	                    <div class="profile_img">
+						<img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" alt="사원 사진" id="currentSignature">
+	                    </div>
+	                    <ul class="profile-details" >
+	                        <li>
+	                            <strong>사번</strong>
+	                            <span th:text="${member.member_number}"></span>
+	                        </li>
+	                        <li>
+	                            <strong>사원명</strong>
+	                            <span th:text="${member.member_name}"></span>
+	                        </li>
+	                        <li>
+	                            <strong>주민번호 </strong>
+	                            <span th:text="${#strings.concat(member.member_national.substring(0, 6), '-', member.member_national.substring(7, 8), '******')}"></span>
+	                        </li>
+	                    </ul>
+	                </div>
+	                <hr class="divider">
+	                <ul class="profile_details paired">
+	                    <li>
+	                        <strong>부서</strong>
+	                        <span th:text="${member.department_name}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>직위</strong>
+	                        <span th:text="${member.position_name}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>입사일</strong>
+	                        <span th:text="${member.member_hire_date}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>퇴사일</strong>
+	                        <span>-</span>
+	                    </li>
+	                    <li>
+	                        <strong>전화번호</strong>
+	                        <span th:text="${member.member_mobile}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>내선번호</strong>
+	                        <span th:text="${member.member_internal}"></span>
+	                    </li>
+	                </ul>
+	                <ul class="profile_details address">
+	                    <li id="address">
+	                        <strong>주소</strong>
+	                        <span th:if="${member.member_address == null or #strings.isEmpty(member.member_address)}" id="editAddress">정보 수정에서 주소를 등록해주세요.</span>
+	                        <span th:if="${member.member_address != null}" th:text="${member.member_address}"></span>
+	                    </li>
+	                </ul>
+	            </div>
+	        </div>
+	    </section>
+	    <script th:src="@{/js/employee/member/mypage.js}"></script>
+</th:block>
+</html>

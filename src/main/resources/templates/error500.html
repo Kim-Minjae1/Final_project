@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> 
+        <link th:href="@{/css/error.css}" rel="stylesheet" type="text/css">
+        <section>
+		    <div class="error-container">
+		        <div class="error-content">
+		            <svg class="error-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+		                <line x1="12" y1="9" x2="12" y2="13"></line>
+		                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+		            </svg>
+		            <h1 class="error-title">요청하신 페이지를 찾을 수 없습니다.</h1>
+		            <p class="error-message">
+		                죄송합니다. 페이지가 존재하지 않거나 다른 문제가 발생했습니다.<br>
+		                관리자게엑 문의부탁드립니다.						
+		            </p>
+		            <button class="error-button" onclick="history.back()">이전 페이지</button>
+		        </div>
+		    </div>
+        </section>
+</html>

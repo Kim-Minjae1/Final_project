@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+	<link th:href="@{/css/employee/survey/survey_question_result.css}"
+		rel="stylesheet" type="text/css">
+	<section>
+		<div class="container">
+			<h1 th:text="${dto.survey_title}" style="margin: 0; padding: 0; text-align: left;"></h1>
+			
+			<div class="header">
+				<div class="details" th:if="${dto != null}">
+					<p>작성자: <span th:text="${dto.member_name} + ' ' + ${dto.position_name}"></span></p>
+					<p>작성일: <span th:text="${#temporals.format(dto.survey_create_date, 'yyyy-MM-dd')}"></span></p>
+					<p>설문 기간: <span th:text="${dto.survey_start_date} + ' ~ ' + ${dto.survey_end_date}"></span></p>
+					<p>설문 상태: <span th:text="${dto.survey_status == 0 ? '진행 중' : '종료'}"></span></p>
+				</div>
+
+				<!-- 참여 통계 -->
+				<div class="stats">
+					<div class="stat">
+						<p>전체 참여자</p>
+						<h2 th:text="${totalParticipants}"></h2>
+					</div>
+					<div class="stat">
+						<p>참여 완료</p>
+						<h2 th:text="${completedParticipants}"></h2>
+					</div>
+					<div class="stat">
+						<p>미참여</p>
+						<h2 th:text="${notParticipatedParticipants}"></h2>
+					</div>
+				</div>
+			</div>
+			<br>
+			
+			<!-- 질문 출력 (참여 완료가 0이 아닐 경우만 표시) -->
+			<div class="questions" th:if="${completedParticipants != 0}">
+				<div class="question" th:each="question, iterStat : ${questions}">
+					<p><strong th:text="${iterStat.count + '.'}"></strong> <span th:text="${question.survey_question_text}"></span></p>
+
+					<div th:if="${question.survey_question_type == 0}">
+						<div class="participation-summary">
+							<p>
+								전체 참여자: <span class="total-participants" th:text="${totalParticipants}"></span>
+								<span class="spacer"></span>
+								참여율: <span class="participation-rate" th:text="${participationRates[question.survey_question_no] + '%'}"></span>
+							</p>
+						</div>
+
+						<!-- 차트 렌더링 -->
+						<div th:id="'piechart-' + ${question.survey_question_no}" style="width: 600px; height: 400px;"></div>
+					</div>
+
+					<!-- 주관식 질문일 경우 -->
+					<div th:if="${question.survey_question_type == 1}">
+						<div class="participation-summary">
+							<p>
+								전체 참여자: <span class="total-participants" th:text="${totalParticipants}"></span>
+								<span class="spacer"></span>
+								참여율: <span class="participation-rate" th:text="${participationRates[question.survey_question_no] + '%'}"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 참여 완료가 0인 경우 -->
+			<div th:if="${completedParticipants == 0}">
+				<p>참여자가 없습니다.</p>
+			</div>
+		
+			<!-- 버튼 영역 -->
+			<div class="button-container">
+				<button type="button" class="cancel-btn" onclick="window.history.back()">목록</button>
+				<a th:href="@{/employee/survey/update/{survey_no}(survey_no=${dto.survey_no})}" 
+				   class="btn-edit" th:if="${dto.survey_status == 0}">수정</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- 구글 차트 스크립트 추가 -->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" th:inline="javascript">
+		google.charts.load('current', {'packages': ['corechart']});
+		google.charts.setOnLoadCallback(drawCharts);
+
+		function drawCharts() {
+			let chartData = /*[[${chartData}]]*/ {};
+
+			for (const [questionNo, data] of Object.entries(chartData)) {
+				drawChart(questionNo, data);
+			}
+		}
+
+		function drawChart(questionNo, chartData) {
+			var data = google.visualization.arrayToDataTable(chartData);
+
+			var options = {
+				is3D: true,
+				width: 600,
+				height: 400,
+				pieSliceText: 'label',
+				chartArea: { width: '90%', height: '75%' },
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('piechart-' + questionNo));
+			chart.draw(data, options);
+		}
+
+		const location_text = document.getElementById('header_location_text');
+	    location_text.innerHTML = '설문&emsp;&gt;&emsp;설문 상세';
+	</script>
+</th:block>
+</html>

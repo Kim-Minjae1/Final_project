@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+    <link th:href="@{/css/employee/member/detail.css}" rel="stylesheet" type="text/css">
+	    <section th:each="member : ${memberDtoList}">
+	        <div class="my_profile">
+	            <div class="profile_card">
+	                <div class="profile_header">
+	                    <div class="profile_img">
+						<img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" alt="사원 사진" id="currentSignature">
+	                    </div>
+	                    <ul class="profile_details" >
+	                        <li>
+	                            <strong>사번</strong>
+	                            <span th:text="${member.member_number}"></span>
+	                        </li>
+	                        <li>
+	                            <strong>사원명</strong>
+	                            <span id="membre_name" th:text="${member.member_name}"></span>
+	                        </li>
+	                        <li>
+	                        <strong>입사일</strong>
+	                        <span th:text="${member.member_hire_date}"></span>
+	                    </li>
+	                    </ul>
+	                </div>
+	                <hr class="divider">
+	                <ul class="profile_details paired">
+	                    <li>
+	                        <strong>부서</strong>
+	                        <span th:text="${member.department_name}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>직위</strong>
+	                        <span th:text="${member.position_name}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>전화번호</strong>
+	                        <span th:text="${member.member_mobile}"></span>
+	                    </li>
+	                    <li>
+	                        <strong>내선번호</strong>
+	                        <span th:text="${member.member_internal}"></span>
+	                    </li>
+	                </ul>
+	
+	                <div class="button_container">
+						<button type="button" id="list_button" onclick="location.href='/employee/member/list'">목록</button>
+				    </div>
+	            </div>
+	        </div>
+	    </section>
+    <script th:src="@{/js/employee/member/detail.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<th:block th:fragment="navLayout">
+
+	<link th:href="@{/css/include/nav.css}" rel="stylesheet" type="text/css">
+	<nav>
+	<div style="display:block;" th:each = "member : ${memberdto}">
+		<input type ="hidden" id="currentMember" th:value="${member.member_no}"/>
+		<input type ="hidden" id="currentMembers" th:value="${member.member_vacation_count}"/>
+	</div>
+	<div id="nav_wrap" >
+		<ul>
+			<li sec:authorize="hasAuthority('USER')">
+				<a href="#" class="dropdown-toggle">마이페이지</a>
+				<div class="dropdown" data-dropdown-id="mypageDropdown">
+					<ul th:each = "member : ${memberdto}">
+						<li><a th:href="@{/employee/member/mypage}">내 정보</a></li>
+						<li><a th:href="@{/employee/member/myedit}">정보 수정</a></li>
+						<li><a th:href="@{/employee/member/digitalname}">전자결재 서명 등록</a></li>
+					</ul>
+				</div>
+			</li>
+			<li th:each="member : ${memberdto}" sec:authorize="hasAuthority('USER')">
+				<a th:href="@{/employee/attendance/myAttendance/{no}(no=${member.member_no})}">근태 조회</a>
+			</li>
+
+			<li th:each = "member : ${memberdto}"  sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('USER')">
+   				 <a th:href="@{/admin/notice/list}">공지사항</a>
+				</li>
+				<li sec:authorize="hasAuthority('USER')">
+					<a href="#" class="dropdown-toggle">휴가</a>
+					<div class="dropdown" data-dropdown-id="vacationapprovalDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/employee/vacationapproval/create}">휴가 신청</a></li>
+							<li><a th:href="@{/employee/vacationapproval/list}">휴가 신청함</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('USER')">
+					<a th:href="@{/employee/schedule}" class="single-menu" data-menu-id="schedule">일정</a>
+				</li>
+
+
+				<li sec:authorize="hasAuthority('USER')">
+					<a href="#" class="dropdown-toggle">회의실</a>
+					<div class="dropdown" data-dropdown-id="meetingDropdown">
+						<ul>
+							<li><a th:href="@{/employee/meeting/reservation}">회의실 예약</a></li>
+							<li><a th:href="@{/employee/meeting/reservation/list}">예약 내역</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('USER')">
+					<a href="#" class="dropdown-toggle">전자결재</a>
+					<div class="dropdown" data-dropdown-id="approvalDropdown">
+						<ul>
+							<li><a th:href="@{/employee/approval/create}">결재 작성</a></li>
+							<li>
+								<a href="#" class="dropdown-toggle" style="pointer-events: none;" >결재 상신함</a>
+
+								<ul style="margin-left: 20px;">
+									<li><a th:href="@{/employee/approval/progress}"><i class="fa-solid fa-caret-right" style="margin-right: 10px; color : gray;"></i>결재 진행함</a></li>
+									<li><a th:href="@{/employee/approval/reject}"><i class="fa-solid fa-caret-right" style="margin-right: 10px; color : gray;"></i>결재 반려함</a></li>
+								</ul>
+							</li>
+
+							<li>
+								<a href="#" class="dropdown-toggle" style="pointer-events: none;">결재 수신함</a>
+
+									<ul style="margin-left: 20px;">
+										<li><a th:href="@{/employee/approval/history}"><i class="fa-solid fa-caret-right" style="margin-right: 10px; color : gray;"></i>결재 내역함</a></li>
+										<li><a th:href="@{/employee/approval/references}"><i class="fa-solid fa-caret-right" style="margin-right: 10px; color : gray;"></i>결재 참조함</a></li>
+									</ul>
+
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li th:each = "member : ${memberdto}" sec:authorize="hasAuthority('USER')">
+
+					<a th:href="@{/api/chat/{no}(no=${member.member_no})}" class="single-menu"  data-menu-id="chatting">메신저</a>
+
+				</li>
+				<li th:each = "member : ${memberdto}" sec:authorize="hasAuthority('USER')">
+					<a th:href="@{/employee/member/list}" class="single-menu"  data-menu-id="memberInfo">주소록</a></li>
+
+				<li sec:authorize="hasAuthority('USER')">
+					<a href="#" class="dropdown-toggle">문서함</a>
+					<div class="dropdown" data-dropdown-id="documentDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/employee/document/personal}">개인 문서함</a></li>
+ 							<li><a th:href="@{/employee/document/department/{no}(no=${member.department_no})}">부서 문서함</a></li>
+							<li><a th:href="@{/employee/document/company}">전사 문서함</a></li>
+							<li><a th:href="@{/employee/document/bin}">휴지통</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('USER')">
+					<a href="#" class="dropdown-toggle">설문</a>
+					<div class="dropdown" data-dropdown-id="Dropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/employee/survey/create/{no}(no=${member.member_no})}">설문 작성</a></li>
+							<li><a th:href="@{/employee/survey/ingList/{no}(no=${member.member_no})}">진행중인 설문</a></li>
+							<li><a th:href="@{/employee/survey/myList/{no}(no=${member.member_no})}">내가 만든 설문</a></li>
+							<li><a th:href="@{/employee/survey/endList/{no}(no=${member.member_no})}">마감된 설문</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('ORGANIZATION_ADMIN')">
+					<a href="#" class="dropdown-toggle">조직 관리</a>
+					<div class="dropdown" data-dropdown-id="departmentDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/department}">부서 관리</a></li>
+							<li><a th:href="@{/position}">직위 관리</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('INVENTORY_ADMIN')">
+					<a href="#" class="dropdown-toggle">비품 관리</a>
+					<div class="dropdown" data-dropdown-id="inventoryDropdown">
+							<ul th:each = "member : ${memberdto}">
+								<li><a th:href="@{/inventory/create/{no}(no=${member.member_no})}">비품 등록</a></li>
+								<li><a th:href="@{/inventory/list/{no}(no=${member.member_no})}">비품 목록</a></li>
+							</ul>
+					</div>
+				</li>
+				
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('MEMBER_ADMIN')">
+					<a href="#" class="dropdown-toggle">사원 관리</a>
+					<div class="dropdown" data-dropdown-id="memberDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/admin/member/create}">사원 등록</a></li>
+<!--							<li><a th:href="@{/admin/member/edit}">사원 수정</a></li>-->
+							<li><a th:href="@{/admin/member/list}">사원 목록</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('SCHEDULE_ADMIN')">
+					<a href="#" class="dropdown-toggle">일정 관리</a>
+					<div class="dropdown" data-dropdown-id="scheduleDropdown">
+						<ul> 
+							<li><a th:href="@{/schedule/category}">카테고리 관리</a></li>
+							<li><a th:href="@{/schedule/company}">전사 일정</a></li>
+						</ul>
+					</div>
+				</li>
+
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('DOCUMENT_ADMIN')">
+					<a href="#" class="dropdown-toggle">전자 결재 양식 관리</a>
+					<div class="dropdown" data-dropdown-id="approvalFormDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/admin/approval/create}">결재 양식 등록</a></li>
+							<li><a th:href="@{/admin/approval/form}">결재 양식함</a></li>
+						</ul>
+					</div>
+				</li>
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('VACATION_ADMIN')">
+					<a href="#" class="dropdown-toggle">휴가 관리</a>
+					<div class="dropdown" data-dropdown-id="vacationDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/vacation/addVacation/{member_no}(member_no=${member.member_no})}">휴가 생성</a></li>
+							<li><a th:href="@{/vacation/vacationStandard/{member_no}(member_no=${member.member_no})}">휴가 기준</a></li>
+						</ul>
+					</div>
+				</li> 
+				<li sec:authorize="hasAuthority('TOTAL_ADMIN') or hasAuthority('METTING_ADMIN')">
+					<a href="#" class="dropdown-toggle">회의실 관리</a>
+					<div class="dropdown" data-dropdown-id="reservationDropdown">
+						<ul th:each = "member : ${memberdto}">
+							<li><a th:href="@{/meetingroomList}">회의실 정보</a></li>
+							<li><a th:href="@{/meeting/reservation/list}">예약 관리</a></li>
+						</ul>
+					</div>
+				</li>
+			<li th:each = "member : ${memberdto}"><a th:href="@{/permission}" class="single-menu" data-menu-id="allPermission" sec:authorize="hasAuthority('TOTAL_ADMIN')">통합 권한 관리</a></li>
+			</ul>
+		</div>
+
+
+	</nav>
+
+	<!-- 알림 모달  -->
+	<div id="notificationContainer">
+		<!--   동적 추가     -->
+	</div>
+	<script th:src="@{/js/include/nav.js}"></script>
+</th:block>
+
+</html>

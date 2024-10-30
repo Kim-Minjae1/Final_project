@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+    <meta charset="UTF-8">
+    <th:block layout:fragment="content" th:each="member : ${memberdto}">
+    <link th:href="@{/css/employee/attendance/myAttendance.css}" rel="stylesheet" type="text/css">
+        <section>
+	        <div id="mem_no" style="display: none;" th:text="${member.member_no}"></div>
+	        <table style="display: none;" class="hidden_table">
+	            <tr th:each="attendance : ${attendanceList}">
+	                <td class="hidden_date" th:text="${attendance.work_date}"></td>
+	                <td th:text="${attendance.check_in_time != null ? attendance.check_in_time : ''}"></td>
+	            </tr>
+				<tr th:if="${vacationListDto != null && vacationListDto.size() > 0}" th:each="vacationApproval : ${vacationListDto}">
+				    <td class="vacation_start" th:text="${vacationApproval.vacation_approval_start_date}"></td>
+				    <td class="vacation_end" th:text="${vacationApproval.vacation_approval_end_date}"></td>
+				</tr>
+	        </table>
+	        <div class="myAttendance_div">
+	            <div class="attendance_div">
+	                <div class="attendance_left">
+	                    <div class="attendance_status">
+	                        <span>출근 <span id="attendance_normal"></span></span>
+	                        <span>지각 <span id="attendance_late"></span></span>
+	                        <span>결근 <span id="attendance_absent"></span></span>
+	                        <span>휴가 <span id="attendance_vacation"></span></span>
+	                    </div>
+	                    <div class="calendar_div">
+	                        <div id="calendar_title">
+	                            <span id="year_and_month"></span>
+	                            <div class="prev_next_buttons">
+			                        <input type="button" class="today_button" value="오늘"></input>
+	                            	<span id="prev_button" onclick="prevMonth()"> &lt; </span>
+	                            	<span id="next_button" onclick="nextMonth()"> &gt; </span>
+	                       		</div>
+	                        </div>
+	                        <table id="calendar">
+	                            <tr class="date_tr">
+	                                <th align="center"><font color="red">일</font></th>
+	                                <th align="center">월</th>
+	                                <th align="center">화</th>
+	                                <th align="center">수</th>
+	                                <th align="center">목</th>
+	                                <th align="center">금</th>
+	                                <th align="center"><font color="blue">토</font></th>
+	                            </tr>
+	                        </table>
+	                    </div>
+	                </div>
+	                <hr style="height: 90%">
+	                <div class="attendance_right">
+	                	<div class="count_div">
+	                		<div id="attendance_count">
+	                			이번 달 근무 일수 
+	                			<div id="count" th:text="${countAttendance}"></div>
+	                		</div>
+	                		<div id="late_count">
+	                			이번 달 지각
+	                			<div id="count" th:text="${countLate}"></div>
+	                		</div>
+	                		<div id="absence_count">
+	                			이번 달 결근
+	                			<div id="count" th:text="${countAbsence}"></div>
+	                		</div>
+	                	</div>
+	                	<div class="search">
+	                		<select id="attendance_state">
+	                			<option>전체</option>
+	                			<option>출근</option>
+	                			<option>지각</option>
+	                			<option>결근</option>
+	                			<option>휴가</option>
+	                		</select>
+	                		<div class="date_div">
+		                		<input type="date" id="start_date">
+		                		<span id="wave">~</span>
+		                		<input type="date" id="end_date">
+	                		</div>
+	                		<select id="sort_select">
+	                			<option>최신순</option>
+	                			<option>과거순</option>
+	                		</select>               		
+	                	</div>				                	
+		                <div class="attendance_list">
+		                    <table class="attendance_table">
+		                        <thead class="table_head">
+		                            <tr>
+		                                <th style="width: 25%">날짜</th>
+		                                <th style="width: 25%">출근 시간</th>
+		                                <th style="width: 25%">퇴근 시간</th>
+		                                <th style="width: 25%">근태</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody id="attendance_table_body">
+		                            <!-- 리스트는 AJAX로 불러옴 -->
+		                        </tbody>
+		                    </table>
+		                </div>
+	                    <div class="pagination" id="pagination">
+	                        <!-- 페이지 버튼 ajax -->
+	                    </div>	                    
+		            </div>
+	            </div>
+	        </div>
+        </section>
+        <script src="/js/employee/attendance/myAttendance.js"></script>
+    </th:block>
+</html>

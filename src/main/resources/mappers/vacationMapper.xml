@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fiveLink.linkOffice.mapper.VacationMapper"> <!-- namespace 수정 -->
+
+    <!-- 멤버의 휴가 데이터를 가져오는 쿼리 -->
+    <select id="selectVacationList" resultType="com.fiveLink.linkOffice.vacation.domain.VacationDto">
+        SELECT *
+        FROM fl_vacation
+    </select>
+    <select id="countVacation" resultType="int">
+        SELECT count(*) FROM fl_vacation
+    </select>
+    <select id="countVacationType" resultType="int">
+        SELECT count(*) FROM fl_vacation_type
+    </select>
+    <select id="selectVacationTypeList" resultType="com.fiveLink.linkOffice.vacation.domain.VacationTypeDto">
+        SELECT *
+        FROM fl_vacation_type
+        ORDER BY vacation_type_name
+    </select>
+    <select id="countCheckOneYear" resultType="int">
+        SELECT count(*) FROM fl_vacation_under
+    </select>
+    <select id="countStandard" resultType="int">
+        SELECT count(*) FROM fl_vacation_standard
+    </select>
+
+    <select id="selectVacationStandard" resultType="com.fiveLink.linkOffice.vacation.domain.VacationStandardDto">
+        SELECT *
+        FROM fl_vacation_standard
+    </select>
+
+
+    <select id="selectUnderYearMember" parameterType="int" resultType="com.fiveLink.linkOffice.member.domain.MemberDto">
+        SELECT *
+        FROM fl_member
+        WHERE member_one_under = #{num}
+    </select>
+
+    <select id="contVacationYear" resultType="int">
+        SELECT vacation_annual_leave FROM fl_vacation
+        WHERE vacation_year = #{year}
+    </select>
+
+    <select id="selectVacationDesignated" resultType="String">
+        SELECT vacation_standard_date FROM fl_vacation_standard
+        WHERE vacation_standard_status = #{num}
+    </select>
+
+    <select id="selectVacationStandardStatus" resultType="int">
+        SELECT vacation_standard_status FROM fl_vacation_standard
+    </select>
+    <select id="checkType" resultType="int">
+        SELECT count(*) FROM fl_vacation_type WHERE vacation_type_name = #{name} AND vacation_type_status = 0
+    </select>
+
+    <select id="checkTypeName" parameterType="map" resultType="int">
+        SELECT count(*) FROM fl_vacation_type WHERE vacation_type_name = #{name} AND vacation_type_no = #{num}
+    </select>
+    <select id="userVacationCount" parameterType="Long" resultType="double">
+        SELECT member_vacation_count FROM fl_member
+        WHERE member_no = #{memberNo}
+    </select>
+
+    <select id="memberHireDate" parameterType="Long" resultType="String">
+        SELECT member_hire_date FROM fl_member
+        WHERE member_no = #{memberNo}
+    </select>
+</mapper>

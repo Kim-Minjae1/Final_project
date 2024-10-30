@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+    <th:block layout:fragment="content">
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+   		<link th:href="@{/css/employee/approval/approval.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{/css/employee/approval/approval_edit.css}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
+	        <section th:each="member : ${memberdto}">
+	            <div class="container">
+	                <form id="appEditFrm" enctype="multipart/form-data">
+	                    <div class="main_container">
+	                        <div class="editor-container editor-container_classic-editor">
+	                            <div class="form-group">
+	                                <input type="hidden" id="csrf_token" th:value="${_csrf.token}" name="_csrf" />
+	                                <input type="hidden" id="approval_no" th:value="${approvaldto.approval_no}" >
+	                                <button type="button" id="previewButton" class="preview_button">미리보기</button> 
+	                                <div class="field">
+	                                    <strong>제목</strong>
+	                                    <input type="text" id="approval_title" name="approval_title" th:value="${approvaldto.approval_title}">
+	                                </div>
+	                              	<div class="approve_container">
+	                                	<button type="button" id="openChart" class="btn btn-primary approve_button">결재선 지정</button>
+	                            	</div>
+	                            </div>
+								<table id="approvalLineTable" class="approval_line_table">
+								    <tr>
+								        <th rowspan="3">결재</th>
+								        <td id="approve"><div><span th:text="${member.position_name}"></span></div></td>
+								        <td><div></div></td>
+								        <td><div></div></td>
+								        <td><div></div></td>
+								        <td><div></div></td>
+								        <td><div></div></td>
+								        <td><div></div></td>
+								    </tr>
+								    <tr>
+								        <td id="approve"><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								        <td><div class="signature_box"></div></td>
+								    </tr>
+								    <tr>
+								        <td id="approve"><span th:text="${member.member_name}"></span></td>
+								        <td></td>
+								        <td></td>
+								        <td></td>
+								        <td></td>
+								        <td></td>
+								        <td></td>
+								    </tr>
+								    <tr id="referenceRow">
+								        <td id="strong"><strong>합의</strong></td>
+								        <td colspan="7" id="referencestCell"><span th:each="flow : ${approvaldto.flows}" 
+								              th:if="${flow.approval_flow_role == 1}"
+								              th:text="${flow.member_name}+' '"></span></td>
+								    </tr>
+								    <tr id="referenceRow">
+								        <td id="strong"><strong>참조</strong></td>
+								        <td id="reviewerCell" colspan="7"><span th:each="flow : ${approvaldto.flows}" 
+								              th:if="${flow.approval_flow_role == 0}"
+								              th:text="${flow.member_name}+' '"></span></td>
+								    </tr>
+								</table>
+	                            <div class="editor-container__editor" id="editor" th:utext="${approvaldto.approval_content}"></div>
+							<div th:each="file : ${approvaldto.files}">
+							     <strong> 등록 파일 </strong>
+							    <span th:text="${file.approval_file_ori_name}"></span>
+							</div>
+							<div>
+							    <input type="file" id="approval_file" name="approval_file">
+							</div>
+	                            <div class="button_container">
+	                                <button type="submit" class="submit_button">신청</button>
+	                                <button type="button" class="cancel_button" onclick="history.back()">취소</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </form>
+	            </div>
+				<div class="modal" id="organizationChartModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel" aria-hidden="true">
+				    <div class="modal-dialog" role="document">
+				        <div class="modal-content">
+				            <form>
+				                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+				                <div class="modal-header">
+				                    <div class="organizationchart_title" id="organizationChartModalLabel">조직도</div>
+				                    <span class="chart_close" data-dismiss="modal" aria-label="Close">&times;</span>
+				                </div>
+				                <div class="modal-body">
+				                    <div class="row">
+				                        <div class="col-md-6">
+				                            <input type="text" id="organization_search" placeholder="검색어를 입력하세요." class="organization_search">
+				                            <div id="organization-chart"></div>
+				                        </div>
+				                        <div class="member-lists-container">
+				                            <div class="member-list">
+				                                <h3>결재자</h3>
+				                                <div class="list-controls">
+				                                	<div>
+					                                    <button class="move-to-approver" data-target="approver">▶</button>
+					                                    <button class="move-from-approver" data-target="approver">◀</button>
+				                                	</div>
+				                                    <div class="member-box" id="approver-list"></div>
+				                                </div>
+				                            </div>
+				                            <div class="member-list">
+				                                <h3>합의자</h3>
+				                                <div class="list-controls">
+					                                <div>
+					                                    <button class="move-to-reference" data-target="reference">▶</button>
+					                                    <button class="move-from-reference" data-target="reference">◀</button>
+					                                </div>
+				                                    <div class="member-box" id="reference-list"></div>
+				                                </div>
+				                            </div>
+				                            <div class="member-list">
+				                                <h3>참조자</h3>
+				                                <div class="list-controls">
+					                                <div>
+					                                    <button class="move-to-reviewer" data-target="reviewer">▶</button>
+					                                    <button class="move-from-reviewer" data-target="reviewer">◀</button>
+					                                </div>
+				                                    <div class="member-box" id="reviewer-list"></div>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+				                </div>
+				                <div class="modal-footer">
+				                    <button id="confirmButton" type="button" class="modal_btn">확인</button>
+				                </div>
+				            </form>
+				        </div>
+				    </div>
+				</div>
+        	</section>
+        <script th:src="@{/js/employee/approval/approval_edit.js}"></script>
+        <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
+            }
+        }
+        </script>
+        <script type="module" th:src="@{/js/employee/approval/approval_progress_edit.js}"></script>
+    </th:block>
+</html>

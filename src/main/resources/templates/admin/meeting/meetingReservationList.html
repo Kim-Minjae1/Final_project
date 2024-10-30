@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{include/layout}"> 
+    <th:block layout:fragment="content">
+        <link th:href="@{/css/admin/meeting/meetingReservationList.css}" rel="stylesheet" type="text/css">
+        <section>  
+			<div class="myMeetingReservation_list">
+                <div class="search_sort_container">
+                    <div class="search_container">
+                        <form th:action="@{/meeting/reservation/list}" method="get">
+                            <select id="meetingRoomSelect" name="meetingNo" class="select_meetingRoom">
+                                <option value="">전체 회의실</option>
+                                <th:block th:each="meeting : ${meetings}">
+                                    <option th:value="${meeting.meeting_no}" 
+                                            th:text="${meeting.meeting_name}" 
+                                            th:selected="${meeting.meeting_no.toString() == meetingNo}">
+                                    </option>
+                                </th:block>
+                            </select>
+                            <input type="text" class="search_input" name="searchText" 
+                                   th:placeholder="'사원명으로 검색하세요.'" th:value="${searchText}">
+							<input type="date" id="startDate" name="startDate" th:value="${startDate}" placeholder="조회 시작일" class="all_sort_select_box">
+							<input type="date" id="endDate" name="endDate" th:value="${endDate}" placeholder="조회 종료일" class="all_sort_select_box">
+                            <button type="submit" class="search_button">검색</button>
+                            <select name="sortBy" id="sort" onchange="this.form.submit()" class= "all_sort_select_box meeting_sort_date">
+                                <option th:value="latest" th:selected="${currentSort == 'latest'}">최신순</option>
+                                <option th:value="oldest" th:selected="${currentSort == 'oldest'}">과거순</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <table class="reservation_list_table">
+                    <thead>
+                        <tr>
+                            <th>회의실명</th>
+                            <th>예약 날짜</th>
+                            <th>예약 시간</th>
+                            <th>예약자</th>
+                            <th>목적</th>
+                            <th>참여 인원</th>
+                            <th>예약 등록일</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+				        <tr th:if="${#lists.isEmpty(reservations.content)}">
+				            <td colspan="6" style="text-align: center;">예약 내역이 존재하지 않습니다.</td>
+				        </tr>
+				         
+				        <tr th:each="reservation : ${reservations.content}">
+				            <td th:text="${reservation.meeting_name}" style="width: 10%"></td>
+				            <td th:text="${reservation.meeting_reservation_date}" style="width: 10%"></td>
+				            <td th:text="${reservation.meeting_reservation_start_time} + ' ~ ' + ${reservation.meeting_reservation_end_time}" style="width: 12%"></td>
+				            <td th:text="${reservation.department_name} + ' ' + ${reservation.member_name} + ' ' + ${reservation.position_name}" style="width: 22%"></td>
+				            <td th:text="${reservation.meeting_reservation_purpose}" style="width: 25%"></td>
+				            <td th:text="${reservation.participant_count}" style="width: 10%; text-align: center;"></td>
+				            <td class="create_date" th:text="${reservation.meeting_reservation_create_date}" style="width: 13%"></td>
+				        </tr>
+				    </tbody>
+                </table>
+                <div class="pagination" th:if="${reservations.totalElements > 0}">
+				    <th:block th:if="${reservations.hasPrevious()}">
+				        <button th:onclick="|location.href='@{/meeting/reservation/list(page=0, meetingNo=${meetingNo}, searchText=${searchText}, sortBy=${currentSort}, startDate=${startDate}, endDate=${endDate})}'|">&lt;&lt;</button>
+				        <button th:onclick="|location.href='@{/meeting/reservation/list(page=${reservations.number - 1}, meetingNo=${meetingNo}, searchText=${searchText}, sortBy=${currentSort}, startDate=${startDate}, endDate=${endDate})}'|">&lt;</button>
+				    </th:block>
+				    <th:block th:with="totalPages=${reservations.totalPages}, currentPage=${reservations.number}">
+				        <th:block th:with="startPage=${currentPage >= totalPages - 1 ? totalPages - 3 : (currentPage <= 1 ? 0 : currentPage - 1)}, 
+				                     endPage=${currentPage >= totalPages - 1 ? totalPages - 1 : (currentPage <= 1 ? 2 : currentPage + 1)}">
+				            <span th:each="i : ${#numbers.sequence(startPage < 0 ? 0 : startPage, endPage >= totalPages ? totalPages - 1 : endPage)}">
+				                <button th:classappend="${i == currentPage} ? 'active'"
+				                        th:onclick="|location.href='@{/meeting/reservation/list(page=${i}, meetingNo=${meetingNo}, searchText=${searchText}, sortBy=${currentSort}, startDate=${startDate}, endDate=${endDate})}'|"
+				                        th:text="${i + 1}"></button>
+				            </span>
+				        </th:block>
+				    </th:block>
+				    <th:block th:if="${reservations.hasNext()}">
+				        <button th:onclick="|location.href='@{/meeting/reservation/list(page=${reservations.number + 1}, meetingNo=${meetingNo}, searchText=${searchText}, sortBy=${currentSort}, startDate=${startDate}, endDate=${endDate})}'|">&gt;</button>
+				        <button th:onclick="|location.href='@{/meeting/reservation/list(page=${reservations.totalPages - 1}, meetingNo=${meetingNo}, searchText=${searchText}, sortBy=${currentSort}, startDate=${startDate}, endDate=${endDate})}'|">&gt;&gt;</button>
+				    </th:block>
+				</div> 
+			</div>
+        </section> 
+        <script th:src="@{/js/admin/meeting/meetingReservationList.js}"></script>
+    </th:block>
+</html>

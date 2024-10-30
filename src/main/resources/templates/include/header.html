@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<th:block th:fragment="headerLayout">
+    <link th:href="@{/css/include/header.css}" rel="stylesheet" type="text/css">
+    <header>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div th:each = "member : ${memberdto}">
+
+            <input type ="hidden" id="headerCurrentMember" th:value="${member.member_no}"/>
+			<input type ="hidden" id="headerCurrentDepartment" th:value="${member.department_no}"/>
+             <div id="header_wrap">
+                <div class="header_logo">
+                    <a th:href="@{/}">
+                        <div class="header_logo_text">LINK OFFICE</div>
+                    </a>
+                </div>
+                 <div class="user_session_container">
+                     <div class="session_time">
+                         <span id="session-time">30:00</span>
+                     </div>
+                 </div>
+                 <div class="user_name" style="margin-right:10px; "> 
+                     <span id="user_info" th:text="${member.member_name} + ' ' + (${member.position_name == '관리자' ? '' : member.position_name})" style="font-size:13px; color:#fff;"></span>
+                 </div>
+                <div class="user_logout_container">
+
+                    <div class="user_image" id="userImage">
+                        <img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" class="user_photo" sec:authorize="hasAuthority('TOTAL_ADMIN')"/>
+
+                        <img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" class="user_photo" onclick="toggleDropdown(event)" sec:authorize="hasAuthority('USER')"/>
+                        <ul class="dropdown_menu" id="dropdownMenu" sec:authorize="hasAuthority('USER')">
+                            <li><a th:href="@{/employee/member/mypage}">내 정보</a></li>
+                            <li><a th:href="@{/employee/member/myedit}">정보 수정</a></li>
+                            <li><a th:href="@{/employee/member/digitalname}">서명 등록</a></li>
+                        </ul>
+                    </div>
+                    <div class="bell" id="notification-bell" sec:authorize="hasAuthority('USER')">
+
+                        <i class="fa-regular fa-bell" style ="marin-right: 20px; font-size: 20px; color:#fff;" sec:authorize="hasAuthority('USER')"></i>
+                        <!--통합 알림 모달-->
+                        <div class="notification-bell-wrapper" sec:authorize="hasAuthority('USER')">
+
+                            <ul id="notification-bell-modal" class="notification-bell-modal" sec:authorize="hasAuthority('USER')">
+                                <!-- 알림 내용 동적 -->
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+                    <form method="post" th:action="@{/logout}" class="logout_form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" class="logout_button">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <script th:src="@{/js/include/header.js}"></script>
+</th:block>
+</html>

@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+.form_page {
+    display: flex;
+    justify-content: center;
+}
+
+.approval_form {
+    width: 1250px;
+    background-color: #ffffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 60px 80px 30px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 20px;
+    margin: auto;
+}
+
+.form_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px; 
+    padding-bottom: 15px; 
+    border-bottom: 1px solid #ddd;
+    font-size: 18px; 
+}
+
+.form_label, .form_date {
+    font-weight: bold;
+    margin-right: 15px; 
+}
+
+.form_title {
+    font-weight: bold;
+    font-size: 20px; 
+    flex-grow: 1;
+}
+
+.form_date {
+    color: #666;
+    font-size: 16px; 
+}
+
+.form_content {
+    margin-bottom: 25px; 
+    min-height: 250px; 
+    border-radius: 4px;
+    padding: 15px; 
+    font-size: 16px; 
+}
+
+.form_value {
+    white-space: pre-wrap;
+    color: #333;
+}
+
+.button_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px; 
+}
+
+.right_buttons {
+    display: flex;
+}
+
+.delete_button {
+    margin-left: 10px; 
+    padding: 10px 20px;
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.delete_button:hover {
+	background-color: #c82333;
+}
+
+.edit_button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.edit_button:hover {
+	background-color: #003a82;
+}
+
+.list_button {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.list_button:hover{
+	background-color: #e9ecef;	
+}
+
+.table_container table {
+    width: 100%;
+    border-collapse: collapse; 
+    margin: 20px 0;
+}
+
+.table_container th, .table_container td {
+    border: 1px solid #ddd; 
+    padding: 8px; 
+}
+
+.table_container th {
+    background-color: #f2f2f2; 
+    text-align: left; 
+}
+
+.table_container input,
+.table_container textarea,
+.table_container select {
+    border: none;
+    cursor: not-allowed; 
+}
+
+.table_container input:disabled,
+.table_container textarea:disabled,
+.table_container select:disabled {
+    color: #333; 
+}

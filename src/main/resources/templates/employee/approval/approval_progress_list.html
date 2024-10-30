@@ -1,0 +1,97 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+  <th:block layout:fragment="content">
+    <link th:href="@{/css/employee/approval/approval_progress_list.css}" rel="stylesheet" type="text/css">
+	    <section>
+			 <div class="approval_list">
+			 <div class="search_sort_container">
+	         <div class="search_container" th:if="${searchDto != null}">
+	             <form th:action="@{/employee/approval/progress}" th:object="${searchDto}"  method="get">
+	                 <select name="search_type" th:value="${searchDto.search_type}" >
+	                     <option th:value="1" th:selected="${searchDto.search_type == 1}">전체</option>
+	                     <option th:value="2" th:selected="${searchDto.search_type == 2}">제목</option>
+	                     <option th:value="3" th:selected="${searchDto.search_type == 3}">상태</option>
+	                 </select>
+	                 <input type="text" class="search_text" name="search_text" th:field="*{search_text}" placeholder="검색어를 입력하세요.">
+	                 <button type="submit" class="search_button">검색</button>
+	                 <select name="sort" id="sort" onchange="this.form.submit()">
+	                     <option th:value="latest" th:selected="${currentSort == 'latest'}">최신순</option>
+	                     <option th:value="oldest" th:selected="${currentSort == 'oldest'}">과거순</option>
+	                 </select>
+	             </form>
+	         </div>
+	        </div>
+	        <table class="approval_list_table">
+	           <colgroup>
+		            <col width="20%">
+		            <col width="40%">
+		            <col width="20%">
+		            <col width="20%">
+	         </colgroup>       
+	          <thead>
+	            <tr>
+	              <th>목록</th>
+	              <th>제목</th>
+	              <th>기안일</th>
+	              <th>상태</th>
+	            </tr>
+	          </thead>
+	         <tbody>
+			    <th:block th:if="${#lists.isEmpty(approvalDtoList)}">
+			        <tr>
+			            <td colspan="5">조회된 목록이 없습니다.</td>
+			        </tr>
+			    </th:block>
+			    <th:block th:if="${!#lists.isEmpty(approvalDtoList)}">
+			        <tr th:each="app , appStat : ${approvalDtoList}" th:data_approval_no="${app.approval_no}" class="approval_row">
+			            <td th:text="${(page.pageable.pageSize*page.pageable.pageNumber)+appStat.count}"></td>
+			            <td th:text="${app.approval_title}"></td>
+			            <td th:text="${app.format_approval_create_date}"></td>
+			            <td th:switch="${app.approval_status}">
+			                <span th:case="0">진행중</span>
+			                <span th:case="1">완료</span>
+			            </td>
+			        </tr>
+			    </th:block>
+			</tbody>
+	
+	        </table>
+	       <div class="pagination">
+	              <th:block th:if="${page.totalElements > 1}"> 
+	                <button th:if="${page.number > 0}"
+	                        th:onclick="|location.href='@{/employee/approval/progress(page=0, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&lt;&lt;
+	                </button>
+	                <button th:if="${page.hasPrevious()}"
+	                        th:onclick="|location.href='@{/employee/approval/progress(page=${page.number - 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&lt;
+	                </button>
+	                <th:block th:with="totalPages=${page.totalPages}, currentPage=${page.number}">
+	                  <th:block th:with="
+	                      startPage=${currentPage >= totalPages - 1 ? totalPages - 3 : (currentPage <= 1 ? 0 : currentPage - 1)}, 
+	                      endPage=${currentPage >= totalPages - 1 ? totalPages - 1 : (currentPage <= 1 ? 2 : currentPage + 1)}">
+	                    <span th:if="${totalPages > 0}"
+	                          th:each="i : ${#numbers.sequence(startPage < 0 ? 0 : startPage, endPage >= totalPages ? totalPages - 1 : endPage)}">
+	                      <button th:classappend="${i == currentPage} ? 'active'"
+	                              th:onclick="|location.href='@{/employee/approval/progress(page=${i}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|"
+	                              th:text="${i + 1}">
+	                      </button>
+	                    </span>
+	                  </th:block>
+	                </th:block>
+	                <button th:if="${page.hasNext()}"
+	                        th:onclick="|location.href='@{/employee/approval/progress(page=${page.number + 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&gt;
+	                </button>
+	                <button th:if="${page.number < page.totalPages - 1}"
+	                        th:onclick="|location.href='@{/employee/approval/progress(page=${page.totalPages - 1}, search_type=${searchDto?.search_type}, search_text=${searchDto?.search_text}, sort=${currentSort})}'|">&gt;&gt;
+	                </button>
+	              </th:block>
+	            
+	              <th:block th:if="${page.totalElements == 1}">
+	                <button class="active">1</button>
+	              </th:block>
+	            </div>
+	      </div>
+	    </section>
+    <script th:src="@{/js/employee/approval/approval_progress_list.js}"></script>
+  </th:block>
+</html>

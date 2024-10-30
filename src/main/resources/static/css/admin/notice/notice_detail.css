@@ -1,0 +1,136 @@
+.detail_notice {
+  	position: relative;
+	width: 1250px;
+	min-height: 700px;
+	margin: 40px auto;
+	padding: 30px;
+	box-sizing: border-box;
+	background-color: #ffffff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+.notice-header h3 {
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 10px;
+	color: #333;
+}
+
+.notice-header .importance {
+	color: red;
+	font-weight: bold;
+}
+
+.notice-header .author, .notice-header .date, .notice-header .modidate {
+	font-size: 18px;
+	color: #666;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.notice-content {
+	margin-top: 20px;
+	border: 1px solid #e0e0e0;
+	padding: 20px;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+}
+
+.notice-image img {
+	width: 100%;
+	max-height: 300px;
+	object-fit: cover;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+/* 버튼 영역 수정 */
+.notice-buttons {
+	display: flex;
+	justify-content: space-between; /* 왼쪽은 목록, 오른쪽은 수정/삭제 */
+	align-items: center; /* 버튼들 높이를 맞춤 */
+	margin-top: 340px;
+}
+
+.notice-buttons .btn {
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	font-size: 14px;
+	cursor: pointer;
+}
+
+.notice-buttons .btn-back {
+	background-color: #f8f9fa;
+	color: black;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-right: auto; /* 목록 버튼을 왼쪽으로 */
+}
+
+.notice-buttons .btn-edit {
+	background-color: #0056b3;
+	color: white;
+	text-decoration: none;
+}
+
+.notice-buttons .btn-delete {
+	background-color: #dc3545;
+	color: white;
+}
+
+.btn-back:hover {
+	background-color: #e9ecef;
+}
+
+.btn-delete:hover {
+	background-color: #c82333;
+}
+
+.btn-edit:hover {
+	background-color: #003a82;
+}
+
+.notice-buttons .btn-edit:hover {
+    text-decoration: none;
+}
+
+.notice-image img {
+	width: 100%;
+	max-width: 600px;
+	max-height: 300px;
+	object-fit: contain;
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.file-download-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    background-color: #f9f9f9;
+}
+
+.file-name {
+    text-decoration: underline;
+    color: #007bff;
+    margin-right: 10px; 
+}
+
+.download-icon {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.download-icon i {
+    cursor: pointer;
+    color: #007bff;
+}
+
+.notice-image {
+    margin-top: 30px;
+}

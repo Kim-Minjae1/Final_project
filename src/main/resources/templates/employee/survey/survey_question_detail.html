@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <link th:href="@{/css/employee/survey/survey_question_detail.css}" rel="stylesheet" type="text/css">
+    <!-- SweetAlert2 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <section>
+        <div class="container">
+            <div class="header">
+                <div th:if="${dto != null}">
+                    <h1 th:text="${dto.survey_title}"></h1>
+                    <br>
+                    <h3 th:text="${dto.survey_description}"></h3>
+                    <br>
+                    <p>작성자: <span th:text="${dto.member_name} + ' ' + ${dto.position_name}"></span></p>
+                    <p>설문 기간: <span th:text="|${dto.survey_start_date} ~ ${dto.survey_end_date}|"></span></p>
+                    <p>설문 상태: <span th:text="${dto.survey_status == 0 ? '진행 중' : '종료'}"></span></p>
+                </div>
+            </div>
+            <br>
+            
+            <form id="surveyDetailForm" method="post" th:action="@{/employee/survey/questionDetail}" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken" />
+                <input type="hidden" id="memberNo" th:value="${memberdto[0].member_no}">
+                <div th:each="question, iterStat : ${questions}" class="question">
+                    <p>
+                        <strong th:text="${iterStat.count + '.'}">1.</strong> 
+                        <span th:text="${question.survey_question_text}">질문 텍스트</span>
+                    </p>
+
+                    <!-- 객관식 질문 처리 -->
+                    <div th:if="${question.survey_question_type == 0}">
+                        <div th:each="option, iterOpt : ${question.survey_option_no}">
+                            <!-- 각 질문별로 고유한 name 값을 설정 -->
+                            <input type="radio" th:id="${'option' + iterOpt.index}" th:name="${'survey_option_no_' + question.survey_question_no}" th:value="${option}" />
+                            <label th:for="${'option' + iterOpt.index}" th:text="${question.survey_option_answer[iterOpt.index]}">옵션 텍스트</label>
+                        </div>
+                    </div>
+
+                    <!-- 주관식 질문 처리 -->
+                    <div th:if="${question.survey_question_type == 1}">
+                        <input type="text" th:name="${'survey_text_answer_' + question.survey_question_no}" class="survey-text" />
+                        <input type="hidden" name="survey_question_no" th:value="${question.survey_question_no}" />
+                    </div>
+                </div>
+
+                <div class="submit-buttons">
+                    <button type="button" class="cancel-btn" onclick="window.history.back()">취소</button>
+                    <button type="submit" class="confirm-btn">제출</button>
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+    <script>
+        const form = document.getElementById("surveyDetailForm");
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const csrfToken = document.getElementById('csrfToken').value;
+            const formData = new FormData(form);
+
+            let isValid = true;
+
+            document.querySelectorAll('.question').forEach((questionDiv) => {
+                const questionType = questionDiv.querySelector('input[type="radio"]') ? 0 : 1; 
+                const questionNo = questionDiv.querySelector('input[type="radio"], input[type="text"]').name.split('_')[1];
+
+                if (questionType === 0) {
+                    const selectedOption = questionDiv.querySelector('input[type="radio"]:checked');
+                    if (!selectedOption) {
+                        showAlert('객관식 문항을 선택해 주세요.');
+                        isValid = false;
+                        return false; 
+                    }
+                    formData.append('survey_option_no', selectedOption.value);
+                    formData.append('survey_question_no', questionNo);
+                } else {
+                    const textAnswer = questionDiv.querySelector('input[type="text"]').value.trim();
+                    if (!textAnswer) {
+                        showAlert('주관식 문항에 답변을 입력해 주세요.');
+                        isValid = false;
+                        return false; 
+                    }
+                    formData.append('survey_text_answer', textAnswer);
+                    formData.append('survey_question_no', questionNo);
+                }
+            });
+
+            if (!isValid) return;
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.res_code === '200') {
+                    Swal.fire({
+                        text: '설문이 제출되었습니다.',
+                        icon: 'success',
+                        confirmButtonText: '확인'
+                    }).then(() => {
+                        const memberNo = document.getElementById('memberNo').value;
+                        location.href = '/employee/survey/ingList/' + memberNo;
+                    });
+                } else {
+                    Swal.fire({
+                        text: '제출 중 오류가 발생했습니다. 다시 시도해주세요.',
+                        icon: 'error',
+                        confirmButtonText: '확인'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('제출 오류:', error);
+                Swal.fire({
+                    title: '서버 오류',
+                    text: '서버 오류가 발생했습니다. 다시 시도해주세요.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
+            });
+        });
+
+        function showAlert(message) {
+            Swal.fire({
+                text: message,
+                icon: 'warning',
+                confirmButtonColor: '#0056b3',
+                confirmButtonText: '확인'
+            });
+        }
+        
+        const location_text = document.getElementById('header_location_text');
+        location_text.innerHTML = '설문&emsp;&gt;&emsp;설문 상세';
+    </script>
+</th:block>
+</html>

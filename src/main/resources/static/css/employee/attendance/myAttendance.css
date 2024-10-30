@@ -1,0 +1,371 @@
+@charset "UTF-8";
+
+.myAttendance_div{
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	height : 75vh;
+}
+.attendance_div{
+    display: flex;
+	width: 70%;
+	height : 65vh;
+	margin-top: 20px;
+}
+.today_button{
+	width: 60px;
+	height: 40px;
+	font-size: 18px;
+	display: inline-block;
+	cursor: pointer;
+	text-align: center;	
+	background-color: #f5f7fa;
+	color: #9d9d9d;
+	border: none;
+}
+.today_button:hover{
+	color: #2692f2;
+	transition: color 0.3s;	
+}
+/* 근태 상태 */
+.attendance_status{
+	margin-bottom: 15px;
+	font-size: 18px;
+	display: flex;
+	align-items: center; 
+}
+/* 출근 */
+#attendance_normal{
+	width: 40px; 
+    height: 20px; 
+    display: inline-block; 
+    background-color: #00D220; 
+    vertical-align: middle; 
+    margin-left: 3px;
+    margin-right: 20px;
+    border-radius: 20px;
+}
+/* 지각 */
+#attendance_late{
+	width: 40px; 
+    height: 20px; 
+    display: inline-block; 
+    background-color: #FFB545; 
+    vertical-align: middle; 
+    margin-left: 3px;
+    margin-right: 20px;
+    border-radius: 20px;
+}
+/* 결근 */
+#attendance_absent{
+	width: 40px; 
+    height: 20px;  
+    display: inline-block; 
+    background-color: #D25726; 
+    vertical-align: middle; 
+    margin-left: 3px;
+    margin-right: 20px;
+    border-radius: 20px;
+}
+/* 휴가 */
+#attendance_vacation{
+	width: 40px; 
+    height: 20px;  
+    display: inline-block; 
+    background-color: #3226D2; 
+    vertical-align: middle; 
+    margin-left: 3px;
+    border-radius: 20px;
+}
+/* 왼쪽 영역 */
+.attendance_left{
+	display: flex;
+	width: 100%;
+	height: 95%;
+	margin-top: 50px;
+	margin-right: 20px;
+	flex-direction: column; 
+	display: inline-block;
+}
+.calendar_div{
+	width: 100%;
+	height: 84%;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* 년도와 날짜, 꺽쇠 */
+#calendar_title{
+	font-weight: bold;
+	margin-top: 23px;
+	width: 100%;
+	height: 40px;
+	display: flex;
+    justify-content: space-between;
+    font-size: 23px;
+}
+/* 년도와 날짜 */
+#year_and_month{
+	width: 150px;
+	text-align: left;
+}
+/* 이전 달, 다음 달 버튼 */
+#prev_button, #next_button{
+	margin: 0 20px;
+	cursor: pointer;
+	font-size: 23px;
+	color: #9d9d9d;
+}
+#prev_button:hover, #next_button:hover{
+	color: #2692f2;
+	transition: color 0.3s;	
+}
+/* 달력 */
+#calendar {
+	height: 90%;
+	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border-collapse: collapse;
+	flex: 1;
+	table-layout: fixed;
+	font-size: 18px;
+	border: 1px solid #ddd;
+}
+.date_tr {
+	height: 20px; 
+}
+#calendar th{
+	border: 1px solid #ddd;
+}
+/* 달력 날짜 안에 바 */
+#calendar td {
+    width: calc(100% / 7);
+    padding: 5px;
+    vertical-align: top;
+    box-sizing: border-box;
+    background-color: white;
+    border: 1px solid #ddd;
+}
+/* 정상 출근 */
+.bar_normal {
+	background-color: #00D220; 
+	border-radius: 20px;
+    width: 70%;
+    height: 30%; 
+    margin-top: 2px; 
+}
+/* 지각 */
+.bar_late {
+	background-color: #FFB545; 
+	border-radius: 20px;
+    width: 70%;
+    height: 30%; 
+    margin-top: 2px; 
+}
+/* 결근 */
+.bar_absent {
+	background-color: #D25726; 
+	border-radius: 20px;
+    width: 70%;
+    height: 30%; 
+    margin-top: 2px;     
+}
+/* 휴가 */
+.bar_vacation {
+	background-color: #3226D2; 
+	border-radius: 20px;
+    width: 70%;
+    height: 30%; 
+    margin-top: 2px; 
+}
+/* 달력 안에 각 날짜 */
+.date_container {
+    position: relative;
+    width: 100%;
+    height: 25px;
+    text-align: right;
+}
+/* 달력 안에 근태 bar */
+.date_bar {
+    position: absolute;
+    margin-top: 15px;
+    left: 50%;
+   	transform: translateX(-50%);
+   	width: 100%;
+}
+.holiday_name {
+    font-size: 15px; 
+    color: red;
+    margin-top: 8px;
+}
+.invisible_table{
+	display: none;
+}
+.attendance_right{
+	width: 100%;
+	height: 95%;
+	margin-left: 20px;
+	flex-direction: column; 
+}
+.count_div{
+	display: flex;
+	width: 100%;
+	height: 50px;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 50px;
+}
+#attendance_count, #late_count, #absence_count{
+	padding: 10px 8px;
+	font-size: 15px;
+	display: flex;
+    align-items: center; 
+    justify-content: space-around;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	background-color: white;
+}
+#attendance_count{
+	width: 180px;
+}
+#late_count, #absence_count{
+	width: 150px;
+}
+#count{
+	font-weight: bold;
+}
+.search{
+	width: 100%;
+	height: 37px;
+	display: flex;
+	margin-top: 13px;
+	justify-content: space-between;
+}
+.date_div{
+	display: flex;	
+}
+#start_date, #end_date{
+	border: 1px solid #ddd;
+    border-radius: 6px;
+	padding: 2px 15px;
+	font-size: 13px;
+}
+#start_date:focus, #end_date:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+#attendance_state{
+	width: 100px;
+	padding: 10px 18px;
+	border-radius: 6px;
+	font-size: 13px;
+	border: 1px solid #ddd;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+#attendance_state:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+#sort_select{
+	width: 100px;
+	padding: 10px 18px;
+	font-size: 13px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+#sort_select:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+#wave{
+	height: 100%;
+	margin: 3px 10px;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+}
+.attendance_list{
+	width: 100%;
+	max-height: 100%;
+	border-radius: 8px;
+	margin-top: 20px;
+	display: inline-block;
+	overflow: hidden;
+    position: relative;
+    font-size: 15px;
+    border: 1px solid #ddd;
+}
+.attendance_table{
+	width: 100%;
+	align-items: center;
+    justify-content: center;
+    text-align: center;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+.attendance_table td { 
+	padding: 10px 10px;
+    text-align: center;
+	border-top: 1px solid #ddd;
+}
+.attendance_table th {
+	background-color: #f8f9fa;
+	padding: 10px 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+.attendance_table tbody tr {
+    vertical-align: middle; 
+    background-color: white;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.pagination_button {
+    margin-right: 10px;
+    width: 33px;
+    height: 31px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pagination_button:hover {
+    background-color: #e9ecef;
+}
+.pagination_button.active {
+    background-color: #0056b3;
+    color: white;
+    border-color: #0056b3;
+}
+.go_first_page_button, .go_last_page_button{
+    margin-right: 10px;
+    width: 42px;
+    height: 31px;    
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.go_first_page_button:hover, .go_last_page_button:hover{
+    background-color: #e9ecef;
+}

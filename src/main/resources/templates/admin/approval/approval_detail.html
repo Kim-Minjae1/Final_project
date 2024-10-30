@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+	<th:block layout:fragment="content">
+	    <link th:href="@{/css/admin/approval/approval_detail.css}" rel="stylesheet" type="text/css">
+		    <section th:each="form : ${formList}">
+		        <form id="appDeleteFrm">
+			        <div class="form_page">
+			            <div class="approval_form">
+			                <div class="form_header">
+			                	<input type="hidden" id="csrf_token" th:value="${_csrf.token}" name="_csrf" />
+		                        <input type="hidden" id="form_no" th:value="${form.approval_form_no}" name="form_no" />
+			                    <span class="form_title" id="form_title" th:text="${form.approval_form_title}"></span>
+			                    <span class="form_date">등록일 </span>
+			                    <span class="form_date" th:text="${form.format_create_date}"></span>
+			                </div>
+			                <div class="form_content">
+			                    <div class="table_container" th:utext="${form.approval_form_content}"></div>
+			                </div>
+			                <div class="button_container">
+			                    <button type="button" class="list_button" onclick="location.href='/admin/approval/form'">목록</button>
+			                    <div class="right_buttons">
+			                        <a th:href="@{/admin/approval/edit/{no}(no=${form.approval_form_no})}" class="edit_button">수정</a>
+				                    <button type="submit" class="delete_button">삭제</button>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+		        </form>
+		    </section>
+	    <script th:src="@{/js/admin/approval/approval_detail.js}"></script>
+	</th:block>
+</html>

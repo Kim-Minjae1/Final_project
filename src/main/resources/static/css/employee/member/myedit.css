@@ -1,0 +1,313 @@
+@charset "UTF-8";
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+   background-color: #ffffff;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+}
+
+.close {
+	color:#aaa;
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover{
+	color:black;
+}
+
+.modal-content h2 {
+    margin-top: 0;  
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#pwVerifyFrm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#pwVerifyFrm label {
+    margin-right: 10px;
+}
+
+#pwVerifyFrm input[type="password"] {
+    width: 130px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+#pwVerifyFrm input[type="password"] {
+    width: 130px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#pwVerifyFrm input[type="password"]:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.button-container {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+}
+
+#pwVerifyFrm button {
+    margin-left: 10px;
+   	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	background-color: #0056b3;
+	color:white;
+	border: none;
+}
+
+#pwVerifyFrm button:hover {
+	background-color: #003a82;
+	color:white;
+}
+
+.my_profile {
+    margin: auto;
+    height: 750px;
+    width: 1250px;
+    background-color: #ffffff;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    padding: 40px 40px 80px 40px;
+    border-radius: 20px;
+}
+
+.profile_card {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.profile_header {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 320px;
+    gap: 60px;
+}
+
+.profile_header_left {
+    margin-left: 30px;
+}
+
+.profile_img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file_info {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 20px;
+}
+
+.upload_button {
+    display: inline-block;
+    padding: 12px 18px;
+    background-color: #C0C0C0;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 25px;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.profile_details {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-top: 30px;
+}
+
+.profile_details li {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 40px;
+    font-size: 18px;
+}
+
+.divider {
+    width: 100%;
+    border: 0;
+    border-top: 2px solid #ddd;
+    margin: 30px 0;
+}
+
+.profile_details.paired {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 55%;
+    margin-left: 520px;
+}
+
+.profile_detail_address {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-left: 555px;
+    margin-top: 30px;
+}
+
+#new_pw {
+    width: 90%;
+}
+
+.profile_detail_address label {
+    margin-right: 25px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.input_address {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    font-size: 16px;
+}
+
+.input_address:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.input_pw_container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.input_pw {
+    width: 55%;
+    padding: 10px;
+    padding-right: 45px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+    font-size: 16px;
+}
+
+.input_pw:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.toggle_icon {
+    position: absolute;
+    right: 200px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+}
+
+.button_container {
+	gap: 15px;
+    margin-left: 1100px;
+    margin-top: 30px;
+    display: flex;
+    bottom: 30px;
+    margin-left: 1080px;
+}
+
+.address_button, .edit_button, .cancel_button {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 10px 15px 10px 15px;
+}
+
+.address_button, .edit_button {
+    background-color: #0056b3;
+    color: white;
+}
+
+.address_button:hover, .edit_button:hover {
+    background-color: #003a82;
+}
+
+.cancel_button {
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.cancel_button:hover {
+    background-color: #e9ecef;
+}

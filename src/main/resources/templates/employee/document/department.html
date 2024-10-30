@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+    <meta charset="UTF-8">
+    <th:block layout:fragment="content" th:each="member : ${memberdto}">
+    <link th:href="@{/css/employee/document/department.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <section>
+        	<div class="document_div">
+	        	<div id="mem_no" style="display: none;" th:text="${member.member_no}"></div>
+	        	<div id="dept_no" style="display: none;" th:text="${member.department_no}"></div>
+	        	<div class="modal_div" style="display: none;">
+		        	<form class="first_folder_add_modal" style="display: none;">
+		        		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		        		<div class="cancel_div">
+		        			<span>&times;</span>
+		        		</div>
+		        		<div class="modal_name">
+		        			<p>폴더 생성</p>
+		        		</div>	        		
+		        		<div class="first_folder_add_div">
+		        			<input type="text" id="first_folder_name" placeholder="폴더명을 입력해주세요.">
+		        		</div>
+		        		<div class="folder_button_div">
+			        		<input type="button" id="first_folder_add_button" value="확인">
+		        		</div>
+	        		</form>
+	        		<form class="change_name_modal" style="display: none;">
+	        			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		        		<div class="cancel_div">
+		        			<span>&times;</span>
+		        		</div>
+		        		<div class="modal_name">
+		        			<p>이름 변경</p>
+		        		</div>	        		
+		        		<div class="change_folder_name_div">
+		        			<input type="text" id="change_folder_name" placeholder="폴더명을 입력해주세요.">
+		        		</div>
+		        		<div class="folder_button_div">
+			        		<input type="button" id="folder_name_change_button" value="확인">
+		        		</div>
+	        		</form>
+	        		<form class="folder_create_modal" style="display: none;">
+	        			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		        		<div class="cancel_div">
+		        			<span>&times;</span>
+		        		</div>
+		        		<div class="modal_name">
+		        			<p>폴더 생성</p>
+		        		</div>	        		
+		        		<div class="folder_create_div">
+		        			<input type="text" id="create_folder_name" placeholder="폴더명을 입력해주세요.">
+		        		</div>
+		        		<div class="folder_button_div">
+			        		<input type="button" id="folder_create_button" value="확인">
+		        		</div>
+	        		</form>
+	        		<form class="file_upload_modal" style="display: none;">
+	         			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		        		<div class="cancel_div">
+		        			<span>&times;</span>
+		        		</div>
+		        		<div class="modal_name">
+		        			<p>업로드</p>
+		        		</div>	        		
+		        		<div class="file_upload_div">
+		        			<input type="file" id="file_input">
+		        		</div>
+		        		<div id="file_limit_div">
+		        			pdf, hwp, docx, ppt, xlsx 파일만 업로드 가능합니다.<br> 
+		        			25MB 미만의 파일만 업로드 가능합니다. 
+		        		</div>
+		        		<div class="file_button_div">
+			        		<input type="button" id="file_upload_button" value="확인">
+		        		</div>       			
+	        		</form>
+	        	</div>
+	            <div class="document_folder_list">
+	                <div class="document_folder_tree">
+	                	<!-- AJAX로 폴더 출력 -->
+		                <div id="tree" style="display: none;"></div>
+		                <div class="folder_buttons" style="display: none;">
+		                	<input type="button" id="folder_delete_button" value="삭제">
+		                	<input type="button" id="folder_add_button" value="생성">
+		                </div>
+		                <div class="box_size" style="display: none">
+		                	<div class="current_size_percent">                		
+		                		<img src="/img/cloud.png" id="cloud">
+		                		<div id="print_size"></div>
+		                	</div>
+		                	<div class="size_bar">
+			                	<div id="bar_background">
+			                		<div id="bar_foreground"></div>
+			                	</div>
+		                	</div>
+		                	<div id="current_size_text"></div>
+		                </div>
+	                </div>
+	                <hr id="document_hr">
+	                <div class="document_file_div">
+		                <div class="document_no_folder" style="display: none;">
+		                    <button id="first_folder_add">+</button>
+		                    <p id="document_no_folder_msg">폴더 생성</p>
+		                </div>
+		                <div class="document_file_list" style="display: none;">
+		                	<div class="document_search">
+		                		<div class="search_range">
+		                			<div class="range_calendar">
+		                				<input type="date" id="start_date">
+		                				<span id="wave">~</span>
+		                				<input type="date" id="end_date">
+		                			</div>       
+		                		</div>
+		                		<div class="search_name">
+		                			<select id="name_select">
+		                				<option value="search_all">전체</option>
+		                				<option value="file_name">파일명</option>
+		                				<option value="member_name">작성자명</option>
+		                			</select>  
+		                			<input type="text" id="file_name_input" placeholder="검색어를 입력하세요."> 
+		                		</div>  		
+		                	</div>
+		                	<div class="folder_name_div">
+		                		<div id="folder_name"></div>
+		                		<input type="button" id="change_name_button" value="이름 변경">
+		                	</div>
+		                	<div class="upper_list_div">
+		                		<div class="select_button">
+		                			<input type="button" id="select_delete" value="선택 삭제"> 
+		                			<hr id="div_hr">
+		                			<input type="button" id="select_down" value="선택 다운">
+		                		</div>
+		                		<div class="upload_and_sort">
+		                			<input type="button" id="upload_button" value="업로드">
+		                			<select id="sort_select">
+		                				<option value="latest">최신순</option>
+		                				<option value="oldest">과거순</option>
+		                			</select>
+		                		</div>
+		                	</div>
+		                	<div class="table_div">
+			                	<table class="file_table">
+			                		<thead class="table_head">
+			                            <tr>
+			                            	<th style="width: 5%"><input type="checkbox" id="select_all"></th>
+			                                <th style="width: 40%">파일명</th>
+			                                <th style="width: 10%">작성자</th>
+			                                <th style="width: 13%">등록일</th>
+			                                <th style="width: 9%">미리보기</th>
+			                                <th style="width: 10%">용량</th>
+			                                <th style="width: 7%">다운로드</th>
+			                                <th style="width: 6%">삭제</th>
+			                            </tr>
+			                        </thead>
+			                        <tbody id="file_table_body">
+			                            <!-- 리스트는 AJAX로 불러옴 -->
+			                        </tbody>
+			                	</table>
+		                	</div>
+	                        <div class="pagination_div">
+	                        	<div class="pagination" id="pagination">
+	                            	<!-- 페이지 버튼 ajax -->
+	                            </div>
+	                        </div>
+		                </div>
+	                </div>
+	        	</div>
+        	</div>
+        </section>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+    	<script src="/js/employee/document/department.js"></script>
+    </th:block>
+</html>

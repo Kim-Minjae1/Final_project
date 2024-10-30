@@ -1,0 +1,651 @@
+.container {
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between;  
+    gap: 20px;  
+    padding: 40px 60px; 
+    width: 1250px;
+}
+.container-section {
+    width: 100%; 
+    padding: 30px 50px; 
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.3);
+}
+ 
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 40px;
+    border: 1px solid #888; 
+    z-index: 1060;  
+    position: relative;  
+    max-width: 600px;  
+    height: auto; 
+    overflow: hidden; 
+    border-radius: 8px; 
+}
+.form_scroll {
+    max-height: 550px;  
+    overflow-y: auto;  
+    padding-right: 10px; 
+}
+ 
+#reservation-table {
+    position: relative;
+    z-index: 1;  
+}
+.room_info_explain {
+	color : red;
+	font-size :14px;
+	margin-bottom:5px;
+	margin-top:-5px;
+}  
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+.info_modal_title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px; 
+}
+
+.modal-body {
+    display: flex;  
+}
+
+.modal-image {
+    flex: 0 0 150px;  
+    margin-right: 50px;  
+}
+
+.room-image {
+    width: 200px;
+    height: 150px; 
+    object-fit: cover;  
+    border-radius: 8px; 
+}
+
+.modal-info {
+    flex: 1;  
+    display: flex;
+    flex-direction: column;  
+}
+
+.info-row {
+    display: flex; 
+    margin-bottom: 25px; 
+}
+
+.info-label {
+    flex: 0 0 130px; 
+    font-weight: bold;
+    text-align: left;
+    font-size: 17px;
+}
+
+.info-value {
+    flex: 1;  
+    text-align: left;
+    font-size :17px;
+}
+ 
+
+/* 조직도 */
+.participate_modal {
+    display: none;  
+    position: fixed;
+    z-index: 9999;
+    right : 180px;
+    top: 100px;
+    width: 450px;
+    height: 400px; 
+    padding: 0;   
+    justify-content: center;
+    align-items: center;
+}
+
+#participate_confirmButton {
+    background-color: #0056b3;
+	color: white;	
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    margin-top: 40px;    
+    float: right;
+} 
+
+#participate_confirmButton:hover { 
+	background-color: #003a82;
+}
+.participate_modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; 
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    max-height: 60vh;  
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;  
+} 
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;  
+    margin-top: 20px;
+}
+
+.participate_modal-header {
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+.participate_organizationchart_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.chart_close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chart_close:hover {
+    color: #000;
+}
+ 
+.remove-member {
+    margin-left: 5px;
+    cursor: pointer;
+    color: red;
+}
+
+.remove-member:hover {
+    font-weight: bold;
+}
+
+.permission_pick_list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.permission-item {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.permission-item:last-child {
+    border-bottom: none;
+}
+ 
+/* 조직도 모달 내부 목록 */
+ #selected-members {
+    margin-bottom: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    min-height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;  
+}
+
+.organization_search {
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+    border-radius: 8px;
+    width : 94.5%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-height: 10px;
+}
+
+.selected-member {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.selected-member span {
+    margin-right: 7px;
+   	padding-left :7px;
+}
+
+.remove-member {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1; 
+}
+
+.remove-member:hover {
+    font-weight: bold;
+    color: #cc0000;
+}  
+ 
+.jstree-closed > .jstree-icon::before {
+    content: '';  
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_plus.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ 
+.jstree-open > .jstree-icon::before {
+    content: ''; /* 기본 아이콘 제거 */
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_minus.png');
+    background-size: cover;   
+    background-position: center;
+    background-repeat: no-repeat;
+}  
+ 
+.selected-participants {
+    display: flex;
+    align-items: center;
+    padding: 5px 20px; 
+    border-radius: 20px; 
+    margin-bottom: 5px;
+    font-size: 14px;
+    width : 200px;
+    color: #333; 
+}
+
+.selected-participants span {
+    margin-right: 7px; 
+} 
+
+.reserve-button { 
+    width: 100%; 
+    max-width: 400px;  
+    padding: 15px;  
+    font-size: 16px; 
+    color: black; 
+    background-color: #0056b3;  
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.reserve-button:hover {
+    background-color: #9CAFC7;  
+} 
+
+textarea{
+	resize: none;
+}
+  
+#reservationModal {
+    display: none;
+    position: fixed;
+    z-index: 1050;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.3);
+}
+ 
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 40px;
+    border: 1px solid #888; 
+    z-index: 1060;  
+    position: relative;  
+    max-width: 600px;  
+    overflow-y: auto;   
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 예약 모달 */ 
+hr {
+	margin-top: 40px;
+}
+
+#reservationForm {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+.reservation_row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.reservation_row label {
+    flex: 0 0 150px; 
+    text-align: left;
+    font-weight: bold;
+}
+
+.reservation_row input,
+.reservation_row select,
+.reservation_row textarea {
+    flex: 1;  
+    width : 110px;
+	padding: 8px 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+} 
+
+.reservation_row input:focus,
+.reservation_row select:focus,
+.reservation_row textarea:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.time_space {
+	margin : 0 7px;
+}
+
+.date_select {
+	margin-right : 10px;
+} 
+
+#reservation_submit {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #0056b3;
+	color: white;
+	border: none;;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    margin-left : 490px;
+}
+
+.cancel_btn {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #C0C0C0;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel_btn:hover {
+    background-color: #9b9b9b;
+}
+
+#reservation_submit:hover {
+    background-color: #003a82;
+}
+
+.participate_btn {
+	width : 120px;
+    padding: 10px 20px;
+    background-color: rbg(192, 192, 192);
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.participate_btn:hover { 
+	background-color: #b5b5b5;
+}
+
+.selected-participants-container {
+  flex: 1;
+  min-height: 50px;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+/* .reservation_detail {
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+} */
+
+.info-row {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    flex: 0 0 120px;
+    font-weight: bold;
+    color: #333;
+}
+
+.info-value {
+    flex: 1;
+    color: #000000;
+}
+
+.info-participant-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.info-participant-value {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.bottom-btn-three {
+    display: flex;
+    justify-content: space-between; 
+    gap: 10px;  
+    margin-top : 80px;
+}
+
+.bottom-btn-three button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+.bottom-btn-three .left-button {
+    margin-right: auto;  
+}
+
+.bottom-btn-three .right-buttons {
+    display: flex;
+    gap: 15px;  
+}
+
+#golistButton {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #C0C0C0;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#golistButton:hover { 
+	background-color: #b5b5b5;
+}
+
+#editReservationButton {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #B3C7EE;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#editReservationButton:hover { 
+	background-color: #9CAFC7;
+}
+
+#cancelReservationButton {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #EEB3B3;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cancelReservationButton:hover { 
+	background-color: #e68e8e;
+}
+
+.pupose_info {
+	font-size:12px;
+	color:red;
+	margin-top : -15px;
+}
+
+.jstree-search { 
+    font-style: normal !important;
+    color: #0059ff !important; 
+}
+
+#golistButton {
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#golistButton:hover {
+  background-color: #e9ecef;
+}
+
+#editReservationButton {
+  padding: 10px 20px;
+  background-color: #0056b3;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#editReservationButton:hover {
+  background-color: #003a82;
+}
+
+/* 취소 버튼 */
+#cancelReservationButton {
+  padding: 10px 20px;
+  background-color: #dc3545;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#cancelReservationButton:hover {
+  background-color: #c82333;
+}
+
+.reservation_detail {
+  width: 1250px; 
+  background-color: #ffffff;
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px 50px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 10px;
+}
+
+.selected-participants-container {
+  flex: 1;
+  min-height: 50px;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+ 

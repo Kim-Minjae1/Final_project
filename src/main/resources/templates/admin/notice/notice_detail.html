@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content">
+	<link th:href="@{/css/admin/notice/notice_detail.css}" rel="stylesheet" type="text/css">
+	<!-- 부트스트랩 아이콘을 사용하기 위한 링크 추가 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+
+	<!-- CSRF 토큰 추가 -->
+	<meta name="_csrf" th:content="${_csrf.token}" />
+	<meta name="_csrf_header" th:content="${_csrf.headerName}" />
+
+	<section>
+		<div class="detail_notice">
+			<div class="notice-header">
+				<h3 class="notice-title">
+					제목 <span style="margin-left: 5px;" th:text="${dto.notice_title}"></span>
+				</h3>
+				<p class="author" style="margin-bottom: -10px;">
+					작성자 <span style="margin-left: 5px;" th:text="${dto.member_name}"></span>
+				</p>
+				<br>
+				<p class="date">
+					작성일 <span style="margin-left: 5px;" th:text="${dto.notice_create_date}"></span>
+				</p>
+				<p class="modidate" th:if="${dto.notice_update_date != null}">
+					수정일 <span style="margin-left: 5px;" th:text="${dto.notice_update_date}"></span>
+				</p>
+			</div>
+			<div class="notice-content">
+
+				<div class="file-download-section" th:if="${dto.notice_ori_img != null}">
+
+					<a th:text="${dto.notice_ori_img}" th:href="@{/download/{no}(no=${dto.notice_no})}" class="file-name">첨부파일</a>
+
+					<a th:href="@{/download/{no}(no=${dto.notice_no})}" class="download-icon"> 
+                        <i class="bi bi-download" style="font-size: 20px;"></i>
+					</a>
+				</div>
+
+				<div class="notice-image" th:if="${dto.notice_new_img != null}">
+					<img th:src="@{'/linkOfficeImg/notice/' + ${dto.notice_new_img}}" alt="Notice Image">
+				</div>
+
+				<div class="notice-text">
+					<div th:utext="${dto.notice_content}"></div>
+				</div>
+			</div>
+
+			<div class="notice-buttons">
+				<!-- 목록 버튼을 왼쪽에 배치 -->
+				<a href="/admin/notice/list" class="btn btn-back">목록</a>
+
+				<!-- 수정, 삭제 버튼을 오른쪽에 배치 -->
+				<div class="right-buttons">
+					<a th:href="@{/admin/notice/update/{no}(no=${dto.notice_no})}" class="btn btn-edit" sec:authorize="hasAuthority('TOTAL_ADMIN')">수정</a>
+					<a class="btn btn-delete" th:onclick="noticeDelete([[${dto.notice_no}]])" sec:authorize="hasAuthority('TOTAL_ADMIN')">삭제</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		const location_text = document.getElementById('header_location_text');
+		location_text.innerHTML = '공지사항&emsp;&gt;&emsp;상세보기';
+
+		// 삭제 버튼 클릭 시 SweetAlert 경고창 실행
+		const noticeDelete = function(noticeNo) {
+			Swal.fire({
+				text: '삭제하시겠습니까?',
+				icon: 'warning',
+				confirmButtonColor: '#0056b3', 
+				confirmButtonText: '확인',       
+			}).then((result) => {
+				if (result.isConfirmed) {
+					const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+					const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+					fetch('/notice/' + noticeNo, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							[csrfHeader]: csrfToken
+						}
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.res_code === '200') {
+							Swal.fire({
+								icon: 'success',
+								text: data.res_msg,
+								confirmButtonColor: '#0056b3', 
+								confirmButtonText: '확인'
+							}).then(() => {
+								location.href = '/admin/notice/list';
+							});
+						} else {
+							Swal.fire({
+								icon: 'error',
+								text: data.res_msg,
+								confirmButtonColor: '#0056b3',  
+								confirmButtonText: '확인'
+							});
+						}
+					})
+					.catch(error => {
+						Swal.fire({
+							icon: 'error',
+							text: '삭제 중 오류가 발생했습니다.',
+							confirmButtonColor: '#0056b3',
+							confirmButtonText: '확인'
+						});
+					});
+				}
+			});
+		};
+	</script>
+</th:block>
+</html>

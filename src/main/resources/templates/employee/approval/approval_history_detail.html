@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+	<link
+		th:href="@{/css/employee/approval/approval_history_vacation_detail.css}"
+		rel="stylesheet" type="text/css">
+	<section th:each="member : ${memberdto}">
+		<div class="container">
+			<input type="hidden" id="approval_member_no" th:value="${approvaldto.member_no}" />
+			<input type="hidden" id="csrf_token" th:value="${_csrf.token}" name="_csrf" /> 
+			<input type="hidden" id="approval_no" th:value="${approvaldto.approval_no}">
+			<input type="hidden" id="member_no" th:value="${member.member_no}" />
+			<div class="main_container">
+				<div class="details_section">
+					<div class="title_button_container">
+						<button type="button" id="previewButton" class="preview_button">미리보기</button>
+						<button type="button" class="reject_button"
+							th:each="flow : ${approvaldto.flows}"
+							th:if="${flow.approval_flow_status == 1 and flow.member_no == currentUserMemberNo and approvaldto.approval_status == 0}"
+							onclick="approvalReject()">반려</button>
+					</div>
+					<div class="approval_line_section">
+						<table class="approval_line_table">
+							<tr>
+								<th rowspan="3">결재</th>
+								<td>
+									<div>
+										<span th:text="${approvaldto.member_position}"></span>
+									</div>
+								</td>
+								<td th:each="flow : ${approvaldto.flows}"
+									th:if="${flow.approval_flow_role == 2}">
+									<div>
+										<span th:text="${flow.member_position}"></span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div class="signature_box">
+										<img th:if="${approvaldto.digitalname != null}"
+											th:src="@{'/linkOfficeImg/member/digital/'+${approvaldto.digitalname}}"
+											alt="기안자 서명" class="currentSignature"> <span
+											th:if="${approvaldto.digitalname == null}"
+											class="currentSignature" th:text="${approvaldto.member_name}"></span>
+									</div>
+									<div class="date_box"
+										th:text="${approvaldto.format_approval_create_date}"></div>
+								</td>
+								<td th:each="flow, stat : ${approvaldto.flows}"
+									th:if="${flow.approval_flow_role == 2}">
+									<div class="signature_box">
+										<button
+											th:if="${flow.approval_flow_status == 1 and flow.member_no == currentUserMemberNo and approvaldto.approval_status == 0}"
+											type="button" class="approval_button"
+											onclick="approveRequest()">승인</button>
+
+										<button
+											th:if="${flow.approval_flow_status == 2 
+											                    and approvaldto.approval_status == 0 
+											                    and flow.member_no == currentUserMemberNo 
+											                    and stat.index + 1 < approvaldto.flows.size() 
+											                    and approvaldto.flows[stat.index + 1].approval_flow_status == 1}"
+											type="button" class="close-button" onclick="cancelApproval()">X</button>
+
+										<img
+											th:if="${flow.approval_flow_status == 2 and flow.digital_name != null}"
+											th:src="@{'/linkOfficeImg/member/digital/' + ${flow.digital_name}}"
+											alt="현재 서명" class="currentSignature"> <span
+											th:if="${flow.approval_flow_status == 2 and flow.digital_name == null}"
+											class="currentSignature" th:text="${flow.member_name}"></span>
+
+										<span
+											th:if="${flow.approval_flow_status != 2 
+											                 and (approvaldto.approval_status != 2 
+											                 or flow.approval_flow_status == 3) 
+											                 and (flow.approval_flow_status != 1 or flow.member_no != currentUserMemberNo)}"
+											class="approval_status"
+											th:classappend="${flow.approval_flow_status == 3 ? 'rejected' : 'pending'}"
+											th:text="${flow.approval_flow_status == 3 || approvaldto.approval_status == 2 ? '반려' : '대기중'}">
+										</span>
+									</div>
+									<div class="date_box"
+										th:if="${flow.approval_flow_status != 0 and flow.approval_flow_status != 1}"
+										th:text="${flow.format_approval_flow_complete_date}"></div>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div th:text="${approvaldto.member_name}"></div>
+
+								</td>
+								<td th:each="flow : ${approvaldto.flows}"
+									th:if="${flow.approval_flow_role == 2}">
+									<div th:text="${flow.member_name}"></div>
+								</td>
+							</tr>
+							<tr>
+								<th>합의</th>
+								<td th:colspan="${#lists.size(approvaldto.flows)+1}">
+									<div class="reference_box">
+										<div th:each="flow ,stat: ${approvaldto.flows}"
+											th:if="${flow.approval_flow_role == 1}">
+											<span th:text="${flow.member_name}"></span> <span
+												th:if="${flow.approval_flow_status == 2}" class="approved">(승인)</span>
+											<span th:if="${flow.approval_flow_status == 3}"
+												class="rejected">(반려)</span>
+											<button
+												th:if="${flow.approval_flow_status == 1 and flow.member_no == currentUserMemberNo and approvaldto.approval_status == 0}"
+												type="button" class="reapproval_button"
+												onclick="approveRequest()">승인</button>
+											<button
+												th:if="${flow.approval_flow_status == 2 
+											                    and approvaldto.approval_status == 0 
+											                    and flow.member_no == currentUserMemberNo 
+											                    and stat.index + 1 < approvaldto.flows.size() 
+											                    and approvaldto.flows[stat.index + 1].approval_flow_status == 1}"
+												type="button" class="recancel_button"
+												onclick="cancelApproval()">X</button>
+										</div>
+
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>참조</th>
+								<td th:colspan="${#lists.size(approvaldto.flows)+1}">
+									<div class="reference_box">
+										<div th:each="flow : ${approvaldto.flows}"
+											th:if="${flow.approval_flow_role == 0}"
+											th:text="${flow.member_name}"></div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+
+					<div class="field">
+						<div id="approval_title" th:text="${approvaldto.approval_title}"></div>
+					</div>
+				</div>
+
+
+				<div class="content_section">
+					<div class="vacationapproval_content">
+						<div class="table_container"
+							th:utext="${approvaldto.approval_content}"></div>
+					</div>
+				</div>
+
+				<div th:if="${approvaldto.approval_cancel_reason != null}"
+					id="vacationapproval_cancel_reason">
+					<strong>기안 취소 사유</strong>
+					<div th:text="${approvaldto.approval_cancel_reason}"></div>
+				</div>
+
+				<div th:each="flow : ${approvaldto.flows}"
+					th:if="${flow.approval_flow_reject_reason != null}"
+					id="vacationapproval_flow_reject_reason">
+					<strong>반려 사유</strong>
+					<div th:text="${flow.approval_flow_reject_reason}"></div>
+				</div>
+
+
+
+				<div class="field">
+					<div
+						th:if="${approvaldto != null and !#lists.isEmpty(approvaldto.files)}">
+						<div th:each="file : ${approvaldto.files}" class="file_item">
+							<strong> 등록 파일 </strong>
+							<div
+								th:if="${file.approval_file_ori_name != null and !file.approval_file_ori_name.isEmpty() and 
+	                                                  (file.approval_file_ori_name.endsWith('.pdf') or 
+	                                                   file.approval_file_ori_name.endsWith('.xls') or 
+	                                                   file.approval_file_ori_name.endsWith('.xlsx') or
+	                                                   file.approval_file_ori_name.endsWith('.png') or 
+	                                                   file.approval_file_ori_name.endsWith('.jpg') or 
+	                                                   file.approval_file_ori_name.endsWith('.jpeg'))}"
+								class="file_info">
+								<a
+									th:href="@{/download_file/{no}(no=${approvaldto.approval_no})}"
+									th:text="${file.approval_file_ori_name}"></a>
+								<p th:text="${'파일 크기: ' + file.approval_file_size + ' KB'}"></p>
+							</div>
+						</div>
+					</div>
+					<div
+						th:if="${approvaldto == null or #lists.isEmpty(approvaldto.files)}">
+						<p>등록된 파일이 없습니다.</p>
+					</div>
+				</div>
+
+
+				<div class="button_container">
+					<button type="button" class="list_button"
+						onclick="location.href='/employee/approval/history'">목록</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="rejectModal" class="modal" style="display: none;">
+			<div class="modal_content">
+				<h2>반려 사유를 입력하세요.</h2>
+				<span class="close">&times;</span>
+				<div class="reject_reason_div">
+					<textarea id="reject_reason" name="reject_reason"></textarea>
+				</div>
+				<div class="modal_button">
+					<button type="submit" id="confirm_reject_button">확인</button>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script th:src="@{/js/employee/approval/approval_history_detail.js}"></script>
+</th:block>
+</html>

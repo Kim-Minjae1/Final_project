@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<link th:href="@{/css/include/layout.css}" rel="stylesheet" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>LinkOffice</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/themes/default/style.min.css" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<th:block th:replace="~{include/header :: headerLayout}"></th:block>
+<div id="main-wrapper">
+    <th:block th:replace="~{include/nav :: navLayout}"></th:block>
+    <div id="content-footer-wrapper">
+        <div class="header_location_text" id="header_location_text"></div>	
+        <th:block layout:fragment="content" id="main_content_area"></th:block>
+        <th:block th:replace="~{include/footer :: footerLayout}"></th:block>
+    </div>
+</div>
+</body>
+
+</html>

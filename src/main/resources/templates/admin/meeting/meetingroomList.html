@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{include/layout}"> 
+    <th:block layout:fragment="content">
+        <link th:href="@{/css/admin/meeting/meetingroomList.css}" rel="stylesheet" type="text/css">
+         <section> 
+            <div class="container">
+                <div class="member-section" id="meetingRoomSection">  
+                    <div class="button-container"> 
+					    <div class="left-buttons">
+						    <button id="deleteMeetingButton" type="button" class="modal_btn" disabled>삭제</button>
+						    <form id="searchForm" method="get" action="/meetingroomList">
+						        <input type="text" id="searchMeetingRoom" name="searchText" placeholder="회의실 이름으로 검색하세요."/>
+						        <button id="meeting_search_btn" type="submit" class="modal_btn">검색</button>
+						    </form>
+						</div>
+					    <button id="addMeetingButton" type="button" class="modal_btn">회의실 등록</button>
+					</div>
+				    <div class="meeting_info_text">회의실을 선택하여 정보를 수정하세요.</div>  
+                    <table id="meetingList" class="meetingRoom_table">
+                        <thead>
+                            <tr>
+                            	<th th:if="${!#lists.isEmpty(meetings.content)}">
+					                <input type="checkbox" id="selectAllCheckbox" />
+					            </th>
+                                <th>회의실 이름</th>
+                                <th>정원</th>
+                                <th>이용 가능 시간</th> 
+                                <th>설명</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+							<tr th:if="${#lists.isEmpty(meetings.content)}">
+					            <td colspan="5">회의실 정보가 존재하지 않습니다.</td>
+					        </tr>
+					        <tr th:each="meeting : ${meetings.content}" class="meeting-row" th:data-id="${meeting.meeting_no}">
+					            <td><input type="checkbox" class="meetingCheckbox" th:data-id="${meeting.meeting_no}"/></td>
+					            <td th:text="${meeting.meeting_name}"></td>
+					            <td th:text="${meeting.meeting_max}"></td>
+					            <td th:text="${meeting.meeting_available_start} + ' ~ ' + ${meeting.meeting_available_end}"></td> 
+					            <td th:text="${meeting.meeting_comment}"></td>
+					        </tr>
+                        </tbody> 
+                    </table> 
+                    <div id="pagination" class="pagination" th:if="${meetings.totalPages > 0}">
+					    <th:block th:if="${meetings.hasPrevious()}">
+					        <button th:if="${meetings.hasPrevious()}"
+					                th:onclick="|location.href='@{/meetingroomList(page=0, searchText=${searchText})}'|">&lt;&lt;
+					        </button>
+					        <button th:if="${meetings.hasPrevious()}"
+					                th:onclick="|location.href='@{/meetingroomList(page=${meetings.number - 1}, searchText=${searchText})}'|">&lt;
+					        </button>
+					    </th:block>
+					    <th:block th:with="totalPages=${meetings.totalPages}, currentPage=${meetings.number}">
+					        <th:block th:with="
+					            startPage=${currentPage >= totalPages - 1 ? totalPages - 3 : (currentPage <= 1 ? 0 : currentPage - 1)},
+					            endPage=${currentPage >= totalPages - 1 ? totalPages - 1 : (currentPage <= 1 ? 2 : currentPage + 1)}">
+					            <span th:if="${totalPages > 0}"
+					                  th:each="i : ${#numbers.sequence(startPage < 0 ? 0 : startPage, endPage >= totalPages ? totalPages - 1 : endPage)}">
+					                <button th:classappend="${i == currentPage} ? 'active'"
+					                        th:onclick="|location.href='@{/meetingroomList(page=${i}, searchText=${searchText})}'|"
+					                        th:text="${i + 1}">
+					                </button>
+					            </span>
+					        </th:block>
+					    </th:block>
+					    <th:block th:if="${meetings.hasNext()}">
+					        <button th:if="${meetings.hasNext()}"
+					                th:onclick="|location.href='@{/meetingroomList(page=${meetings.number + 1}, searchText=${searchText})}'|">&gt;
+					        </button>
+					        <button th:if="${meetings.number < meetings.totalPages - 1}"
+					                th:onclick="|location.href='@{/meetingroomList(page=${meetings.totalPages - 1}, searchText=${searchText})}'|">&gt;&gt;
+					        </button>
+					    </th:block>
+					</div>
+                    
+                </div>
+            </div> 
+        </section>
+		
+        <!-- 등록 모달 -->
+        <div id="addModal" class="modal">
+            <div class="modal-content">
+                <span class="add_close close">&times;</span>
+                <h2 class="modal-title">회의실 정보 등록</h2>
+                <hr>
+                <form id="addForm">
+                    <div class="form-group">
+                        <label for="meetingName">회의실 이름</label>
+                        <input type="text" id="meetingName" name="meetingName" maxlength="15">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingMax">수용 인원</label>
+                        <input type="number" id="meetingMax" name="meetingMax" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingAvailableStart">이용 가능 시간</label>
+                        <div class="time-range">
+                            <input type="time" id="meetingAvailableStart" name="meetingAvailableStart">
+                            <span>~</span>
+                            <input type="time" id="meetingAvailableEnd" name="meetingAvailableEnd" disabled>
+                        </div>
+                    </div>
+
+                    <div class="time-set-msg">
+                        30분 단위 설정
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingComment">설명</label>
+                        <textarea id="meetingComment" name="meetingComment"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meetingImage">이미지</label>
+                        <div class="file-input-wrapper">
+                            <img id="imagePreview" src="" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label></label>
+                        <input type="file" id="meetingImage" name="meetingImage" accept=".png, .jpg">
+                    </div>
+
+                    <div class="form-group">
+                        <label></label>
+                        <button type="submit" class="modal_in_btn">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div> 
+
+		<!-- 수정 모달 --> 
+		<div id="editModal" class="modal">
+		    <div class="modal-content">
+		        <span class="edit_close close">&times;</span>
+		        <h2 class="modal-title">회의실 정보 수정</h2>
+		        <hr>
+		        <form id="editForm" enctype="multipart/form-data">
+		            <input type="hidden" id="modal-meeting-id" name="meetingId">
+		            <div class="form-group">
+		                <label for="modal-meeting-name">회의실 이름</label>
+		                <input type="text" id="modal-meeting-name" name="meetingName" maxlength="15">
+		            </div>
+		            <div class="form-group">
+		                <label for="modal-meeting-max">수용 인원</label>
+		                <input type="number" id="modal-meeting-max" name="meetingMax">
+		            </div>
+		            <div class="form-group">
+		                <label for="modal-meeting-available-start">이용 시작 시간</label>
+		                <input type="time" id="modal-meeting-available-start" name="meetingAvailableStart">
+		            </div>
+		            <div class="form-group">
+		                <label for="modal-meeting-available-end">이용 마감 시간</label>
+		                <input type="time" id="modal-meeting-available-end" name="meetingAvailableEnd">
+		            </div>
+		            <div class="form-group">
+		                <label for="modal-meeting-comment">설명</label>
+		                <textarea id="modal-meeting-comment" name="meetingComment"></textarea>
+		            </div>
+		            <div class="form-group">
+                        <label for="meetingImage">이미지</label>
+                        <div class="file-input-wrapper">
+                            <img id="modal-image-preview" src="" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label></label>
+                        <input type="file" id="edit_modal_image" name="meetingImage" accept=".png, .jpg">
+                    </div> 
+
+					<div class="form-group">
+                        <label></label>
+                        <button type="submit" class="edit_btn modal_in_btn">수정</button> 
+                    </div> 
+		        </form>
+		    </div>
+		</div> 
+		
+        <script th:src="@{/js/admin/meeting/meetingroomList.js}"></script>
+    </th:block>
+</html>

@@ -1,0 +1,221 @@
+/* 테이블 데이터 없을 때 메시지 스타일 */
+.dataTables_empty {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    padding: 20px;
+}
+
+/* 기본 테이블 스타일 */
+.dataTable {
+    width: 100%;
+    margin: 0 auto;
+    clear: both;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* 테이블 헤더 스타일 */
+.dataTable thead th {
+    padding: 10px;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+/* 테이블 행 스타일 */
+.dataTable tbody tr {
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.dataTable tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* 필터 입력 박스 스타일 */
+.dataTables_filter {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.dataTables_filter label {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.dataTables_filter input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 220px !important;
+    background-color: white !important;
+}
+
+/* 페이징 버튼 스타일 */
+.dataTables_paginate {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: none !important;
+}
+
+.dataTables_paginate a {
+    padding: 10px 15px; /* 크기 조정 */
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333 !important;
+    border: 1px solid #ddd !important;
+    background-color: #f8f9fa !important;
+    border-radius: 4px;
+}
+
+.dataTables_paginate a:hover {
+    background-color: #e9ecef !important;
+    color: #000 !important;
+}
+
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background-color: #0056b3 !important;
+    color: white !important;
+}
+
+/* active 상태에서 hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background-color: #003a82 !important;
+/* 선택된 페이징 버튼 */
+.dataTables_paginate .current {
+    background-color: #0056b3 !important;
+    color: white !important;
+    border-color: #0056b3 !important;
+}
+
+/* 페이징 버튼 호버 */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #0056b3 !important;
+    color: white !important;
+}
+
+/* 정렬 아이콘 스타일 */
+.dataTables_wrapper .sorting:after {
+    content: '\f0dc';
+    font-family: FontAwesome;
+    padding-left: 5px;
+}
+
+.dataTables_wrapper .sorting_asc:after {
+    content: '\f0de';
+}
+
+.dataTables_wrapper .sorting_desc:after {
+    content: '\f0dd';
+}
+
+table.dataTable td.dt-control {
+    text-align: center;
+    cursor: pointer;
+}
+
+table.dataTable td.dt-control:before {
+    height: 1em;
+    width: 1em;
+    margin-top: -9px;
+    display: inline-block;
+    color: white;
+    border: .15em solid white;
+    border-radius: 1em;
+    box-shadow: 0 0 .2em #444;
+    box-sizing: content-box;
+    text-align: center;
+    font-family: "Courier New", Courier, monospace;
+    content: "+";
+    background-color: #31b131;
+}
+
+table.dataTable tr.dt-hasChild td.dt-control:before {
+    content: "-";
+    background-color: #d33333;
+}
+
+/* 기타 스타일 */
+.dataTables_wrapper {
+    position: relative;
+    clear: both;
+}
+
+.dataTables_wrapper .dataTables_length {
+    float: left;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+    margin-left: 3px;
+}
+
+.dataTables_wrapper .dataTables_info {
+    clear: both;
+    float: left;
+    padding-top: .755em;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+    padding-top: .25em;
+}
+
+.dataTables_wrapper .dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 40px;
+    margin-left: -50%;
+    margin-top: -25px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: white;
+}
+
+/* 작은 화면 대응 */
+@media screen and (max-width: 767px) {
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none;
+        text-align: center;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        margin-top: .5em;
+    }
+}

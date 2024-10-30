@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content" th:each="member : ${memberdto}">
+    <link th:href="@{/css/employee/member/myedit.css}" rel="stylesheet" type="text/css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<h2>비밀번호 입력</h2>
+			<form id="pwVerifyFrm">
+			<span class="close">&times;</span>
+			 <input type="hidden" id="member_no_pw" th:value="${member.member_no}" />
+			 <input type="hidden" id="csrf_token_pw" th:value="${_csrf.token}" />
+				<div class="password-container">
+					<label for="pwVerify">비밀번호 </label> 
+					<input type="password"id="pw_verify" name="pw_verify" required>
+				</div>
+				<div class="button-container">
+					<button type="submit">확인</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<section>
+        <div class="my_profile">
+            <form id="myeditUpdateFrm" enctype="multipart/form-data">
+                <input type="hidden" id="csrf_token" th:value="${_csrf.token}" />
+                <input type="hidden" id="member_no" th:value="${member.member_no}" />
+                <div class="profile_card">
+                    <div class="profile_header">
+                        <div class="profile_header_left">
+                        	<img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" alt="사원 사진" class="profile_img" id="profileImg">
+                            <label for="profile_image" class="upload_button"><span>이미지 등록</span></label><br>
+                            <p class="file_info">이미지는 PNG 또는 JPG만 등록 가능합니다.</p>
+                            <input type="file" id="profile_image" name="profile_image" style="display: none;" onchange="previewImage(event)">
+                        </div>
+                        <ul class="profile_details">
+                            <li><strong>사번</strong> <span th:text="${member.member_number}"></span></li>
+                            <li><strong>사원명</strong> <span th:text="${member.member_name}"></span></li>
+                            <li><strong>주민번호</strong> <span th:text="${#strings.concat(member.member_national.substring(0, 6), '-', member.member_national.substring(7, 8), '******')}"></span></li>
+                        </ul>
+                    </div>
+                    <hr class="divider">
+                    <ul class="profile_details paired">
+                        <li><strong>부서</strong> <span th:text="${member.department_name}"></span></li>
+                        <li><strong>직위</strong> <span th:text="${member.position_name}"></span></li>
+                        <li><strong>입사일</strong> <span th:text="${member.member_hire_date}"></span></li>
+                        <li><strong>퇴사일</strong> <span>-</span></li>
+                        <li><strong>전화번호</strong> <span th:text="${member.member_mobile}"></span></li>
+                        <li><strong>내선번호</strong> <span th:text="${member.member_internal}"></span></li>
+                    </ul>
+                    <ul class="profile_detail_address">
+                        <li>
+                            <label for="address">주소</label>
+                            <input type="hidden" id="sample4_postcode" placeholder="우편번호"> 
+                            <input type="text" class="input_address" id="sample4_roadAddress" placeholder="도로명주소">
+                            <input type="hidden" id="sample4_jibunAddress" placeholder="지번주소">
+                            <span id="guide" style="color: #999; display: none"></span> 
+                            <input type="text" id="sample4_detailAddress" class="input_address" placeholder="상세주소">
+                            <input type="hidden" id="sample4_extraAddress" placeholder="참고항목">
+                            <input type="button" onclick="sample4_execDaumPostcode()" class="address_button" value="주소 검색">
+                        </li>
+                        <li id="new_pw">
+                            <div class="input_pw_container">
+                                <label for="new_password">새 비밀번호</label>
+                                <input type="password" id="new_password" name="new_password" class="input_pw" placeholder="새로운 비밀번호를 입력하세요."> 
+                                <img th:src="@{/img/pw_hidden.png}" id="pwHidden" class="toggle_icon" onclick="togglePasswordVisibility()" />
+                                <img th:src="@{/img/pw_show.png}" id="pwShow" class="toggle_icon"/>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="button_container">
+                        <button type="submit" class="edit_button">수정</button>
+                        <button type="button" class="cancel_button" onclick="goMypage()">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    <script th:src="@{/js/employee/member/myedit.js}"></script>
+</th:block>
+</html>

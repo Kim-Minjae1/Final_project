@@ -1,0 +1,113 @@
+@charset "UTF-8";
+
+/* 눈누 폰트 */
+/* 레페리포인트 */
+@font-face {
+    font-family: 'LeferiPoint-BlackA';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/LeferiPoint-BlackA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body { 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+   display: none;
+}
+
+#main-wrapper {
+    display: flex;
+    flex: 1;
+
+}
+
+#content-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: #f5f7fa; 
+}
+
+#main-content {
+    display: flex;
+    flex: 1;
+}
+
+section {
+    flex: 1;
+    padding: 20px;
+    gap: 15px;
+    min-height: 680px;
+    margin-bottom: 300px;
+}
+
+/* 정렬 select box 공통 디자인 */
+.all_sort_select_box {
+	width : 110px;
+	padding: 8px 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+select:focus, 
+input:focus,
+textarea:focus{
+    outline: none !important;
+    border-color: #0056b3 !important;
+}
+
+input, textarea{ 
+    border: 1px solid #ddd;
+    border-radius: 6px; 
+
+    transition: border-color 0.3s;
+} 
+
+/* 내부 페이지 제목 공통 디자인 */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    width: auto;
+    align-self: flex-start;
+    margin-left: 60px;
+    color: #333;
+}
+
+.swal2-confirm {
+	background-color: #0056b3;
+	color: white;
+	border : none;
+}
+.swal2-cancel{
+	background-color: #f8f9fa;
+	color: black;
+	border: 1px solid #ddd;
+}
+.swal2-confirm:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.header_location_text {
+	font-size: 17px;
+	color:#727272;
+	margin-left : 50px;
+	font-weight: 550; 
+	margin-top: 30px;
+	margin-bottom: 10px;
+}
+
+input[type='button']{ 
+	cursor: pointer;
+}

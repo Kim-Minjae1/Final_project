@@ -1,0 +1,608 @@
+@charset "UTF-8";
+
+.document_div{
+	display: flex;
+    width: 100%;
+    overflow: hidden; 
+    justify-content: center;
+}
+.document_folder_list{
+	display: flex;
+    width: 80%;
+    overflow: hidden; 
+    justify-content: center;
+    margin-top: 20px;
+}
+.document_folder_tree{
+	border-radius: 8px;
+	border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    width: 18%;
+	height: 66vh;
+    font-size: 15px;
+    overflow-y: auto;
+    background-color: white;
+}
+#tree{
+	font-size: 15px;
+	display: block;
+	height: 70%;
+}
+.jstree-closed > .jstree-icon::before{
+    content: '';  
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_plus.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ 
+.jstree-open > .jstree-icon::before{
+    content: ''; 
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_minus.png');
+    background-size: cover;   
+    background-position: center;
+    background-repeat: no-repeat;
+} 
+.document_no_folder{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%;
+}
+#document_no_folder_msg{
+    text-align: center;
+    font-size: 18px;
+    cursor: pointer;
+}
+#first_folder_add{
+    border: none;
+    background-color: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.folder_buttons{
+	height: 10%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.box_size{
+	height: 10%;
+	margin: 8px 0 0 10px;
+	font-size: 13px;
+}
+#cloud{
+	width: 15px;
+	height: 18px;
+	margin-top: 2px;
+}
+.current_size_percent{
+	display: flex;	
+	align-items: center;
+}
+#print_size{
+	margin-top: 5px;
+	margin-left: 5px;
+}
+.size_bar{
+	width: 95%;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+#bar_background {
+    width: 100%;
+    height: 10px;
+    background-color: lightgray;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+#bar_foreground {
+    height: 100%;
+    background-color: #4E597E;
+    transition: width 0.3s ease;
+    border-radius: 20px;
+}
+#current_size_text{
+	width: 100%;
+	margin-top: 10px;
+}
+#folder_delete_button{
+	margin-left: 10px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 15px;
+    text-align: center;
+}
+#folder_delete_button:hover{
+    background-color: #c82333;
+}
+#folder_delete_button:active{
+    transform: scale(0.98);
+}
+#folder_add_button{
+	margin-right: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 15px;
+    text-align: center;
+}
+#folder_add_button:hover{
+    background-color: #003a82;
+}
+
+#folder_add_button:active{
+    transform: scale(0.98);
+}
+#document_hr{
+	height: 69vh;
+}
+.document_file_div{
+	border-radius: 8px;
+	width: 1250px;
+	max-height: 100%;
+	margin-right: 10px;
+}
+.document_no_file{
+	display: flex;
+	align-items: center;
+    justify-content: center; 
+    height: 100%;
+    position: relative;
+} 
+.document_file_list{
+	height: 100%;
+	margin: 12px;
+	font-size: 13px;
+}
+.document_search{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.search_range{
+	display: flex;
+}
+#start_date, #end_date{
+	padding: 10px 25px;
+	font-size: 13px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+}
+#start_date:focus, #end_date:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+#start_date{
+	margin-right: 5px;
+}
+#end_date{
+	margin-left: 5px;
+}
+#wave{
+	font-size: 13px;
+}
+.search_name{
+	display: flex;
+    justify-content: center; 
+}
+#file_name_input{
+	font-size: 13px;
+	padding: 10px 25px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 150px;
+}
+#file_name_input:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+#search_button{
+	float: right;
+	margin-left: 5px;
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+#search_button:hover{
+    background-color: #003a82;
+}
+
+#search_button:active{
+    transform: scale(0.98);
+}
+.folder_name_div{
+	display: flex;
+	height: 50px;
+	align-items: center;
+	margin-top: 10px;
+}
+#folder_name{
+	margin-right: 10px;
+	font-size: 22px;
+}
+#change_name_button{
+	margin-right: 5px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 13px;
+    text-align: center;
+}
+#change_name_button:hover{
+    background-color: #003a82;
+}
+#change_name_button:active{
+    transform: scale(0.98);
+}
+.upper_list_div{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 35px;
+	margin-top: 10px;
+}
+.select_button{
+	display: flex;
+}
+#select_delete{
+	margin-right: 5px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 13px;
+    text-align: center;
+}
+#select_delete:hover{
+    background-color: #c82333;
+}
+#select_delete:active{
+    transform: scale(0.98);
+}
+#select_delete:disabled, #select_down:disabled{
+    background-color: #d3d3d3;  
+    color: #a9a9a9; 
+    cursor: not-allowed;
+} 
+#select_delete:disabled, #select_down:disabled:hover{
+    background-color: #d3d3d3;
+}
+#select_down{
+	margin-left: 5px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 13px;
+    text-align: center;
+}
+#select_down:hover{
+   background-color: #003a82;
+}
+#select_down:active{
+    transform: scale(0.98);
+}
+.upload_and_sort{
+	display: flex;
+	align-items: center;
+}
+#upload_button{
+	margin-right: 5px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+    padding: 10px 13px;
+    text-align: center;
+}
+#upload_button:hover{
+    background-color: #003a82;
+}
+
+#upload_button:active{
+    transform: scale(0.98);
+}
+#sort_select{
+	width: 100px;
+	padding: 10px 18px;
+	border-radius: 2px;
+	font-size: 13px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    transition: border-color 0.3s;
+}
+#sort_select:focus, #name_select:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+.table_div{
+	border-radius: 8px;	
+	border: 1px solid #ddd;
+	margin-top: 20px;
+}
+.file_table{
+	width: 100%;
+	align-items: center;
+    justify-content: center;
+    text-align: center;
+	border-collapse: collapse;
+	table-layout: fixed; 
+	background-color: white;
+	border-radius: 8px;
+	overflow: hidden;
+}
+.file_table td { 
+	padding: 13px 10px;
+    text-align: center;
+	border-top: 1px solid #ddd;	
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.file_table th {
+	padding: 13px 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+    background-color: #f8f9fa;
+}
+
+.file_table tbody tr {
+    vertical-align: middle; 
+    font-size: 15px;
+}
+input[type="checkbox"] {
+	height: 15px;
+	width: 15px;
+}
+#select_all{
+	height: 15px;
+	width: 15px;	
+}
+.file_show_button{
+    cursor: pointer;
+    width: 17px;
+    text-align: center;
+    fill: #515151;	
+ }
+.file_down_button{
+    cursor: pointer;
+    width: 15px;
+    text-align: center;
+    fill: #515151;  	
+}
+.delete_button{
+    cursor: pointer;
+    width: 13px;
+    text-align: center;
+    fill: #515151;    
+}
+.delete_button:hover, .file_down_button:hover, .file_show_button:hover{
+    fill: #C0C0C0;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+.pagination_button {
+	width: 33px;
+	height: 31px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+.pagination_button:hover {
+    background-color: #e9ecef;
+}
+.pagination_button.active {
+    background-color: #0056b3;
+    color: white;
+    border-color: #0056b3;
+}
+.go_first_page_button, .go_last_page_button{
+    width: 42px;
+	height: 31px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+.go_first_page_button:hover, .go_last_page_button:hover{
+    background-color: #e9ecef;
+}
+/* 모달 css */
+.modal_name{
+	height: 50px;
+	border-bottom: 0.7px solid gray;
+	margin-left: 5px;
+	margin-top: -50px;
+	font-size: 22px;
+	font-weight: bold;
+}
+.modal_div{
+	display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); 
+}
+.first_folder_add_modal, .change_name_modal,
+.folder_create_modal, .file_upload_modal{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+    transform: translate(-50%, -70%);
+    background: #fefefe;
+    border: 1px solid #888;
+    z-index: 1000;
+    width: 430px;
+    height: 300px;
+    padding: 30px;
+    border-radius: 8px;
+    align-items: center;
+}
+.first_folder_add_div, .change_folder_name_div,
+.folder_create_div, .file_upload_div{
+	text-align: center;
+	height: 35px;
+	margin-top: 40px;
+}
+.folder_button_div{
+	display: flex;
+	justify-content: right;
+	margin-top: 40px;
+}
+.cancel_div{
+	display: flex;
+	justify-content: right;
+	height: 20%;
+	font-size: 30px;
+	cursor: pointer;
+	color: #888;
+}
+.cancel_div:hover{
+	color: black;
+}
+#first_folder_name, #change_folder_name, #create_folder_name{
+	width: 95%;
+	height: 100%;
+	font-size: 15px;
+	padding-left: 15px;
+}
+#file_input::file-selector-button {
+    background-color: #0056b3;
+  	color: white;
+    width: 23%;
+    height: 100%;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px; 
+    cursor: pointer;
+}
+#file_input::file-selector-button:hover {
+	background-color: #003a82;
+}
+#file_input{
+	margin-left: 5px;
+    width: 98%;
+    height: 35px;
+}
+#first_folder_add_button, #folder_name_change_button, #folder_create_button,
+#file_upload_button{
+	margin-right: 5px;
+	margin-top: 40px;
+    padding: 5px;
+  	background-color: #0056b3;
+  	color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 15px;
+    width: 65px;
+    height: 40px;
+    text-align: center;
+}
+#first_folder_add_button:hover, #folder_name_change_button:hover,
+#folder_create_button:hover, #file_upload_button:hover{
+    background-color: #003a82;
+}
+#first_folder_add_button:active, #folder_name_change_button:active,
+#folder_create_button:active, #file_upload_button:active{
+    transform: scale(0.98);
+}
+#file_limit_div{
+	font-size: 12px;
+	color: red;
+	margin: 10px 0 0 8px;
+}
+.file_button_div{
+	display: flex;
+	justify-content: right;
+	margin-top: 5%;
+}
+.swal2-confirm {
+  	background-color: #0056b3;
+  	color: white;
+  	border: none;
+}
+.swal2-confirm:hover{
+	background-color: #003a82;
+}
+.swal2-cancel{
+  	background-color: #f8f9fa;
+  	color: #333;
+  	border: 1px solid #ddd;
+}
+.swal2-cancel{
+	background-color: #e9ecef;
+}
+.swal2-confirm:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}

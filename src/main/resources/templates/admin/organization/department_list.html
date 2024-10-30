@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{include/layout}"> 
+<th:block layout:fragment="content">
+<link th:href="@{/css/admin/organization/departmentList.css}" rel="stylesheet" type="text/css"> 
+        <section>  
+            <div class="container">
+            	<div class="content-wrapper">
+	                <div class="list">
+	                    <div class="list-header">
+                            <h3 class="department_comment">부서를 선택하여 상세 정보를 확인하세요.</h3>
+                            <button id="openModal">부서 등록</button>
+                        </div> 
+	                    <ul class="department_ul">
+	                        <th:block th:each="department : ${departments}">
+	                            <li class="department_li">
+	                            	<div class="pardep_div">
+		                                <a class="list_pardep" th:href="@{/department(id=${department.department_no})}" th:text="${department.department_name}"></a>	                            	
+	                            	</div>
+	                                <ul class="department_ul" th:if="${department.subDepartments}">
+	                                    <th:block th:each="sub : ${department.subDepartments}">
+	                                        <li class="department_li">
+	                                            <a class="list_subdep" th:href="@{/department(id=${sub.department_no})}" th:text="${sub.department_name}"></a>
+	                                        </li>
+	                                    </th:block>
+	                                </ul>
+	                            </li>
+	                        </th:block>
+	                    </ul>
+	                </div> 
+	               <div class="details" th:if="${department}">
+					    <div class="details-header">
+							<div>
+								<h3>부서 정보</h3>
+							</div>
+
+							<div class="info_btn">
+								<button id="editButton" th:data-department-id="${department.department_no}">수정</button>
+								<button id="deleteButton" th:data-department-id="${department.department_no}">삭제</button>
+							</div>
+                        </div>
+
+					    <p>
+					    	<span class="department_info">부서명</span> <span class="info_content1" th:text="${department.department_name}"></span>
+					    	<th:block th:if="${#lists.size(department.subDepartments) == 0}">
+					    		(<span th:text="${department.memberCount ?: 0}"></span>명)
+					    	</th:block>
+					    	<th:block th:if="${#lists.size(department.subDepartments) > 0}">
+					    		(<span th:text="${department.subMemberCount ?: 0}"></span>명)
+					    	</th:block>
+					    </p>
+					    <p><span class="department_info">상위 부서명</span> <span class="info_content2" th:text="${department.department_high_name}"></span></p>
+					    <div class="sub-departments" th:if="${department.subDepartments}">
+						    <span class="department_info">하위 부서</span>
+						    <ul class="department_ul department_list"> 
+						        <th:block th:if="${#lists.size(department.subDepartments) > 0}">
+						            <th:block th:each="sub : ${department.subDepartments}">
+						                <li class="department_li info_content_tag">
+						                    <a th:href="@{/department(id=${sub.department_no})}" th:text="${sub.department_name}"></a>
+						                    (<span th:text="${sub.memberCount ?: 0}"></span>명)  
+						                </li>
+						            </th:block>
+						        </th:block>  
+						        <th:block th:if="${#lists.size(department.subDepartments) == 0}">
+						            <li>-</li>
+						        </th:block>
+						    </ul>
+						</div>  
+
+					</div>
+				</div>
+            </div>
+        </section>
+
+        <!-- 등록 모달 -->
+        <div id="createModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="modal-title">부서 등록</h2>
+                <hr>
+                <form id="departmentForm">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    
+                    <div class="form-group">
+	                    <label for="departmentName">부서명</label>
+	                    <input type="text" id="departmentName" name="departmentName"><br><br>
+                    </div>
+                    
+                    <div class="form-group">
+	                    <label for="departmentHigh">상위 부서</label>
+	                    <select id="departmentHigh" name="departmentHigh">
+	                        <option value="0">선택 없음</option>
+	                        <th:block th:each="dept : ${topLevelDepartments}">
+	                            <option th:value="${dept.department_no}" th:text="${dept.department_name}"></option>
+	                        </th:block>
+                    	</select> 
+                    </div>
+                    
+                    <button type="submit" class="create_btn">등록</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 수정 모달 -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2 class="modal-title">부서 수정</h2>
+                <hr>
+                <form id="editForm">
+                    <input type="hidden" id="editDepartmentId" name="departmentId"/>
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    
+                    <div class="form-group">
+                    	<label for="editDepartmentName">부서명</label>
+                    	<input type="text" id="editDepartmentName" name="departmentName"><br><br>
+                    </div>
+                    
+                    <div class="form-group">
+                    	<label for="editDepartmentHigh">상위 부서</label>
+                    	<select id="editDepartmentHigh" name="departmentHigh">
+	                        <option value="0">선택 없음</option>
+	                        <th:block th:each="dept : ${topLevelDepartments}">
+	                            <option th:value="${dept.department_no}" th:text="${dept.department_name}"></option>
+	                        </th:block>
+	                    </select><br><br>
+                    </div>
+                    
+                    <button type="submit">수정</button>
+                </form>
+            </div>
+        </div>  
+		<script th:src="@{/js/admin/organization/departmentList.js}"></script>
+    </th:block> 
+</html>
+

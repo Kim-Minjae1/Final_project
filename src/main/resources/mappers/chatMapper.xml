@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fiveLink.linkOffice.mapper.ChatMapper"> <!-- namespace 수정 -->
+<!-- 채팅방 목록 가져오기   -->
+    <select id="selectChatList" parameterType="java.lang.Long" resultType="com.fiveLink.linkOffice.chat.domain.ChatMemberDto">
+        SELECT cm.*
+        FROM fl_chat_member cm
+        LEFT JOIN (
+        SELECT cm.chat_room_no, MAX(cmsg.chat_message_create_date) AS recent_message_date
+        FROM fl_chat_member cm
+        JOIN fl_chat_message cmsg ON cm.chat_room_no = cmsg.chat_room_no
+        WHERE cm.member_no = #{memberNo}
+        GROUP BY cm.chat_room_no
+        ) AS rm ON cm.chat_room_no = rm.chat_room_no
+        JOIN fl_chat_room cr ON cm.chat_room_no = cr.chat_room_no
+        WHERE cm.member_no = #{memberNo}
+        AND cm.chat_member_par = 0
+        ORDER BY
+        cm.chat_member_pin DESC,
+        CASE
+        WHEN cm.chat_member_pin = 0 THEN
+        COALESCE(rm.recent_message_date, cm.chat_member_join_date)
+        END DESC,
+        cm.chat_member_no DESC;
+
+    </select>
+
+    <!-- 채팅 내용 가져오기   -->
+    <select id="getChatMessages" parameterType="java.util.Map" resultType="java.util.HashMap">
+<!--        SELECT-->
+<!--        cm.chat_message_create_date AS chatMessageCreateDate,-->
+<!--        cm.chat_content AS chatContent,-->
+<!--        m.member_name AS senderName,-->
+<!--        cm.chat_room_no AS roomNo,-->
+<!--        cm.chat_sender_no AS senderNo-->
+<!--        FROM fl_chat_message cm-->
+<!--        JOIN fl_member m ON cm.chat_sender_no = m.member_no-->
+<!--        WHERE cm.chat_room_no = #{roomNo}-->
+<!--        ORDER BY cm.chat_message_create_date ASC;-->
+<!--        SELECT-->
+<!--        cm.chat_message_create_date AS chatMessageCreateDate,-->
+<!--        cm.chat_content AS chatContent,-->
+<!--        m.member_name AS senderName,-->
+<!--        cm.chat_room_no AS roomNo,-->
+<!--        cm.chat_sender_no AS senderNo-->
+<!--        FROM fl_chat_message cm-->
+<!--        JOIN fl_member m ON cm.chat_sender_no = m.member_no-->
+<!--        JOIN fl_chat_member ctm ON cm.chat_room_no = ctm.chat_room_no-->
+<!--        WHERE cm.chat_room_no = #{roomNo}-->
+<!--        AND ctm.member_no = #{memberNo}-->
+<!--        AND ctm.chat_member_par = 0-->
+<!--        AND cm.chat_message_create_date >= ctm.chat_member_join_date-->
+<!--        ORDER BY cm.chat_message_create_date ASC;-->
+        SELECT
+        cm.chat_message_create_date AS chatMessageCreateDate,
+        cm.chat_content AS chatContent,
+        m.member_name AS senderName,
+        cm.chat_room_no AS roomNo,
+        cm.chat_sender_no AS senderNo
+        FROM fl_chat_message cm
+        LEFT JOIN fl_member m ON cm.chat_sender_no = m.member_no
+        JOIN fl_chat_member ctm ON cm.chat_room_no = ctm.chat_room_no
+        WHERE ctm.member_no = #{memberNo}
+        AND ctm.chat_member_par = 0
+        AND cm.chat_message_create_date >= ctm.chat_member_join_date
+        AND (cm.chat_room_no = #{roomNo}  OR cm.chat_sender_no = 0 OR (cm.chat_room_no = ctm.chat_room_no AND cm.chat_content LIKE '%초대%'))
+        AND cm.chat_room_no = #{roomNo}
+        GROUP BY cm.chat_content, cm.chat_sender_no, cm.chat_message_create_date, m.member_name, cm.chat_room_no
+        ORDER BY cm.chat_message_create_date ASC;
+    </select>
+
+    <select id="countRoomNo" resultType="int">
+        SELECT count(*) FROM fl_chat_room
+    </select>
+
+<!-- 이름 + 부서 같이 넣기 위해 찾기-->
+    <select id="searchPosition" resultType="String"  parameterType="java.lang.Long">
+        SELECT p.position_name
+        FROM fl_member m
+        JOIN fl_position p ON m.position_no = p.position_no
+        WHERE m.member_no = #{memberNo}
+    </select>
+
+<!-- 채팅방 이름 가져오기   -->
+    <select id="selectChatRoomName" parameterType="java.util.Map" resultType="String">
+        SELECT chat_member_room_name
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+        AND member_no = #{memberNo}
+        AND chat_member_par = 0
+    </select>
+
+<!-- 채팅방 이름 수정   -->
+    <update id="updateChatRoom">
+        UPDATE fl_chat_member SET
+        chat_member_room_name = #{roomName}
+        WHERE member_no = #{memberNo}
+        AND chat_room_no = #{roomNo}
+    </update>
+
+<!-- 채팅방 타입 가져오기  -->
+    <select id="chatRoomType" resultType="int">
+        SELECT chat_room_type FROM fl_chat_room
+        WHERE chat_room_no = #{chatRoomNo}
+    </select>
+
+    <!-- 같은 채팅방에 있는 사용자 번호  -->
+    <select id="chatRoomMemberNo" resultType="Long">
+        SELECT member_no FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+        AND chat_member_par = 0
+    </select>
+
+    <select id="selectMemberChatRoomName" resultType="String" parameterType="java.lang.Long">
+        SELECT chat_room_name
+        FROM fl_chat_room
+        WHERE chat_room_no = #{chatRoomNo}
+    </select>
+
+    <select id="getMemberInfo" resultType="Long" parameterType="java.lang.Long">
+        SELECT member_no
+        FROM fl_chat_member WHERE
+        chat_room_no = #{chatRoomNo}
+    </select>
+
+    <select id="getMembersByChatRoomNo" parameterType="java.lang.Long" resultType="com.fiveLink.linkOffice.chat.domain.ChatMemberDto">
+        SELECT *
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+    </select>
+
+    <!-- 채팅방 나가기   -->
+    <update id="chatRoomOut">
+        UPDATE fl_chat_member SET
+        chat_member_par = 1
+        WHERE  chat_room_no = #{chatRoomNo}
+        AND member_no = #{memberNo}
+
+    </update>
+
+    <!-- 채팅방 고정   -->
+    <update id="chatRoomPin">
+        UPDATE fl_chat_member SET
+        chat_member_pin = #{status},
+        chat_member_pin_time = #{updateTime}
+        WHERE chat_room_no = #{chatRoomNo}
+        AND member_no = #{memberNo}
+
+    </update>
+<!-- 채팅방 고정 여부 -->
+    <select id="selectChatPin" parameterType="java.util.Map" resultType="int">
+        SELECT chat_member_pin
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+        AND member_no = #{memberNo}
+    </select>
+
+    <!-- 채팅방 참여자 수 -->
+    <select id="countParicipant" parameterType="java.lang.Long" resultType="int">
+        SELECT count(*)
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+        AND chat_member_par = 0
+        <!--   채팅방 참여자는 상태값 0     -->
+    </select>
+
+    <!-- 채팅방 별 안읽은 메시지 -->
+    <select id="markMessagesAsReadForChatRoom" parameterType="java.util.Map" resultType="Long">
+        SELECT cm.chat_message_no
+        FROM fl_chat_message cm
+        LEFT JOIN fl_chat_read_status cr ON cm.chat_message_no = cr.chat_message_no AND cr.member_no = #{memberNo}
+        WHERE cm.chat_room_no = #{chatRoomNo}
+        AND cr.chat_read_no IS NULL AND cm.chat_sender_no NOT IN (0)
+    </select>
+
+    <!-- 채팅방 별 안읽은 개수-->
+    <select id="getUnreadCounts" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT COUNT(cm.chat_message_no) AS unread_count, cm.chat_room_no
+        FROM fl_chat_message cm
+        LEFT JOIN fl_chat_read_status cr ON cm.chat_message_no = cr.chat_message_no AND cr.member_no = #{memberNo}
+        JOIN fl_chat_member ctm ON cm.chat_room_no = ctm.chat_room_no
+        WHERE cr.chat_read_no IS NULL
+        AND cm.chat_room_no IS NOT NULL
+        AND ctm.member_no = #{memberNo}
+        AND cm.chat_message_create_date >= ctm.chat_member_join_date AND cm.chat_sender_no NOT IN (0)
+        GROUP BY cm.chat_room_no;
+
+    </select>
+
+    <!-- 채팅방 중복 생성-->
+    <select id="findChatRoomsByMember" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT chat_room_no
+        FROM fl_chat_member
+        WHERE member_no = #{memberNo} AND chat_member_par = 0
+    </select>
+
+    <select id="findMembersByChatRoom" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT member_no
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo} AND chat_member_par = 0
+    </select>
+
+    <!--채팅방 사용자 번호-->
+    <select id="findChatRoomMembers" parameterType="java.lang.Long" resultType="Long">
+        SELECT member_no
+        FROM fl_chat_member
+        WHERE chat_room_no = #{chatRoomNo}
+        AND member_no != #{memberNo};
+    </select>
+
+    <!-- 원하는 채팅방 별 안읽은 개수-->
+    <select id="chatRoomUnread" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(cm.chat_message_no) AS unread_count
+        FROM fl_chat_message cm
+        LEFT JOIN fl_chat_read_status cr ON cm.chat_message_no = cr.chat_message_no AND cr.member_no = #{memberNo}
+        JOIN fl_chat_member ctm ON cm.chat_room_no = ctm.chat_room_no
+        WHERE cr.chat_read_no IS NULL
+        AND cm.chat_room_no IS NOT NULL
+        AND cm.chat_room_no = #{chatRoomNo}
+        AND cm.chat_message_create_date >= ctm.chat_member_join_date
+        AND ctm.member_no = #{memberNo}
+        AND ctm.chat_member_par = 0
+        AND cm.chat_sender_no NOT IN (0)
+    </select>
+
+    <!-- 채팅 메시지 -->
+    <select id="getChatMessageText" parameterType="Long" resultType="String">
+        SELECT chat_content FROM fl_chat_message
+        WHERE chat_room_no = #{chatRoom}
+        ORDER BY chat_message_create_date DESC
+        LIMIT 1;
+    </select>
+
+    <!-- 멤버이름  -->
+    <select id="getMemberName" parameterType="Long" resultType="String">
+        SELECT member_name
+        FROM fl_member
+        WHERE member_no = #{memberNo}
+    </select>
+    <!-- 본인을 제외한 사용자들의 정보   -->
+    <select id="selectAnotherUser" parameterType="java.util.Map" resultType="Long">
+        SELECT member_no
+        FROM fl_chat_member
+        WHERE member_no != #{memberNo} AND chat_room_no = #{chatRoomNo}
+    </select>
+    <!--  다른 사용자의 사진 정보   -->
+    <select id="getProfileImageByMemberNo" parameterType="Long" resultType="String">
+        SELECT member_new_profile_img
+        FROM fl_member
+        WHERE member_no = #{memberNo}
+    </select>
+
+    <!-- 상단 고정 개수 제한  -->
+    <select id="getPinnedChatRoomCount" parameterType="Long" resultType="int">
+        SELECT count(chat_member_pin)
+        FROM fl_chat_member
+        WHERE member_no = #{memberNo} AND chat_member_par = 0
+        AND chat_member_pin = 1
+    </select>
+</mapper>

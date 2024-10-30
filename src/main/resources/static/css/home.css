@@ -1,0 +1,1319 @@
+@charset "UTF-8";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#main-wrapper {
+    display: flex;
+    flex: 1;
+}
+
+#content-footer-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+ 
+
+/* 개별 높이 설정 */
+/* 수정하지 마세요 */
+/* 
+.custom-height-2 { height: 150px; } 
+.custom-height-4 { height: 200px; } 
+.custom-height-8 { height: 100px; }
+.custom-height-9 { height: 220px; }
+.custom-height-10 { height: 160px; }
+.custom-height-11 { height: 180px; } */
+
+
+.custom-height-1 { height: 400px; }
+.custom-height-3 { height: 150px; }
+.custom-height-7 { height: 1030px; } 
+.custom-height-11 { height: 180px; }
+.custom-height-5 { height: 160px; }
+.custom-height-6 { height: 350px; } 
+
+#main-content {
+    display: flex;
+    flex: 1;
+}
+
+section {
+    flex: 1;
+    margin-top: -30px; 
+    display: flex; 
+    gap: 15px;
+}
+
+.main_item_box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0 15px;
+    flex-grow: 1;  
+}
+
+.left-column {
+    flex: 0.8;  
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: auto;  
+}
+
+.middle-column {
+    flex: 1.9;  
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: auto; 
+}
+
+.right-column {
+    flex: 1.3;  
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: auto;  
+}
+
+.right-top, .right-bottom {
+    display: flex;
+    gap: 15px;
+}
+
+.right-top {
+    flex: none;  
+    justify-content: space-between;  
+}
+
+.right-top .main_item_box {
+    flex: 1; 
+}
+
+.right-bottom {
+    flex-direction: column;
+    flex-grow: 1;  
+} 
+
+.main_link {
+	text-decoration: none;
+	color : black;
+}
+
+.main_link:hover {
+	text-decoration: none;
+	color : gray;
+}
+
+.main_box_title {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;  
+    padding: 10px 0;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+.slide-right_img {
+	width : 25px;
+	padding-top : 1px;
+} 
+
+.approval_img {
+	width : 22px;
+	padding-top : 1px;
+}
+ 
+
+.meeting_reservation_img, .address_book_img {
+    width: 75px; 
+    margin-top : 20px;
+} 
+
+/* ------------- 윗부분 수정 금지  -------------- */
+
+/* 내 정보 css */
+/*
+.employee-info {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
+}
+
+.employee-info .main_box_title {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.employee-info .main_arrow_img {
+    width: 16px;
+    height: 16px;
+}
+ 
+.employee-profile {
+    display: flex;
+    align-items: center;
+	justify-content: space-evenly;    
+}
+
+.employee-info .user_photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.employee-details {
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+
+.employee-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.employee-department {
+    color: #666;
+    font-size: 20px;
+    font-weight: bold;
+}
+.employee-position {
+    font-size: 14px;
+    color: #666;
+} */
+
+/* 날씨 css */
+/* .weather_div{
+	display: flex;
+}
+.weather_left_div{
+	text-align: center;
+	width: 50%;
+	margin-right: 10px;
+}
+.weather_right_div{
+	font-size: 15px;
+	margin-top: 5px;
+}
+.weather_location{
+	display: flex;
+	justify-content: center;
+	font-size: 14px;
+	margin-top: 5px;
+}
+#weather_location_text{
+	color: #666;
+}
+#weather_icon{
+	width: 100px;
+}
+#weather_now_temp{
+	font-size: 23px;
+	font-weight: bolder;
+	margin-bottom: 5px;
+}
+#map_location_icon{
+	width: 13px;
+	height: 13px;
+	margin-right: 2px;
+}
+.weather_temp{
+	display: flex;
+	justify-content: space-between;
+}
+#weather_temp_max{
+	margin-top: 5px;
+}
+#weather_temp_min{
+	margin-top: 5px;
+}
+#weather_pop{
+	margin-top: 5px;
+}
+#weather_humidity{
+	margin-top: 5px;
+} */
+
+/* 결재 */
+/* .approval-title {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+      
+.approval-status {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+      
+.approval-status li {
+     text-align: center;
+     padding: 10px;
+     width: calc(33.33% - 10px); 
+     border-radius: 8px;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     
+ }
+ .approval-status li:nth-child(1) {
+     background-color: #FFF3E0;
+     border: 1px solid #FFE0B2;
+ }
+ .approval-status li:nth-child(2) {
+     background-color: #E8F5E9;
+     border: 1px solid #C8E6C9;
+ }
+ .approval-status li:nth-child(3) {
+     background-color: #E8EAF6;
+     border: 1px solid #C5CAE9;
+ }
+ .approval-status span:first-child {
+     display: block;
+     font-weight: bold;
+     margin-bottom: 5px;
+     color: #666;
+     font-size: 0.9em;
+ }
+ .approval-status span:last-child {
+     color: #333;
+     font-weight: bold;
+ }
+ 
+ .app_ata{
+ 	text-decoration: none;
+ 	display:flex;
+ }
+.approval_btn_con {
+    display: flex;
+    justify-content: space-between;
+}
+
+.approval_btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    margin-top:20px;
+}
+
+.app_primary {
+    color: #000000;
+}
+
+.app_primary:hover {
+    transform: scale(0.98);
+}
+.app_arrow{
+	width: 15px;
+    height: 15px;
+    padding-top: 3px;
+    margin-left: 2px;
+} */
+
+/* 회의실 */
+.fc {
+    cursor: pointer;
+}
+ 
+.fc-daygrid-day {
+    cursor: pointer;
+}
+.fc-day-sun .fc-col-header-cell-cushion {
+	color: red;
+}
+.fc-day-sat .fc-col-header-cell-cushion {
+	color: blue;
+}
+	 
+.fc-daygrid-day.fc-day-sun .fc-daygrid-day-number{ 		
+	color: red;
+}
+.fc-daygrid-day.fc-day-sat .fc-daygrid-day-number{		
+	color: blue;
+}
+
+
+.fc .fc-button.fc-button-primary {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d;
+    font-size : 20px;
+    font-weight: 550;
+}
+
+.fc .fc-button.fc-button-primary:hover {
+    background-color: transparent; 
+    border:none;
+    color: #2692f2;
+}
+ 
+.fc-prev-button {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d;
+}
+
+.fc-prev-button:hover {
+    background-color: transparent; 
+    border:none;
+    color: #2692f2;
+}
+ 
+.fc-next-button {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d; 
+} 
+.fc-daygrid-day {
+    max-height: 30px;  
+}  
+.google-holiday {
+	text-align: right;  
+} 
+
+.fc-header-toolbar {
+	font-size : 12px;	
+}
+.fc-next-button:hover {
+    background-color: transparent; 
+    border:none;
+    color: #2692f2;
+}
+.fc-button, .fc-button:focus, .fc-button:active {
+    outline: none !important; 
+    box-shadow: none !important; 
+    border: none !important;  
+}
+
+.fc-button:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.fc .fc-button.fc-button-primary.fc-button-active {
+    background-color: transparent; 
+    border:none;
+    color: black;
+    font-weight: 550;
+}
+
+#meeting_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#meeting_calendar {
+    width: 100%;
+    height: 60%;  
+}
+
+#meeting_reservation_list { 
+    height: 40%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff; 
+    height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+    padding: 30px 40px;
+} 
+
+#meeting_reservation_list::-webkit-scrollbar {
+    width: 8px;  
+    display: block; 
+}
+  
+#meeting_home_date { 
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}  
+
+#meeting_selected_date_list {
+	list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    font-size: 18px; 
+	scrollbar-width: thin; 
+    scrollbar-color: #888 #f1f1f1;  
+    margin-top:20px;
+}
+
+.meeting_list_div { 
+	margin-bottom: 10px;
+	font-size: 17px;
+	padding-bottom : 10px;  
+    border-bottom: 1px solid #ddd; 
+}
+ 
+/*휴가 현황*/
+.approvalState {
+    position: relative;
+    display: flex;  
+    flex-direction: column; 
+}
+
+.vacationApproval_btn_con {
+    margin-bottom: 10px;
+    align-self: flex-end;
+}
+
+#vacationDays {
+    background-color: #ffffff;
+    border: 2px solid #007BFF;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#vacationDays span {
+    display: block;
+    font-size: 16px;
+    color: #555;
+}
+
+#vacationDays strong {
+    font-size: 24px;
+    color: #333;
+}
+.vacationApproval {
+    margin:0;
+    color: black;
+}
+
+/* 일정 */ 
+#calendar .fc-daygrid-day {
+    height: 130px;  
+}  
+
+#schedule_list {
+    width: 89%;
+    max-width: 89%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 30px 40px;
+    background-color: #fff; 
+    margin : 20px 0;
+}
+ 
+#schedule_home_date {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+ 
+#schedule_selected_date_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 150px;  
+    overflow-y: auto;
+    font-size: 18px; 
+	scrollbar-width: thin; 
+    scrollbar-color: #888 #f1f1f1; 
+}
+ 
+#schedule_selected_date_list::-webkit-scrollbar {
+    width: 8px; 
+    display: block; 
+}
+
+#schedule_selected_date_list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd; 
+}
+
+#schedule_selected_date_list li:last-child {
+    border-bottom: none;
+} 
+
+.event_view_modal {
+    display: none;
+    position: fixed;
+    z-index: 999;  
+    left: 300px;
+    top: 50px;  
+    width: 100%;
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.0);
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}  
+
+#eventModal, .modal-content{
+	 z-index: 999;
+}
+
+#closeScheduleModalBtn { 
+    color: #aaa; 
+    font-size: 26px;
+    font-weight: bold; 
+    padding-left: 20px;
+    margin-bottom: 3px;
+}
+
+#closeScheduleModalBtn:hover,
+#closeScheduleModalBtn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.event_modal-content {
+	z-index:100; 
+	position: fixed;
+    background-color: #ffffff;
+    margin: 300px 650px;
+    padding: 15px 35px; 
+    width: 250px;
+    height:300px;
+    max-width: 300px;
+    border-radius: 8px;
+    border:none;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow:  0 5px 10px rgba(0,0,0,0.4);
+}
+
+#par_create_name {
+	margin-bottom: 10px;
+}
+
+#eventViewComment {
+	margin-bottom: 20px;
+}
+
+.category_department_container {
+    display: flex;           
+    align-items: center;   
+    gap: 10px;             
+}
+
+#meeting_name {
+	margin-top: 20px;
+}
+#departmentName { 
+	margin-bottom: 10px; 
+	font-weight: 500;
+}
+
+#eventViewDateRange {
+	color : #707070;
+	margin-bottom: 15px;
+	font-size : 14px;
+}
+
+#eventViewCategory { 
+	margin-bottom: 10px;
+}
+
+.event_view_hr {
+	margin:20px 0;
+}
+
+#eventViewRepeatInfo, #eventViewCreatedDate{
+	margin-bottom: 10px; 
+}
+
+.modal-schedule-button {
+    float: right;
+    display: flex;
+    align-items: center; 
+} 
+
+.modal-header {
+    margin-top: 50px; 
+    font-size : 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.fc-direction-ltr .fc-daygrid-more-link {
+	margin-top : 7px;
+	margin-left : 5px;
+	font-weight: 550; 
+}
+
+.fc .fc-day-today {
+  background-color: rgb(177, 194, 221, 0.2)!important;
+}
+
+.fc-more-link {
+  color: #666666;
+  background-color: #f0f0f0;
+  padding: 2px 5;
+  border-radius: 3px; 
+  font-weight: 550; 
+  margin-left: 10px;
+}
+
+.fc-event {
+  border: none;
+  border-radius: 5px; 
+  padding: 2px 15px;
+  font-size: 0.85em;
+  transition: opacity 0.2s;
+  margin-bottom: 3px; 
+}
+
+/* 공지사항 테이블 스타일 */
+/* .important-notices-container {
+    margin-top: 20px;
+    max-width: 100%; 
+    overflow-x: auto; 
+}
+
+.important-notices-container h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.important-notices-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.important-notices-table th, .important-notices-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+    font-size: 14px;
+}
+
+.important-notices-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    font-size: 15px;
+    color: #333;
+}
+
+.important-notices-table td {
+    font-size: 14px;
+    color: #333;
+}
+
+
+.important-notices-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.important-notices-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+
+.important-notices-table th:nth-child(1), 
+.important-notices-table td:nth-child(1) {
+    width: 10%;
+}
+
+.important-notices-table th:nth-child(2),
+.important-notices-table td:nth-child(2) {
+    width: 50%;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.important-notices-table th:nth-child(3),
+.important-notices-table td:nth-child(3),
+.important-notices-table th:nth-child(4),
+.important-notices-table td:nth-child(4) {
+    width: 20%;
+}
+
+.important-notices-table tbody td {
+    padding: 10px 5px;
+}
+ */
+/* 수정 */
+.employee-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    justify-content: center;  
+    text-align: center;  
+}
+
+.main_user_photo {
+    width: 100px;  
+    height: 100px;
+    border-radius: 50%; 
+    object-fit: cover;
+    margin-bottom: 10px;  
+    cursor:default; 
+}
+
+.employee-details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+} 
+
+.employee-department {
+    margin-top: 5px;
+    font-size: 17px;
+    color: #666;
+    font-weight: 550;
+}
+
+.employee-info {
+    font-size: 20px; 
+    color: #333;
+    margin-bottom: 5px; 
+}
+
+.employee-name, .employee-position {
+	font-weight: 650;
+}
+ 
+/* 근태 */
+#clock{
+	font-size: 1.4vw;
+}
+.attendance{
+	flex: 1.5;  
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: auto; 
+	text-align: center;
+	font-size: 2vw;
+	align-items: center;
+	margin-top:40px;
+}
+.attendance_button{
+	 display: flex;
+     justify-content: center;
+     align-items: center;
+}
+/* 출퇴근 버튼 css */
+#check_in_button, #check_out_button {
+    border: 1px solid #0056b3;
+    width: 155px;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: transparent; 
+    color : #0056b3;
+    font-weight: 550;
+}
+#check_in_button {
+    margin-right: 0.2vw;
+}
+/* 출퇴근 버튼이 활성화 상태일 때 cursor 모양 */
+#check_in_button:enabled {
+    cursor: pointer;
+}
+#check_out_button{
+	cursor: pointer;
+}
+/* 출근 버튼이 비활성화 상태일 때 기본 커서 모양과 색깔  */ 
+#check_in_button:disabled, #check_out_button:disabled {
+    cursor: default; 
+    color : #c0c0c0;
+    border : 1px solid #c0c0c0;
+}
+
+/* 활성화된 출퇴근 버튼에 대한 호버 효과 */
+#check_in_button:hover, #check_out_button:hover {
+    background-color: #0056b3;
+    color : white;
+}
+
+#check_in_button:disabled:hover, #check_out_button:disabled:hover {
+    cursor: default; 
+    color : #c0c0c0;
+    background-color: white;
+}
+ 
+#check_in_time{
+	grid-column: 1;
+	color: gray;
+}
+#check_out_time{
+	grid-column: 2;
+	color: gray;
+}
+.swal2-confirm {
+  	background-color: #0056b3;
+  	color: white;
+  	border: none;
+}
+.swal2-confirm:hover{
+	background-color: #003a82;
+}
+
+.time_display {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+.time_row {
+    display: flex;
+    justify-content: space-between;  
+    margin-bottom: 5px;
+}
+
+.time_label {
+    text-align: left;  
+    font-weight: bold;
+    color: #333;
+}
+
+#check_in_time, #check_out_time {
+    text-align: right; 
+    min-width: 100px;  
+    color: #666;
+}
+
+/* 전자 결재 */  
+.approval_area {
+	margin-top: 10px;	
+}
+
+.approval-status {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;  
+    justify-content: center; 
+    list-style-type: none;  
+    padding: 0;  
+}
+
+.approval-status li {
+    flex: 1;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease-in-out;
+    margin-bottom: 12px;
+    width : 90%; 
+}
+
+.approval-status li:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.app_ata {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.app_ata span {
+    margin-right: 8px;
+}
+
+.app_arrow {
+    width: 16px;
+    height: 16px;
+}
+ 
+.approval-status li > span:last-child {
+    background-color: transparent;
+    color: #0056b3;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    min-width: 24px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* 휴가 */
+.vacation_box_area {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top : -10px;
+}
+
+.vacation_area {
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 10px; 
+    width : 95%; 
+}
+
+.vacation_ata {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;  
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease-in-out; 
+    width : 50%;
+    margin-right: 3%;
+} 
+
+.vacation_ata:last-child {
+    margin-right: 0;  
+}
+
+.vacation_ata:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#vacationTitle, #vacationTitle2 {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+#vacationCount, #vacationRemainCount {
+    background-color: transparent;
+    color: #0056b3;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    min-width: 24px;
+    text-align: center;
+    font-size: 18px; 
+}
+
+/* 결재, 휴가 작성 */ 
+.approval_write_btn {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;    
+}
+
+.approval_btn, .vacationApproval {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    background-color: white;
+    border: 1px solid #e9ecef; 
+    padding: 20px 10px;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    text-align: center; 
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.approval_btn:hover, .vacationApproval:hover {
+    background-color: #f1f1f1;
+}
+
+.approval_btn_con {
+    display: flex; 
+    align-items: center;
+    width: 100%;
+    justify-content: center; 
+    text-decoration: none;
+    color: #495057;
+    font-weight: 500;
+    font-size: 17px;
+}
+
+.approval_btn_con span, .vacationApproval_btn_con span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.app_arrow {
+    width: 16px;
+    height: 16px;   
+    margin-left: 15px;
+} 
+
+a {
+	text-decoration: none;
+	color : #333;
+}
+
+/* 공지사항 */  
+.notice_list {
+    width: 98%;
+    margin: auto;
+}
+ 
+.important-notices-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.important-notices-table tbody {
+    display: table;
+    width: 100%;
+}
+ 
+.clickable-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 0.2s;
+}
+
+.clickable-row:hover {
+    background-color: #f9f9f9;
+}
+ 
+.notice-important-label {
+    display: inline-block;
+    background-color: #e53935;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 550;
+    margin-right: 15px;
+}
+
+.notice-non-label {
+    display: inline-block;
+    background-color: transparent;
+    color: transparent;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: 550;
+    margin-right: 15px;
+    
+}
+
+tr.notice-important {
+    background-color: #fff8f8;
+}
+
+tr.notice-important:hover {
+    background-color: #fff0f0;
+}
+  
+.bold-title {
+    font-weight: 600;
+} 
+
+.clickable-row td:nth-child(2) {
+    flex-grow: 1;
+    color: black; 
+    padding-right: 20px;
+}
+ 
+.clickable-row td:last-child {
+    color: #808080;
+    white-space: nowrap;
+}
+ 
+.important-notices-table tr td[colspan="4"] {
+    text-align: center;
+    padding: 20px;
+    color: #808080;
+} 
+
+/* 설문 */
+.survey_completed {
+    display: inline-block;
+    background-color: #43a047;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 13px; 
+    margin-right: 10px;
+    width : 55px;
+    text-align: center;
+}
+
+.survey_not_completed {
+    display: inline-block;
+    background-color: #f9a825;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-size: 13px; 
+    margin-right: 10px;
+    width : 55px;
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+ 
+.survey_li {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 10px;
+    border-bottom: 1px solid #ddd; 
+    font-size : 16px; 
+}
+
+.survey_li:last-child {
+    border-bottom: none;  
+    margin-bottom: 10px;
+}
+
+.survey_li_title {
+    flex-grow: 1; 
+    text-decoration: none;  
+    color: #333;  
+    font-weight: 600; 
+}
+ 
+.survey_li:hover {
+    background-color: #f9f9f9;
+}
+
+.survey_create_name {
+    color: #808080; 
+	margin-right : 20px; 
+} 
+
+.survey_date {
+    color: #808080;  
+	margin-right : 25px;
+}
+
+.survey_list {
+	width: 98%;  
+}
+
+/* 날씨 */
+#weather_icon{
+	width: 100px;
+}
+
+#weather_now_temp{
+	font-size: 30px;
+	font-weight: 600;
+	margin-bottom: 5px;
+	margin-top:10px;
+}
+ 
+.weather_location {
+    display: flex;               
+    align-items: center;   
+    margin-top:10px;      
+}
+
+#map_location_icon {
+    width: 15px;            
+    height: 15px;              
+    margin-right: 10px;           
+}
+
+#weather_location_text {
+    font-size: 15px;            
+    color: #666;                 
+}
+
+.weather_left_div {
+	margin-bottom: 20px;
+}
+
+.weather_right_div {
+   align-items: center; 
+   width : 65%;
+   margin-left: 65px;
+}
+
+.weather_info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.weather_info_label {
+    text-align: left;
+    flex: 1;
+    font-size: 14px;             
+    color: #666;  
+}
+
+#weather_temp_min,
+#weather_temp_max,
+#weather_pop,
+#weather_humidity {
+    flex: 1;
+    text-align: left;
+    font-size: 16px;            
+    font-weight: 600;         
+    color: #333;      
+}
+
+.weather_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;  
+    justify-content: center;  
+    text-align: center;  
+    margin-top:30px;
+}
+
+  

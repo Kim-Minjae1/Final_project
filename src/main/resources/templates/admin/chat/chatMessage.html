@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+    <link th:href="@{/css/admin/chat/chat.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/admin/organization/organizationChart.css}" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+
+
+    <section class="chatSection" th:each="member : ${memberdto}">
+        <input type="hidden" id="currentMember" th:value="${member.member_no}"/>
+        <div class="chatArea">
+            <div class="chatContainer">
+                <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div id="chatRoomTitleContainer">
+                        <h3 id="chatListTitle"><i class="fa-solid fa-comment" style="margin-left: 10px; margin-right: 10px;"></i>메신저</h3>
+                    </div>
+                    <div id ="listButtons">
+
+                        <button id="searchChatButton"  onclick="toggleSearch()" class="btn btn-primary no-style">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                        <button id="openChart" class="btn btn-primary no-style">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 검색 창 구역 -->
+
+                <div class="chatList-container">
+                    <div id="searchContainer" class="searchContainer" style="display:none;">
+                        <input type="text" id="searchInput" placeholder="메신저방 이름을 입력하세요." oninput="searchMem()">
+                        <button id="cancelSearchButton" onclick="toggleSearch()" class="btn btn-danger no-style">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="chatList" id="chatList" th:each="item : ${combinedChatList}">
+                        <!-- 채팅 목록 항목 -->
+                        <div class="chatItem" th:onclick="'handleChatRoomClick('+ ${item.chatMember.chat_room_no} + ')'">
+                            <img th:if="${item.chatType == 0}"
+                                 th:src="${item.profileImages[0] != null ? '/linkOfficeImg/member/profile/' + item.profileImages[0] : '/img/user_profile.png'}"
+                                 alt="프로필 이미지" style="border-radius: 50%; width: 70px; height: 70px; margin: 20px;   margin-left: 40px;" />
+                            <div class="group-info" th:if="${item.chatType == 1}">
+                                <div class="group-image" th:text="${item.chatMember.chat_member_room_name.charAt(0)}" style="border-radius: 50%; width: 70px; height: 70px; margin: 20px;"></div>
+                            </div>
+                            <h3><p th:text="${item.chatMember.chat_member_room_name}"></p></h3>
+                            <div class="pin">
+                                <i class="fa-solid fa-thumbtack" th:if="${item.chatMember.chat_member_pin == 1}"></i>
+                            </div>
+                            <!-- 읽지 않은 메시지 개수 표시 -->
+                            <div class="unread-count-container">
+                                <span class="unread-count"></span>
+                            </div>
+                            <input type="hidden" id="memberNo" th:value="${item.chatMember.member_no}"/>
+                            <input type="hidden" id="chatRoomNo" th:value="${item.chatMember.chat_room_no}" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="chatElement">
+                <div class="chatHeader" style="height: 93.94px;">
+                    <div class="chatInfo">
+                        <h4 id="chatRoomTitle">메신저방을 선택해주세요</h4>
+                        <div class ="countParticipant" id="countParticipant" style="display:none;">
+                            <i class="fa-solid fa-user"></i>
+                            <span id="participantCountSpan"></span>
+                        </div>
+                    </div>
+
+                    <div class ="chatHeader-buttons" id="chatHeader-buttons" style="display:none;">
+<!--                        <button id="searchChatContent" class="btn btn-primary no-style">-->
+<!--                            <i class="fa-solid fa-magnifying-glass"></i>-->
+<!--                        </button>-->
+                        <div class="chatDropdown">
+                            <button id="openDrop" class="btn btn-primary no-style">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>
+                            <div id="chatDropdownMenu" class="chat-dropdown-menu">
+                                <a href="#" id="pinChatItem" class="chat-dropdown-item">
+                                    <i class="fa-solid fa-thumbtack" style="margin-left:4px;" ></i> <span class="menu-text">고정</span>
+                                </a>
+                                <a href="#" id="pinDeleteChatItem" class="chat-dropdown-item" style="display:none;">
+                                    <i class="fa-solid fa-thumbtack-slash"></i> <span class="menu-text">고정해제</span>
+                                </a>
+<!--                                <a href="#" id="notifyChatItem" class="chat-dropdown-item">-->
+<!--                                    <i class="fa-solid fa-bell-slash"></i> <span class="menu-text">알림끄기</span>-->
+<!--                                </a>-->
+<!--                                <a href="#" id="notifyOnChatItem" class="chat-dropdown-item" style="display:none;">-->
+<!--                                    <i class="fa-solid fa-thumbtack"></i> <span class="menu-text">알림켜기</span>-->
+<!--                                </a>-->
+                                <a href="#" id="addChatItem" class="chat-dropdown-item">
+                                    <i class="fa-solid fa-plus" style="margin-left:4px;"></i> <span class="menu-text">초대</span>
+                                </a>
+                                <a href="#" id="editChatRoomButton" class="chat-dropdown-item">
+                                    <i class="fa-regular fa-pen-to-square"  style="margin-left:5px;"></i> <span class="menu-text">수정</span>
+                                </a>
+                                <a href="#" id="leaveChatItem" class="chat-dropdown-item">
+                                    <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i> <span class="menu-text" style="margin-left: 10px;">나가기</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chatContent" id="chatContent">
+                    <div>
+                        <!-- 여기에 채팅 메시지가 표시 -->
+                    </div>
+                </div>
+                <div class="chatInput" id="chatInput" style="display:none;">
+                    <input type="hidden" id="userNo" th:value="${member.member_no}">
+                    <input type="hidden" id="userName" th:value="${member.member_name}">
+                    <input type="text" id="messageInput" class="message-input" placeholder="메시지를 입력하세요.">
+                    <button class="send-button" id="sendButton" onclick="sendMessage()" disabled>전송</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal" id="organizationChartModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form>
+                        <input type="hidden" id="currentMemberNo" th:value="${member.member_no}"/>
+                        <input type="hidden" id="currentMemberName" th:value="${member.member_name}"/>
+                        <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                        <div class="modal-header">
+                            <div class="organizationchart_title" id="organizationChartModalLabel">조직도</div>
+                            <span class="chart_close" data-dismiss="modal" aria-label="Close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 선택된 사원 출력 -->
+                            <div id="selected-members"></div>
+
+                            <!-- 검색  -->
+                            <input type="text" id="organization_search" placeholder="검색어를 입력하세요." class="organization_search">
+
+                            <div id="organization-chart"></div>
+
+                            <button id="confirmButton" type="submit" class="modal_btn">확인</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 그룹 채팅방 이름 입력 모달 -->
+        <div class="modal" id="groupChatNameModal" tabindex="-1" role="dialog" aria-labelledby="groupChatNameModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="group-modal-header">
+                        <h5 class="modal-title" id="groupChatNameModalLabel">그룹 채팅방 이름 입력</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span  class="chart_close" aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="text" id="groupChatNameInput" class="form-control" placeholder="그룹 채팅방 이름을 입력하세요">
+                        <div id="selectedMembersList" class="mt-3">
+                            <!-- 선택된 사람의 목록이 여기 표시됨 -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary ml-auto" id="confirmGroupChatName" disabled>확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 수정 버튼 클릭 시 열리는 모달 -->
+        <div id="editChatRoomModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-content-element">
+                    <p style="font-weight: bold; font-size: 18px;">채팅방 이름 수정</p>
+                    <button type="button" class="close">&times;</button>
+                </div>
+
+                <form id="editChatRoomForm" style="display:flex; flex-direction:column;">
+                    <input type="text" id="chatRoomNameInput" value="" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                        <button type="button" class="update-button" id="confirmEditButton" disabled>확인</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="organizationAddModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form>
+                        <input type="hidden" id="currentNo" th:value="${member.member_no}"/>
+                        <input type="hidden" id="currentName" th:value="${member.member_name}"/>
+                        <!--                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+                        <div class="modal-header">
+                            <div class="organizationchart_title" id="organizationAddModalLabel">조직도</div>
+                            <span class="chart_close" data-dismiss="modal" aria-label="Close">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <!-- 선택된 사원 출력 -->
+                            <div id="selected-member"></div>
+
+                            <!-- 검색  -->
+                            <input type="text" id="organization_add_search" placeholder="검색어를 입력하세요." class="organization_search">
+
+                            <div id="organization-chart-add"></div>
+
+                            <button id="addButton" type="submit" class="modal_btn">추가</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <script th:src="@{/js/admin/chat/chatMessage.js}"></script>
+
+<!--    <script th:src="@{/js/admin/chat/chatMember.js}"></script>-->
+
+</th:block>
+</html>

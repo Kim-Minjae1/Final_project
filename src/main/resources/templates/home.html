@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content">
+	<link th:href="@{/css/home.css}" rel="stylesheet" type="text/css">  
+	<script
+		src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+	<script
+		src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js'></script>
+	<section sec:authorize="hasAnyAuthority('USER')"
+		th:each="member : ${memberdto}">
+		<div class="left-column">
+			<div class="main_item_box left-top custom-height-1 employee-info">
+				<a class="main_link" th:href="@{employee/member/mypage}"> <span
+					class="main_box_title"> 내 정보 <img th:src="@{/img/slide-right.png}" alt="slide-right" class="slide-right_img" />
+				</span>
+				</a>
+				<div class="employee-profile">
+				    <img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}"
+				         alt="사원 사진" class="main_user_photo">
+				    <div class="employee-details">
+				        <div class="employee-info">
+				            <span class="employee-name" th:text="${member.member_name}"></span>
+				            <span class="employee-position" th:text="${member.position_name}"></span>
+				        </div>
+				        <span class="employee-department" th:text="${member.department_name}"></span>
+				    </div>
+				</div>
+				
+				<div class="approval_area">
+				    <ul class="approval-status">
+				        <li>
+				            <a class="app_ata" th:href="@{/employee/approval/progress}">
+				                <span>결재 진행함</span>
+				                <img th:src="@{/img/main_arrow.png}" alt="slide-right" class="app_arrow" />
+				            </a>
+				            <span th:text="${progressCount}"></span>
+				        </li>
+				        <li>
+				            <a class="app_ata" th:href="@{/employee/approval/history}">
+				                <span>결재 내역함</span>
+				                <img th:src="@{/img/main_arrow.png}" alt="slide-right" class="app_arrow" />
+				            </a>
+				            <span th:text="${approvalCount}"></span>
+				        </li>
+				        <li>
+				            <a class="app_ata" th:href="@{/employee/approval/references}">
+				                <span>결재 참조함</span>
+				                <img th:src="@{/img/main_arrow.png}" alt="slide-right" class="app_arrow" />
+				            </a>
+				            <span th:text="${referenceCount}"></span>
+				        </li> 
+				    </ul>
+				    <div class="vacation_box_area">
+					    <div class="vacation_area">
+					    	 <div class="vacation_ata" onclick="window.location.href='/employee/vacationapproval/list'">
+					            <span id="vacationTitle">지급 휴가</span>
+					            <span id="vacationCount">0</span>
+					        </div>
+							<div class="vacation_ata" onclick="window.location.href='/employee/vacationapproval/list'">
+							    <span id="vacationTitle2">남은 휴가</span>
+							    <span id="vacationRemainCount">0</span>
+							</div> 
+					    </div>
+				    </div>
+				</div> 
+			</div>
+			
+			<div class="approval_write_btn"> 
+				<a th:href="@{/employee/approval/create}" class="approval_btn app_primary">
+			    	<div class="approval_btn_con">  
+			    		결재 작성<img th:src="@{/img/main_arrow.png}" class="app_arrow" />
+			   		</div>	 
+	    		</a>
+	    		<a th:href="@{/employee/vacationapproval/create}" class="vacationApproval">
+					<div class="approval_btn_con">
+						휴가 신청<img th:src="@{/img/main_arrow.png}" class="app_arrow" />
+					</div>
+				</a>
+			</div>
+				    
+				    
+			<div class="main_item_box custom-height-3">
+				<a class="main_link"
+					th:href="@{/employee/attendance/myAttendance/{no}(no=${member.member_no})}">
+					<span class="main_box_title"> 근태 조회 <img
+						th:src="@{/img/slide-right.png}" alt="slide-right"
+						class="slide-right_img" />
+				</span>
+				</a>
+				<div class="attendance">
+					<span id="clock" th:text="${time}"></span>
+					<div class="attendance_button">
+						<form id="attendanceForm" action="/attendance/checkIn"
+							method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}" /> <input type="hidden"
+								id="attendance_memberNo" th:value="${member.member_no}">
+							<button type="submit" id="check_in_button" th:disabled="${isCheckedIn == 'true'}">출근</button>
+							<button type="submit" id="check_out_button">퇴근</button>
+							<div class="time_display">
+							    <div class="time_row">
+							        <span class="time_label">출근 시간</span>
+							        <span id="check_in_time" th:text="${checkInTime != null ? checkInTime : '미등록'}"></span>
+							    </div>
+							    <div class="time_row">
+							        <span class="time_label">퇴근 시간</span>
+							        <span id="check_out_time" th:text="${checkOutTime != null ? checkOutTime : '미등록'}"></span>
+							    </div>
+							</div>  
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<div class="main_item_box custom-height-11">
+				<!-- <h3>날씨</h3> -->
+				<div class="weather_div">
+					<div class="weather_left_div">
+						<img id="weather_icon" />
+						<div class="weather_location">
+							<img th:src="@{/img/map_location.png}" alt="map_location_icon" id="map_location_icon" />
+							<div id="weather_location_text">금천구 가산동</div>
+						</div>
+						
+						<div class="weather_temp">
+							<div id="weather_now_temp"></div>
+						</div>
+					</div>
+
+					<div class="weather_right_div"> 
+						<div class="weather_info">
+							<div class="weather_info_label">최저 기온</div>
+							<div id="weather_temp_min"></div>						
+						</div>
+						<div class="weather_info">
+							<div class="weather_info_label">최고 기온</div>
+							<div id="weather_temp_max"></div>						
+						</div> 
+						<div class="weather_info">
+							<div class="weather_info_label">강수 확률</div>
+							<div id="weather_pop"></div>						
+						</div> 
+						<div class="weather_info">
+							<div class="weather_info_label">습도</div>
+							<div id="weather_humidity"></div>						
+						</div>  
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="middle-column">
+			<div class="main_item_box left-bottom custom-height-2">
+				<input type="hidden" id="schedule_memberNo"
+					th:value="${member.member_no}"> <input type="hidden"
+					id="schedule_departmentNo" th:value="${member.department_no}">
+				<a class="main_link" th:href="@{/employee/schedule}"> 
+				<span class="main_box_title"> 일정 
+					<img th:src="@{/img/slide-right.png}" alt="slide-right" class="slide-right_img" />
+				</span>
+				</a>
+				<div id="calendar"></div>
+				<div id="schedule_list">
+					<div id="schedule_home_date"></div>
+					<ul id="schedule_selected_date_list"></ul>
+				</div> 
+			</div> 
+			<div class="main_item_box custom-height-6">
+				<a class="main_link" th:href="@{/employee/survey/ingList/{member_no}(member_no=${memberdto[0].member_no})}">
+					<span class="main_box_title"> 설문
+					<img th:src="@{/img/slide-right.png}" alt="slide-right" class="slide-right_img" />
+				</span>
+				</a> 
+				<div class="survey_list">
+					<ul>
+						<th:block th:if="${#lists.isEmpty(mySurveyList)}">
+							<tr>
+								<td class="notice_nothing">설문이 없습니다.</td>
+							</tr>
+						</th:block>
+						<th:block th:if="${!#lists.isEmpty(mySurveyList)}" th:each="survey : ${mySurveyList}"> 
+						    <li class="survey_li">
+						        <a th:href="@{'/employee/survey/detail/' + ${survey.survey_no}}" 
+						           th:text="${survey.survey_title}" 
+						           class="survey_li_title">설문 제목</a> 
+						           
+						        <span class="survey_create_name" th:text="${survey.member_name} + ' ' + ${survey.position_name}"></span> 
+						              
+						        <span class="survey_date" th:text="${survey.survey_start_date} + ' ~ ' + ${survey.survey_end_date}"></span> 
+						              
+						        <span th:text="${survey.survey_participant_status == 1 ? '참여완료' : '미참여'}" 
+						              th:classappend="${survey.survey_participant_status == 1 ? 'survey_completed' : 'survey_not_completed'}"></span>
+						    </li>
+						</th:block> 
+					</ul>
+				</div> 
+			</div>
+		</div>
+
+		<div class="right-column"> 
+			<div class="main_item_box custom-height-5"> 
+				<a class="main_link" th:href="@{/admin/notice/list}"> <span
+					class="main_box_title">공지사항
+					<img th:src="@{/img/slide-right.png}" alt="slide-right" class="slide-right_img" />
+				</span>
+				</a> 
+				<div class="notice_list">
+					<table class="important-notices-table"> 
+						<tbody>
+							<th:block th:if="${#lists.isEmpty(noticeList)}">
+								<tr>
+									<td class="notice_nothing">공지사항이 없습니다.</td>
+								</tr>
+							</th:block>
+							<th:block th:if="${!#lists.isEmpty(noticeList)}">
+							    <tr th:each="notice, iterStat : ${noticeList}" 
+							        th:onclick="|location.href='@{/admin/notice/list/{no}(no=${notice.notice_no})}'|"
+							        class="clickable-row"
+							        th:classappend="${notice.notice_importance == 1} ? 'notice-important'">
+							        <td>
+							            <span th:if="${notice.notice_importance == 1}" class="notice-important-label">중요</span>
+							            <span th:if="${notice.notice_importance == 0}" class="notice-non-label">중요</span>
+							        </td>
+							        <td th:classappend="${notice.notice_importance == 1} ? 'bold-title' : ''" th:text="${notice.notice_title}"></td>
+							        <td th:text="${notice.notice_create_date}"></td>
+							    </tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div> 
+			</div> 
+			<div class="right-top">
+				<div class="main_item_box custom-height-7">
+					<a class="main_link" th:href="@{/employee/meeting/reservation}">
+						<span class="main_box_title meeting_box_title"> 회의실 예약 
+						<img th:src="@{/img/slide-right.png}" alt="slide-right" class="slide-right_img" />
+					</span>
+					</a>
+					<div id="meeting_wrapper">
+						<div id="meeting_calendar"></div>
+						<div id="meeting_reservation_list">
+							<div id="meeting_home_date"></div>
+							<ul id="meeting_selected_date_list"></ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 일정 상세보기 -->
+	<div id="eventViewModal" class="event_view_modal"
+		style="display: none;">
+		<div class="event_modal-content" id="event_modal_vacation">
+			<input type="hidden" id="eventId"> <input type="hidden"
+				id="isException"> <input type="hidden" id="isRecurring_view">
+			<div class="modal-schedule-button">
+				<span class="schedule_close" id="closeScheduleModalBtn">&times;</span>
+			</div>
+			<div>
+				<div class="modal-header">
+					<div class="category_department_container">
+						<div id="eventViewCategory"></div>
+						<div id="departmentName"></div>
+					</div>
+					<div id="eventViewTitle"></div>
+				</div>
+				<div id="eventViewDateRange"></div>
+				<div id="eventViewComment"></div>
+			</div>
+ 
+			<div class="participate_area">
+				<div id="par_create_name"></div>
+				<div id="par_join">[참여자]</div>
+				<div id="par_join_name"></div>
+				<div id="meeting_name"></div>
+			</div>
+
+			<div class="modal-body">
+				<hr class="event_view_hr" id="eventViewHr">
+				<div id="eventViewRepeatInfo"></div>
+				<div id="eventViewCreatedDate"></div>
+			</div>
+		</div>
+	</div>
+
+	<section sec:authorize="hasAnyAuthority('TOTAL_ADMIN')">
+		hello</section>
+	<script src="/js/employee/attendance/attendance.js"></script>
+	<script src="/js/employee/weather/weather.js"></script>
+	<script src="/js/employee/schedule/homeSchedule.js"></script>
+	<script src="/js/employee/meeting/homeMeeting.js"></script>
+	<script src="/js/employee/vacationapproval/homeVacationCount.js"></script>
+</th:block>
+</html>

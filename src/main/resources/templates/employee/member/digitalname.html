@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content">
+	<link th:href="@{/css/employee/member/digitalname.css}"
+		rel="stylesheet" type="text/css">
+	<section class="signature-registration">
+		<div id="digital_name">
+			<form class="digital_form" id="digitalFrm"
+				th:each="member : ${memberdto}">
+				<input type="hidden" id="csrf_token" th:value="${_csrf.token}" /> <input
+					type="hidden" name="member_no" th:value="${member.member_no}" />
+				<p th:text="${member.member_name} + '님의 서명을 등록/수정해주세요'"></p>
+				<div class="digital_box">
+					<img th:if="${member.member_new_digital_img != null}"
+						th:src="@{'/linkOfficeImg/member/digital/'+${member.member_new_digital_img}}"
+						alt="현재 서명" id="currentSignature">
+					<canvas id="canvas" width="600" height="300" ></canvas>
+				</div>
+
+				<div class="button_container">
+					<button th:if="${member.member_ori_digital_img != null}"
+						id="modifyBtn" class="button primary_button" type="button">수정</button>
+					<button id="saveBtn" class="button primary_button">등록</button>
+					<button id="clearBtn" class="button secondary_button" type="button">지우기</button>
+				</div>
+			</form>
+		</div>
+	</section>
+	<script th:src="@{/js/employee/member/digitalname.js}"></script>
+</th:block>
+</html>

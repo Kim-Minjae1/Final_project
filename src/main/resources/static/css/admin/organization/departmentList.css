@@ -1,0 +1,275 @@
+
+.container {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 1250px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+}
+
+.list, .details {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 40px;
+    flex: 1; 
+    height: 700px;
+    max-height: 700px;
+}
+
+.list-header, .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    margin-top : -15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+ 
+.department_comment {
+	margin-bottom: 20px;	
+}
+
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #003a82;
+}
+
+.sub-departments {
+    display: flex; 
+}
+
+.department_info {
+    font-size: 17px;
+    font-weight: bold;
+    margin-right: 10px;  
+}
+  
+.department_ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 15px;
+    margin-top:5px;
+}
+
+.department_li {
+    margin-bottom: 5px;   
+}
+
+.info_content_tag a {
+    text-decoration: none;
+    color: #0056b3;
+    transition: color 0.3s;
+}
+
+.info_content_tag a:hover {
+    color: #163e65;
+}
+ 
+.container a, .details a {
+    color: #0056b3;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+    font-style: bold;
+}
+
+.container a:hover, .details a:hover {
+    color: #163e65;
+} 
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 0;   
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 30px 40px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+}
+
+.modal-title {
+	margin-bottom: 40px;	
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content form button {
+    align-self: flex-end;
+} 
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top : 15px;
+}
+
+.close:hover {
+    color: #000;
+} 
+ 
+.details-actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.details-content {
+    margin-top: 20px;
+}
+
+.modal_btn {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 20px;
+}
+ 
+.info_content1 {
+	margin-left : 92px;
+}
+
+.info_content2 {
+	margin-left : 57px;
+}
+
+.department_list {
+	margin-left : 80px;
+}
+
+.list_subdep {
+	font-size : 18px;
+	margin-left : 30px;
+	padding-left: 10px; 
+}
+
+.list_pardep {
+	font-size : 20px;  
+	font-weight: bold;  
+	padding-left: 10px; 
+}
+
+.pardep_div { 
+	margin-top :25px;
+	margin-bottom: 10px;
+}
+
+.info_btn {
+	text-align: right;
+}
+
+.info_btn button {
+	width : 70px;
+	margin : 5px;
+}
+
+#deleteButton {
+	background-color: #dc3545;
+	color : white;
+} 
+
+#deleteButton:hover {
+	background-color: #c82333;
+}
+
+#departmentName, #editDepartmentName{
+	width : 96%;
+	padding: 8px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+#departmentName:focus, #editDepartmentName:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+
+#departmentHigh, #editDepartmentHigh{
+	width : 96%;
+	padding: 8px;
+	border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+#departmentHigh:focus, #editDepartmentHigh:focus{
+    outline: none;
+    border-color: #0056b3;
+}
+
+.create_btn {
+	margin-top : 50px;
+} 
+
+#editDepartmentName {
+	width : 96%;
+}
+
+.selected {
+    background-color: #e9ecef;
+    color: #0056b3;
+    text-decoration: none; 
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+p {
+	margin-bottom: 25px;
+}
+
+hr {
+	margin : -10px 0 40px 0;
+}
+
+.modal-content .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 35px;
+    justify-content: flex-start;
+}
+ 
+.modal-content label {
+    width: 200px;  
+    text-align: left;
+    font-weight: bold;
+}
+
+form input[type="text"], form select { 
+    padding-left: 10px;
+}
+ 

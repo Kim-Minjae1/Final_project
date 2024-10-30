@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LINK OFFICE</title> 
+    <link th:href="@{/css/pwchange.css}" rel="stylesheet" type="text/css">
+	 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>  
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+   <div class="login_container">
+        <div class="logo_container">
+        	<div class="header_logo_text">LINK OFFICE</div>
+        </div>
+        <form id="pwchangeFrm">
+         <input type="hidden" id="csrf_token" th:value="${_csrf.token}" />
+                <label for="userid">아이디(사번)</label>
+            <div class="input_group">
+                <input type="text" id="user_id" name="user_id">
+            </div>
+                <label for="national_number">주민등록번호</label>
+            <div class="input_group">
+                <div class="national_number">
+                    <input type="text" id="national_number_front" name="national_number_front" maxlength="6">
+                    <span>-</span>
+                    <input type="text" id="national_number_mid" name="national_number_mid" maxlength="1"> 
+                    <input type="password" id="national_number_back" name="national_number_back" maxlength="6">
+                </div>
+            </div>
+                <label for="new_password">새로운 비밀번호</label>
+            <div class="input_group">
+		        <input type="password" id="new_password" name="new_password">
+                <img th:src="@{/img/pw_hidden.png}" id="pwHidden" class="toggle_icon"/>
+                <img th:src="@{/img/pw_show.png}" id="pwShow" class="toggle_icon"/>
+                <div id="capsLockAlert" class="capsLockAlert">Caps Lock이 켜져 있습니다!</div>
+   			</div>
+            <div class="button_group">
+                <a th:href="@{/login}" class="button_link">로그인</a>
+                <button type="submit">비밀번호 변경하기</button>
+            </div>
+        </form>
+    </div>
+   <script th:src="@{/js/pwchange.js}"></script>
+</body>
+</html>

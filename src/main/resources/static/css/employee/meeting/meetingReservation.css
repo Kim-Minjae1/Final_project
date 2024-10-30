@@ -1,0 +1,768 @@
+
+.container {
+    display: flex;
+    flex-direction: row;  
+    justify-content: space-between;  
+    gap: 20px;  
+    padding: 40px 60px; 
+    width: 1250px;
+    margin : auto;
+        background-color: #ffffff;
+    border-radius: 12px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.container-section {
+    margin : auto;
+}
+
+.top_area {
+  width : 1100px; 
+  margin: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+#calendar {
+    width: 500px;
+    height:420px;
+    margin-bottom: 20px;
+    margin-right : 360px;
+    display : line-block;
+} 
+#room-info {
+    width: 500px;
+    height: 400px; 
+    position: relative;  
+    margin-top : -20px;
+}
+.room-info-two { 
+	margin-top : 20px; 
+    padding: 0px 10px 5px 10px;  
+} 
+
+.room-info-table-div {
+    height: 300px; 
+    overflow-y: auto;  
+    padding: 0 10px; 
+}
+
+#reservation-table {
+    width: 1100px;
+    height: 100%;
+    overflow-x: auto; 
+    margin-left: 15px;
+    padding-bottom: 5px;
+}
+
+.room-info-table-div::-webkit-scrollbar {
+    display: block;      
+    width: 12px;
+} 
+ 
+.room-info-table-div::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 86, 179, 0.5); 
+    border-radius: 10px;    
+}
+
+.room-info-table-div::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 86, 179, 0.5); 
+}
+
+#reservation-table::-webkit-scrollbar {
+    display: block;      
+    height: 12px;
+}
+
+#reservation-table::-webkit-scrollbar-thumb {
+    background-color: rgb(0, 86, 179, 0.3);  
+    border-radius: 10px;   
+}
+
+#reservation-table::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(0, 86, 179, 0.5); 
+}
+
+#room-info table {
+    border-collapse: collapse;
+    width: 100%; 
+}
+#room-info th, #room-info td {
+    border: 1px solid #ddd;
+    padding: 8px;
+     text-align: center;
+}
+#room-info th {
+    background-color: #f2f2f2; 
+    position: sticky; 
+  	top : 0;
+}
+#room-info td {
+    cursor: pointer; 
+}
+#room-info tr:hover {
+    background-color: #f2f2f2; 
+}
+#reservation-table table {
+    border-collapse: collapse;
+    width: 100%;
+    display:table; 
+    table-layout:fixed; 
+    
+}
+#reservation-table th, #reservation-table td {
+    border: 1px solid #8c8c8c;
+    padding: 8px;
+    text-align: left;
+    display:table-cell;
+    width:50px;
+    text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+    font-size : 15px;
+}
+#reservation-table th {
+    background-color: #f2f2f2;
+    display:table-cell;
+    width:60px;  
+    text-align: center;
+} 
+#reservation-table td:first-child,
+#reservation-table th:first-child {
+    position: sticky;
+    left: 0;
+    background-color: #fff;
+    z-index: 5;
+    width : 80px; 
+    text-align: center; 
+}
+
+#reservation-table td:first-child { 
+    cursor:pointer;
+}
+
+.reservation-table-title{
+	margin-left: 15px; 
+} 
+
+.fc .fc-toolbar-title {
+	font-size: 23px;
+}
+
+.fc-button, .fc-button:focus, .fc-button:active {
+    outline: none !important; 
+    box-shadow: none !important; 
+    border: none !important;  
+}
+
+.fc-button:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.fc .fc-button.fc-button-primary {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d;
+    font-size : 16px;
+    font-weight: 600;
+}
+
+.fc .fc-button.fc-button-primary:hover {
+    background-color: transparent; 
+    border:none;
+    color : #0056b3;
+}
+ 
+.fc-prev-button {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d;
+}
+
+.fc-prev-button:hover {
+    background-color: transparent; 
+    border:none; 
+    color : #0056b3;
+}
+ 
+.fc-next-button {
+    background-color: transparent; 
+    border:none;
+    color: #9d9d9d; 
+}  
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.3);
+}
+ 
+.form_scroll {
+    max-height: 550px;  
+    overflow-y: auto;  
+    padding-right: 10px; 
+}
+#reservation-table {
+    position: relative;
+    z-index: 1;  
+}
+.room_info_explain {
+	color : red;
+	font-size :14px;
+	margin-bottom:5px;
+	margin-top:-5px;
+}  
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+.info_modal_title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px; 
+}
+
+.modal-body {
+    display: flex;  
+}
+
+.modal-image {
+    flex: 0 0 150px;  
+    margin-right: 50px;  
+}
+
+.room-image {
+    width: 200px;
+    height: 150px; 
+    object-fit: cover;  
+    border-radius: 8px; 
+}
+
+.modal-info {
+    flex: 1;  
+    display: flex;
+    flex-direction: column;  
+}
+
+.info-row {
+    display: flex; 
+    margin-bottom: 15px;
+}
+
+.info-label {
+    flex: 0 0 130px; 
+    font-weight: bold;
+    text-align: left;
+}
+
+.info-value {
+    flex: 1;  
+    text-align: left;
+}
+
+/* 예약된 시간 */
+td.reserved {
+    background-color: #ffcccc; 
+}
+
+/* 사용 가능한 시간 */
+td.available {
+    background-color: #ffffff; 
+    cursor:pointer;
+}
+
+/* 불가능한 시간 */
+.unavailable {
+    background-color: rgb(196, 196, 196, 0.2); 
+    cursor: not-allowed;
+}
+
+/* 현재 날짜 - 이전 시간 */
+.past-time {   
+    cursor: not-allowed;
+    background-color: white; 
+}
+
+/* fullcalendar */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+}
+ 
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+}
+
+
+/* 조직도 */
+.participate_modal {
+    display: none;  
+    position: fixed;
+    z-index: 9999;
+    right : 180px;
+    top: 100px;
+    width: 450px;
+    height: 400px; 
+    padding: 0;   
+    justify-content: center;
+    align-items: center;
+}
+
+#participate_confirmButton {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+    margin-top: 40px;    
+    float: right;
+} 
+
+#participate_confirmButton:hover {
+	background-color: #003a82;
+}
+.participate_modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; 
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    max-height: 60vh;  
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;  
+} 
+
+.button-container {
+    display: flex;
+    justify-content: flex-end;  
+    margin-top: 20px;
+}
+
+.participate_modal-header {
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center; 
+    margin-bottom: 20px;
+}
+
+.participate_organizationchart_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.chart_close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chart_close:hover {
+    color: #000;
+}
+ 
+.remove-member {
+    margin-left: 5px;
+    cursor: pointer;
+    color: red;
+}
+
+.remove-member:hover {
+    font-weight: bold;
+}
+
+.permission_pick_list {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.permission-item {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.permission-item:last-child {
+    border-bottom: none;
+}
+ 
+/* 조직도 모달 내부 목록 */
+ #selected-members {
+    margin-bottom: 30px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    min-height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;  
+}
+
+.organization_search {
+	margin-bottom: 15px;
+	border: 1px solid #ccc;
+    border-radius: 8px;
+    width : 94.5%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    min-height: 10px;
+}
+
+.selected-member {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.selected-member span {
+    margin-right: 7px;
+   	padding-left :7px;
+}
+
+.remove-member {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1; 
+}
+
+.remove-member:hover {
+    font-weight: bold;
+    color: #cc0000;
+}  
+ 
+.jstree-closed > .jstree-icon::before {
+    content: '';  
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_plus.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+ 
+.jstree-open > .jstree-icon::before {
+    content: ''; /* 기본 아이콘 제거 */
+    display: inline-block;
+    width: 26px;
+    height: 26px;
+    background-image: url('/img/org_minus.png');
+    background-size: cover;   
+    background-position: center;
+    background-repeat: no-repeat;
+}  
+ 
+.selected-participants {
+    display: flex;
+    align-items: center;
+    padding: 5px 20px; 
+    margin-bottom: 5px;
+    font-size: 14px;
+    width : 200px;
+    color: #333; 
+}
+
+.selected-participants span {
+    margin-right: 7px;
+   	padding-left :7px;
+}
+ 
+
+.reserve-button { 
+    width: 100%; 
+    max-width: 400px;  
+    padding: 15px;  
+    font-size: 16px; 
+    color: white; 
+    background-color: #0056b3;  
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+.reserve-button:hover {
+    background-color: #003a82;  
+} 
+
+textarea{
+	resize: none;
+}
+ 
+/* 예약 모달 */
+#reservationModal {
+    display: none;
+    position: fixed;
+    z-index: 1050;  
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 40px;
+    border: 1px solid #888; 
+    z-index: 1060;  
+    position: relative;  
+    max-width: 600px; 
+    overflow-y: auto; 
+    border-radius: 8px;   
+}
+ 
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 예약 모달 */ 
+hr {
+	margin-top: 40px;
+}
+
+#reservationForm {
+	margin-top : 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation_row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.reservation_row label {
+    flex: 0 0 150px; 
+    text-align: left;
+    font-weight: bold;
+}
+
+.reservation_row input,
+.reservation_row select,
+.reservation_row textarea {
+    flex: 1;  
+    width : 110px;
+	padding: 8px 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+} 
+
+.reservation_row input:focus,
+.reservation_row select:focus,
+.reservation_row textarea:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+.time_space {
+	margin : 0 7px;
+}
+
+.date_select {
+	margin-right : 10px;
+}
+
+.two_btn {
+	margin-left : 365px;
+}
+
+.reservation_btn {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right : 5px;
+}
+
+.cancel_btn {
+	width : 110px;
+    padding: 10px 20px;
+    background-color: #C0C0C0;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel_btn:hover {
+    background-color: #9b9b9b;
+}
+
+.reservation_btn:hover {
+    background-color: #9CAFC7;
+}
+
+.participate_btn {
+	width : 120px;
+    padding: 10px 20px;
+    background-color: rbg(192, 192, 192);
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.participate_btn:hover { 
+	background-color: #b5b5b5;
+}
+
+.selected-participants-container {
+	width : 100%;  
+}
+.pupose_info {
+	font-size:12px;
+	color:red;
+	margin-top : -15px;
+}
+
+select option:disabled {
+    color : gray;
+}
+
+select option {
+	font-weight : 550;
+}
+  
+.fc {
+    cursor: pointer;
+}
+ 
+.fc-daygrid-day {
+    cursor: pointer; 
+} 
+
+.jstree-search { 
+    font-style: normal !important;
+    color: #0059ff !important; 
+}
+
+.small-dot {
+    font-size: 8px;   
+    color: #ff6c6c;       
+    display: inline-block;
+    text-align: center;
+    margin-left: 32px; 
+}   
+
+.fc .fc-day-today {
+  background-color: rgb(29, 70, 145)!important;
+}
+ 
+.fc .fc-daygrid-day-frame {
+	background-color: rgb(255, 255, 255, 0.9);
+}
+
+.reserve-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 20px;
+}
+
+.reserve-button:hover {
+  background-color: #003a82;
+}
+
+#reservation-table th,
+#reservation-table td {
+  padding: 12px; 
+  text-align: center;
+  min-width: 80px; 
+}
+
+.selected-participants-container {
+  flex: 1;
+  min-height: 50px;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+ 
+.reservation_btn, .cancel_btn {
+  padding: 10px 30px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reservation_btn {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+}
+
+.reservation_btn:hover {
+  background-color: #003a82;
+}
+
+.cancel_btn {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.cancel_btn:hover {
+  background-color: #e9ecef;
+}

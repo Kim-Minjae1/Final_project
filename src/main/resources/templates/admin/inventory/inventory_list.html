@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content">
+    <link th:href="@{/css/admin/inventory/inventory_list.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/datatable.css}" rel="stylesheet" type="text/css">
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<section>
+<div class="list_inventory">
+        <br>
+        <div id="departmentSelectContainer">
+            <select id="departmentSelect" onchange="fetchInventoryByDepartment()">
+                <option value="">부서 선택</option>
+                <option th:each="department : ${departments}" 
+                    th:value="${department.department_no}" 
+                    th:text="${department.department_name}">
+                </option>
+            </select>
+        </div>
+
+        <!-- 카테고리 목록 테이블 -->
+        <table id="example" class="display">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>카테고리 번호</th>
+                    <th>카테고리명</th>
+                    <th>평균 가격</th>
+                    <th>총 개수</th>
+                    <th>최근 위치</th>
+                    <th>최근 등록일자</th>
+                </tr>
+            </thead>
+            <tbody id="categoryTableBody">
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- CSRF 토큰을 hidden input으로 추가 -->
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" id="csrfToken"/>
+
+<!-- 모달 창 HTML -->
+<div id="inventoryModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>비품 정보 수정</h3>
+        <form id="inventoryForm">
+            <div class="form-group">
+                <label for="itemName">비품명:</label>
+                <input type="text" id="itemName" name="itemName">
+            </div>
+            <div class="form-group">
+                <label for="itemPrice">가격:</label>
+                <input type="number" id="itemPrice" name="itemPrice">
+            </div>
+            <div class="form-group">
+                <label for="itemQuantity">개수:</label>
+                <input type="number" id="itemQuantity" name="itemQuantity">
+            </div>
+            <div class="form-group">
+                <label for="itemLocation">위치:</label>
+                <input type="text" id="itemLocation" name="itemLocation">
+            </div>
+            <div class="form-group">
+                <label for="itemPurchaseDate">구입일자:</label>
+                <input type="date" id="itemPurchaseDate" name="itemPurchaseDate">
+            </div>
+            <input type="hidden" id="itemNo" name="itemNo" value="[[${inventory_no}]]">
+        </form>
+        <div class="button-container">
+            <button type="button" class="button-edit" onclick="saveChanges()">수정</button>
+            <button type="button" class="button-delete" onclick="deleteItem()">삭제</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const location_text = document.getElementById('header_location_text');
+location_text.innerHTML = '비품 관리&emsp;&gt;&emsp;비품 목록';
+
+function showAlert(message) {
+    Swal.fire({
+        text: message,
+        icon: 'warning',
+        confirmButtonColor: '#0056b3',
+        confirmButtonText: '확인',
+    });
+}
+
+function fetchInventoryByDepartment() {
+    var departmentNo = document.getElementById("departmentSelect").value;
+    var table = $('#example').DataTable();
+
+    if (!departmentNo) {
+        showAlert('부서를 선택해주세요.'); 
+        table.clear(); 
+        table.settings()[0].oLanguage.sEmptyTable = "부서를 선택해주세요";
+        table.draw();  
+        return;  
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/inventory/department/' + departmentNo, true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                updateCategoryTable(data);
+            } else {
+                console.error('요청 실패:', xhr.status, xhr.statusText);
+            }
+        }
+    };
+    xhr.send();
+}
+
+function updateCategoryTable(data) {
+    var table = $('#example').DataTable();
+    table.clear(); 
+
+    if (data.length === 0) {
+        table.settings()[0].oLanguage.sEmptyTable = "부서를 선택해주세요";
+        table.draw();  
+        table.page.len(-1).draw(); 
+    } else {
+        data.forEach(function(item, index) {
+            var row = `
+                <tr data-inventory_no="${item.inventory_category_no}">
+                    <td class="details-control"></td>
+                    <td>${index + 1}</td>
+                    <td>${item.inventory_category_name}</td>
+                    <td>${item.inventory_price}</td> 
+                    <td>${item.inventory_quantity}</td> 
+                    <td>${item.inventory_location}</td> 
+                    <td>${item.inventory_purchase_date}</td> 
+                </tr>
+            `;
+            table.row.add($(row));
+        });
+        table.draw(false);
+        table.page.len(10).draw(); 
+    }
+}
+
+ // 화살표 클릭 시 세부 비품 표시
+function format(inventory_category_no, row) {
+    var departmentNo = document.getElementById("departmentSelect").value;
+    var detailsHtml = '<table class="child-table"><thead><tr><th>번호</th><th>비품명</th><th>가격</th><th>개수</th><th>위치</th><th>구입일자</th><th>관리자</th></tr></thead><tbody>';
+
+    fetchInventoryByCategoryAndDepartment(inventory_category_no, departmentNo, function(data) {
+        if (Array.isArray(data) && data.length > 0) {
+            data.forEach(function(item, index) {
+                detailsHtml += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><a href="#" class="inventory-name" data-id="${item.inventory_no}" data-item="${item.inventory_name}" data-price="${item.inventory_price}" data-quantity="${item.inventory_quantity}" data-location="${item.inventory_location}" data-purchase-date="${item.inventory_purchase_date}">${item.inventory_name}</a></td>
+                        <td>${item.inventory_price}</td>
+                        <td>${item.inventory_quantity}</td>
+                        <td>${item.inventory_location}</td>
+                        <td>${item.inventory_purchase_date}</td>
+                        <td>${item.member_name}</td>
+                    </tr>
+                `;
+            });
+        } else {
+            detailsHtml += '<tr><td colspan="7">세부 정보가 없습니다.</td></tr>';
+        }
+        detailsHtml += '</tbody></table>';
+        row.child(detailsHtml).show();
+    });
+}
+
+function fetchInventoryByCategoryAndDepartment(inventory_category_no, departmentNo, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/inventory/category/' + inventory_category_no + '/department/' + departmentNo, true);
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                try {
+                    var data = JSON.parse(xhr.responseText);
+                    callback(data);  
+                } catch (e) {
+                    console.error('Error parsing JSON:', e);
+                }
+            } else {
+                console.error('요청 실패:', xhr.status, xhr.statusText);
+            }
+        }
+    };
+
+    xhr.send(); 
+}
+
+$(document).ready(function() {
+    var debounceTimeout;  
+    var table = $('#example').DataTable({
+        "paging": true,
+        "ordering": true,
+        "info": false,
+        "autoWidth": false,
+        "pagingType": "full_numbers",
+        "language": {
+            "emptyTable": "부서를 선택해주세요.",
+            "zeroRecords": "검색 결과가 없습니다.",
+            "paginate": {
+                "first": "<<",
+                "last": ">>",
+                "next": ">",
+                "previous": "<"
+            },
+            "search": ""
+        },
+        "drawCallback": function(settings) {
+            var api = this.api();
+            var records = api.rows({ page: 'current' }).data().length;
+            if (records === 0) {
+                $('.dataTables_paginate').hide();
+            } else {
+                $('.dataTables_paginate').show();
+            }
+            var pageInfo = api.page.info();
+            if (pageInfo.page === 0) {
+                $('.paginate_button.previous, .paginate_button.first').hide();
+            } else {
+                $('.paginate_button.previous, .paginate_button.first').show();
+            }
+            if (pageInfo.page === pageInfo.pages - 1) {
+                $('.paginate_button.next, .paginate_button.last').hide();
+            } else {
+                $('.paginate_button.next, .paginate_button.last').show();
+            }
+        }
+    });
+ 	// DataTables 검색 필드에 placeholder 설정
+    $('#example_filter input').attr('placeholder', '카테고리명을 입력해주세요.');
+    // DataTables 기본 검색 필드에 디바운스 적용
+    $('#example_filter input').unbind() 
+    .on('input', function() {
+        var searchValue = this.value;  
+        clearTimeout(debounceTimeout); 
+
+        // 새 타이머 설정: 300ms 후에 검색 실행
+        debounceTimeout = setTimeout(function() {
+            table.search(searchValue).draw();  
+        }, 400);  
+    });
+   
+    $('.dataTables_length').remove();
+
+    // 화살표 클릭 시 세부 비품 표시
+    $('#example tbody').on('click', 'td.details-control', function() {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+        var inventory_category_no = tr.attr('data-inventory_no');
+
+        if (row.child.isShown()) {
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            format(inventory_category_no, row);
+            tr.addClass('shown');
+        }
+    });
+
+
+    // 세부 비품명 클릭 시 모달 표시
+    $('#example tbody').on('click', 'a.inventory-name', function(e) {
+        e.preventDefault();
+
+        var itemNo = $(this).data('id');
+        var itemName = $(this).data('item');
+        var itemPrice = $(this).data('price');
+        var itemQuantity = $(this).data('quantity');
+        var itemLocation = $(this).data('location');
+        var itemPurchaseDate = $(this).data('purchase-date');
+
+        $('#itemNo').val(itemNo);
+        $('#itemName').val(itemName);
+        $('#itemPrice').val(itemPrice);
+        $('#itemQuantity').val(itemQuantity);
+        $('#itemLocation').val(itemLocation);
+        $('#itemPurchaseDate').val(itemPurchaseDate);
+        $('#inventoryModal').show();
+    });
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('inventoryModal')) {
+            document.getElementById('inventoryModal').style.display = 'none';
+        }
+    };
+    document.querySelector('.close-modal').addEventListener('click', function() {
+        document.getElementById('inventoryModal').style.display = 'none';
+    });
+});
+
+function saveChanges() {
+    var csrfToken = $('#csrfToken').val();  
+
+    const formData = {
+        inventory_no: $('#itemNo').val(),  
+        inventory_name: $('#itemName').val(),
+        inventory_price: $('#itemPrice').val(),
+        inventory_quantity: $('#itemQuantity').val(),
+        inventory_location: $('#itemLocation').val(),
+        inventory_purchase_date: $('#itemPurchaseDate').val()
+    };
+
+    Swal.fire({
+    	text: '수정하시겠습니까?',
+        icon: 'warning',
+        confirmButtonColor: '#0056b3',
+        confirmButtonText: '수정',
+        showCancelButton: true,
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '/inventory/update',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken  
+                },
+                success: function(response) {
+                    if(response.res_code === "200") {
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.res_msg 
+                        }).then(() => {
+                            $('#inventoryModal').hide();
+                            fetchInventoryByDepartment(); 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: response.res_msg 
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        text: '수정 중 오류가 발생했습니다.' 
+                    });
+                }
+            });
+        }
+    });
+}
+
+function deleteItem() {
+    const csrfToken = $('#csrfToken').val();
+    const no = $('#itemNo').val();
+
+    Swal.fire({
+        text: '삭제하시겠습니까?',
+        icon: 'warning',
+        confirmButtonColor: '#0056b3',
+        confirmButtonText: '삭제',
+        showCancelButton: true,
+        cancelButtonText: '취소'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/inventory/delete/${no}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('네트워크 응답이 좋지 않습니다.');
+                }
+                return response.json(); 
+            })
+            .then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    text: '삭제되었습니다.' 
+                }).then(() => {
+                    $('#inventoryModal').hide();
+                    fetchInventoryByDepartment(); 
+                });
+            })
+            .catch(() => {
+                Swal.fire({
+                    icon: 'error',
+                    text: '삭제 중 오류가 발생했습니다.' 
+                });
+            });
+        }
+    });
+}
+
+function closeModal() {
+    $('#inventoryModal').hide();
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</th:block>
+</html>

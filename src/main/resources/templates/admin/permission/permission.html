@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{include/layout}">
+    <th:block layout:fragment="content">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+        <link th:href="@{/css/admin/organization/organizationChart.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{/css/admin/permission/permission.css}" rel="stylesheet" type="text/css">
+        
+        <section> 
+            <div class="container">
+                <!-- 권한 기능 목록 -->
+                <div class="permission_list_box">
+					<div class = "permission_title">권한 기능 목록</div>
+					<div class="permission-list">
+					    <ul class="permission_Lists">
+					        <li th:each="permission : ${permissionList}">
+					            <a href="#" th:text="${permission.menu_name}" 
+					               th:data-id="${permission.menu_no}" 
+					               onclick="fetchPermissionMembers(this)"></a> 
+					        </li>
+					    </ul> 
+					</div> 
+                </div>
+                
+                <!-- 선택한 기능명 + 권한자 목록 -->
+                <div class="member-section" id="permissionMembersSection">
+                    <div id="sectionTitle"> </div>
+                    <div class="sort-buttons">
+                        <button id="openModalButton" type="button" class="modal_btn" onclick="openOrganizationChartModal()">권한자 등록</button>
+                    </div>
+                    <div class="button-container"> 
+					    <div class="left-buttons">
+					        <button id="deleteButton" type="button" class="modal_btn" disabled>삭제</button>
+					        <input type="text" id="searchMember" placeholder="부서명 또는 사원명으로 검색하세요.">
+					    </div> 
+					    <select id="sortOrderSelect" class="modal_btn all_sort_select_box">
+					        <option value="newest" selected>최신순</option>
+					        <option value="oldest">과거순</option>
+					    </select>
+					</div>
+
+
+
+                    <!-- 권한자 목록 -->
+                    <table id="memberList" class="permission_table">
+                        <thead>
+                            <tr>
+                            	<th><input type="checkbox" id="selectAllCheckbox" /></th>
+                                <th>부서</th>
+                                <th>권한자</th>
+                                <th>권한 등록일</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                    <div id="pagination" class="pagination"></div> 
+                </div>
+            </div>
+        </section>
+        
+        <!-- 조직도 모달 -->
+        <div class="modal" id="organizationChartModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="modal-header">
+                            <div class="organizationchart_title" id="organizationChartModalLabel">조직도</div>
+                            <span class="chart_close" data-dismiss="modal" aria-label="Close">&times;</span>
+                        </div>
+                        <div class="modal-body"> 
+                            <div id="selected-members"> </div>
+                            <input type="text" id="organization_search" placeholder="검색어를 입력하세요." class="organization_search">
+                            <div id="organization-chart"></div>
+                            <button id="confirmButton" type="button" class="modal_btn">확인</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <script th:src="@{/js/admin/permission/permissionList.js}"></script>
+    </th:block>
+</html>

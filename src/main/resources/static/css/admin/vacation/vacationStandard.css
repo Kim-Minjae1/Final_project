@@ -1,0 +1,61 @@
+.vacationStandard_content {
+  font-size: 1vw;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+.vacationStandardForms {
+    width: 1250px;
+    height: 700px;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-top : 20px;
+} 
+ .standard_click {
+     display: flex;
+      flex-direction: column;
+      margin-left: 20px;
+ }
+ .standard_ele1 {
+     display: flex;
+     flex-direction: column;
+ }
+  .standard_ele2 {
+     margin-top :1vw;
+     margin-bottom: 1vw;
+
+  }
+ .standard_ele_ele2 {
+     display: flex;
+     flex-direction: row;
+ }
+ .standard_ele3 button {
+     padding: 10px 20px;
+     font-size: 16px;
+     border-radius : 10px;
+     border: none;
+     cursor: pointer;
+     background-color: #0056b3;
+     color:white;
+ }
+
+ .custom-confirm-button {
+      background-color: #0056b3;
+      color: white;
+  }
+
+ 
+input[type=checkbox] { 
+	transform : scale(1.2); 
+}
+#designatedcheckDate{
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 5px;
+    font-size: 17px;
+    margin-top: 10px;
+    transition: border-color 0.3s;
+}

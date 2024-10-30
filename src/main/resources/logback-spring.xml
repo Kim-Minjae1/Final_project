@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+<!-- TRACE < DEBUG < INFO < WARN < ERROR -->
+
+	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />    
+	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />    
+	<conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />  
+
+	<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+	<property name="CONSOLE_LOG_CHARSET" value="${CONSOLE_LOG_CHARSET:-default}"/>
+	<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>    
+	<property name="FILE_LOG_CHARSET" value="${FILE_LOG_CHARSET:-default}"/>
+ 	
+ 	<property name="LOG_PATH" value="/log/boot"/>
+ 	<property name="LOG_FILE_NAME" value="sampleLog"/>
+
+	<!-- 콘솔에 로그 출력 세팅 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>${CONSOLE_LOG_CHARSET}</charset>
+		</layout>
+	</appender>
+	
+	<!-- 파일에 로그 출력 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!-- 파일 경로 설정 -->
+		<file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+	    <!-- <file>/Users/parkhyeseon/Desktop/fiveLink/sampleLog.log</file>  -->
+		<!-- 출력 패턴 설정 -->
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+			<charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+        <!-- Rolling 정책 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- .gz,.zip 등을 넣으면 자동 일자별 로그파일 압축 -->
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}_%i.zip</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 파일당 최고 용량 kb, mb, gb -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 일자별 로그파일 최대 보관주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
+            <maxHistory>30</maxHistory>
+            <!--<MinIndex>1</MinIndex>
+            <MaxIndex>10</MaxIndex>-->
+        </rollingPolicy>
+	</appender>
+	
+		
+	<!-- root레벨 설정 -->
+    <!--<root level="INFO">
+       <appender-ref ref="CONSOLE"/>
+       <appender-ref ref="FILE"/>
+   </root>-->
+   
+   <logger name="org.springframework" level="INFO">
+   		<appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+   </logger>
+
+   <!-- 특정패키지 로깅레벨 설정 -->
+   <logger name="com.fiveLink.linkOffice" level="DEBUG">
+       <appender-ref ref="CONSOLE"/>
+       <appender-ref ref="FILE"/>
+   </logger>
+   <!-- JPA 쿼리 로그 설정 -->
+   <logger name="org.hibernate.SQL" level="DEBUG">
+   		<appender-ref ref="CONSOLE"/>
+   		<appender-ref ref="FILE"/>
+   </logger>
+</configuration>

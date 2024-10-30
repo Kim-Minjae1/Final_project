@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content">
+    <link th:href="@{/css/admin/member/edit.css}" rel="stylesheet" type="text/css">
+	    <section th:each="member : ${memberDtoList}">
+	        <div class="my_profile">
+	            <form id="editFrm" enctype="multipart/form-data">
+	                <div class="profile_card">
+	                <input type="hidden" id="csrf_token" th:value="${_csrf.token}" />
+	                <input type="hidden" id="member_no" th:value="${member.member_no}" />
+	                    <div class="profile_header">
+	                        <div class="profile_header_left">
+	                        	<img th:src="${member.member_new_profile_img != null ? '/linkOfficeImg/member/profile/' + member.member_new_profile_img : '/img/user_profile.png'}" alt="사원 사진" class="profile_img" id="profileImg">
+	                            <label for="profile_img" class="upload_button"><span>이미지 등록</span></label>
+	                            <p class="file_info">이미지는 PNG 또는 JPG만 등록 가능합니다.</p>
+	                            <input type="file" id="profile_img" name="profile_img" style="display: none;" onchange="previewImage(event)">
+	                        </div>
+	                        <ul class="profile_details_top">
+	                            <li>
+	                                <strong>사번</strong>
+	                                <span th:text="${member.member_number}"></span>
+	                            </li>
+	                            <li>
+	                                <strong>사용자</strong>
+	                                <span id="member_name" th:text="${member.member_name}"></span>
+	                            </li>
+	                            <li>
+	                                <strong>주민번호</strong><span th:text="${#strings.concat(member.member_national.substring(0, 6), '-', member.member_national.substring(7, 8), '******')}"></span>
+	                            </li>
+	                        </ul>
+	                    </div>
+	                    <hr class="divider">
+	                    <ul class="profile_details paired">
+	                        <li>
+	                            <strong>부서</strong>
+	                            <select id="department" name="department">
+	                                <option th:each="department : ${departments}" th:value="${department.department_no}" th:text="${department.department_name}" th:selected="${department.department_no == member.department_no}"></option>
+	                            </select>
+	                        </li>
+	                        <li>
+	                            <strong>직위</strong>
+	                            <select id="position" name="position">
+	                                <option th:each="position : ${positions}" th:value="${position.position_no}" th:text="${position.position_name}" th:selected="${position.position_no == member.position_no}"></option>
+	                            </select>
+	                        </li>
+	                        <li>
+	                            <strong>입사일</strong>
+	                            <input type="date" id="hire_date" name="hire_date" th:value="${member.member_hire_date}">
+	                        </li>
+	                        <li>
+	                            <strong>퇴사일</strong>
+	                            <span>-</span>
+	                        </li>
+							<li>
+							    <strong>전화번호</strong>
+							    <div class="mobile_number">
+							        <input type="text" id="mobile1" name="mobile1" maxlength="3" th:value="${#strings.substring(member.member_mobile, 0, 3)}">
+							        <span>-</span>
+							        <input type="text" id="mobile2" name="mobile2" maxlength="4" th:value="${#strings.substring(member.member_mobile, 4, 8)}">
+							        <span>-</span>
+							        <input type="text" id="mobile3" name="mobile3" maxlength="4" th:value="${#strings.substring(member.member_mobile, 9)}">
+							    </div>
+							</li>
+							<li>
+							    <strong>내선번호</strong>
+							    <div class="internal_number">
+							        <input type="text" id="internal" name="internal" th:value="${member.member_internal}" maxlength="4">
+							    </div>
+							</li>
+	                        <li id="address">
+	                            <strong>주소</strong>
+	                            <span th:text="${member.member_address}"></span>
+	                        </li>
+	                    </ul>
+	                    <div class="button_container">
+	                        <button type="submit" class="edit_button">등록</button>
+	                        <button type="button" class="cancel_button" onclick="location.href='/admin/member/list'">취소</button>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	    </section>
+    <script th:src="@{/js/admin/member/edit.js}"></script>
+</th:block>
+</html>

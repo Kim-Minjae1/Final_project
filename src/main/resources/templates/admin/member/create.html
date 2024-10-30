@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content">
+	    <link th:href="@{/css/admin/member/create.css}" rel="stylesheet" type="text/css">
+	        <section>
+	            <div class="create_member">
+	                <form id="createMemberFrm">
+	                    <div class="member_card">
+	                        <div class="member_header">
+	                            <input type="hidden" id="csrf_token" th:value="${_csrf.token}" />
+		                            <div class="profile_header_left">
+		                                <div class="profile_img">
+		                                    <img th:src="@{/img/user_profile.png}" alt="사원 사진" id="profileImg">
+		                                </div>
+		                                <label for="profile_image" class="btn_upload"><span>이미지 등록</span></label>
+		                                <p class="file_info">이미지는 PNG 또는 JPG만 등록 가능합니다.</p>
+		                                <input type="file" id="profile_image" name="profile_image" style="display: none;" onchange="previewImage(event)">
+		                            </div>
+		                           	<ul class="profile_details">
+		                                <li>
+		                                    <strong>사원명</strong>
+		                                    <input type="text" id="name" name="name">
+		                                </li>
+		                                <li>
+		                                    <strong>주민번호</strong>
+		                                    <div class="national_number">
+		                                        <input type="text" id="national_number_front" name="national_number_front" maxlength="6">
+		                                        <span>-</span> 
+		                                        <input type="text" id="national_number_back" name="national_number_back" maxlength="7">
+		                                    </div>
+		                                </li>
+		        				        <li>
+										    <strong>부서</strong>
+										    <select  name="department">
+										     	<option th:each="department : ${departments}" th:value="${department.department_no}" th:text="${department.department_name}"></option>
+										    </select>
+										</li>
+	
+	                                <li>
+	                                    <strong>직위</strong>
+	                                     <select name="position" id="position">
+									     	<option th:each="position : ${positions}" th:value="${position.position_no}" th:text="${position.position_name}" ></option>
+									    </select>
+	                                </li>
+	                                <li>
+	                                    <strong>입사일</strong>
+	                                    <input type="date" id="hire_date" name="hire_date">
+	                                </li>
+									<li>
+									    <strong>전화번호</strong>
+									    <div class="mobile_number">
+									        <input type="text" id="mobile1" name="mobile1" maxlength="3" value="010">
+									        <span>-</span>
+									        <input type="text" id="mobile2" name="mobile2" maxlength="4">
+									        <span>-</span>
+									        <input type="text" id="mobile3" name="mobile3" maxlength="4">
+									    </div>
+									</li>
+									<li>
+									    <strong>내선번호</strong>
+									    <div class="internal_number">
+									        <input type="text" id="internal" name="internal" maxlength="4">
+									    </div>
+									</li>
+	                            </ul>
+	                        </div>
+	                        <div class="button_container">
+	                            <button type="submit" class="create_button">등록</button>
+	                            <button type="button" class="cancel_button" onclick="location.href='/admin/member/list'">취소</button>
+	                        </div>
+	                    </div>
+	                </form>
+	            </div>
+	        </section>
+        <script th:src="@{/js/admin/member/create.js}"></script>
+</th:block>
+</html>
+

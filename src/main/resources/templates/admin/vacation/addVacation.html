@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<th:block layout:fragment="content"> 
+    <link th:href="@{/css/admin/vacation/addVacation.css}" rel="stylesheet" type="text/css">
+        <div class="addVacation_content"> 
+            <div class="vacationForms">
+                <form id="vacationForm" class="vacationForm">
+                    <div class="vacation_click">
+                        <div class="vacation_click_ele">
+                            <div class="vacation_ele1">
+                                <p style="font-weight: 550;">연차별 휴가 지정</p>
+                            </div>
+                            <div>
+                                <p style="color: red; font-size: 15px;">* 입사일 기준 해당 년도 연차 개수 지정</p>
+                            </div>
+
+                        </div>
+
+                        <div class="addVacation_submit" style="text-align: center; margin-top: 20px;" th:if="${countVacation == 0}">
+                            <button type="submit">등록</button>
+                        </div>
+
+                        <div class="addVacation_update" style="text-align: center; margin-top: 20px;" th:if="${countVacation > 0}">
+                            <button type="submit" >수정</button>
+                        </div>
+                    </div>
+
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="hidden" th:name="memberNo" th:id="memberNo" th:value="${memberdto[0].member_no}"/>
+                    <input type="hidden" th:name="countVacation" th:id="countVacation" th:value="${countVacation}"/>
+
+                    <div id="vacationFormContainer">
+
+                        <div class="input-group" th:if="${countVacation > 0}" th:each="list : ${vacationList}">
+                            <label for="year${list.vacation_year}">[[${list.vacation_year}]]년차</label>
+                            <input type="number" id="year${list.vacation_year}" name="year${list.vacation_year}"
+                                   th:value="${list.vacation_annual_leave}"
+                                   maxlength="4" placeholder="휴가 개수 입력">
+                            <input type="hidden" id="vacationPk" th:value="${list.vacation_no}"/>
+                        </div> 
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year1">1년차</label>
+                            <input type="number" id="year1" maxlength="4" name="year1" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year2">2년차</label>
+                            <input type="number" id="year2" maxlength="4" name="year2" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year3">3년차</label>
+                            <input type="number" id="year3" maxlength="4" name="year3" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year4">4년차</label>
+                            <input type="number" id="year4" maxlength="4" name="year4" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year5">5년차</label>
+                            <input type="number" id="year5" maxlength="4" name="year5" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year6">6년차</label>
+                            <input type="number" id="year6" maxlength="4" name="year6" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year7">7년차</label>
+                            <input type="number" id="year7" maxlength="4" name="year7" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year8">8년차</label>
+                            <input type="number" id="year8" maxlength="4" name="year8" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year9">9년차</label>
+                            <input type="number" id="year9" maxlength="4" name="year9" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year10">10년차</label>
+                            <input type="number" id="year10" maxlength="4" name="year10" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year11">11년차</label>
+                            <input type="number" id="year11" maxlength="4" name="year11" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year12">12년차</label>
+                            <input type="number" id="year12" maxlength="4" name="year12"  placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year13">13년차</label>
+                            <input type="number" id="year13" maxlength="4" name="year13" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year14">14년차</label>
+                            <input type="number" id="year14" maxlength="4" name="year14" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year15">15년차</label>
+                            <input type="number" id="year15" maxlength="4" name="year15" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year16">16년차</label>
+                            <input type="number" id="year16" maxlength="4" name="year16" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year17">17년차</label>
+                            <input type="number" id="year17" maxlength="4" name="year17" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year18">18년차</label>
+                            <input type="number" id="year18" maxlength="4" name="year18" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year19">19년차</label>
+                            <input type="text" id="year19" maxlength="4" name="year19" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year20">20년차</label>
+                            <input type="number" id="year20" maxlength="4" name="year20" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year21">21년차</label>
+                            <input type="number" id="year21" maxlength="4" name="year21" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year22">22년차</label>
+                            <input type="number" id="year22" maxlength="4" name="year22" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year23">23년차</label>
+                            <input type="number" id="year23" maxlength="4" name="year23" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year24">24년차</label>
+                            <input type="number" id="year24" maxlength="4" name="year24" placeholder="휴가 개수 입력">
+                        </div>
+                        <div class="input-group" th:if="${countVacation == 0}">
+                            <label for="year25">25년차 이상</label>
+                            <input type="number" id="year25" maxlength="4" name="year25" placeholder="휴가 개수 입력">
+                        </div>
+
+                    </div>
+                </form>
+
+                <form id="oneUnderForm" class="oneUnderForm">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <div>
+                        <div class="vacation_ele1">
+                            <p style="font-weight: 550;">1년 미만 월차 지급 여부</p>
+                            <div class="checkButton" style="text-align: center; margin-top: 20px;">
+                                <!-- countCheckOneYear가 0보다 크면 버튼을 비활성화 -->
+                                <button type="submit" th:disabled="${countCheckOneYear > 0}">등록</button>
+                            </div>
+                        </div>
+                        <!-- 분리되는 부분 -->
+                        <div>
+                            <p style="color: red; font-size: 15px; padding-left: 20px; padding-right: 15px;">* 최초 설정만 가능</p>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <div>
+                            <!-- 체크박스 비활성화 처리 -->
+                            <input type="checkbox" id="lessThanOneYear" name="lessThanOneYear" value="true"
+                                   th:disabled="${countCheckOneYear > 0}"
+                                   th:checked="${countCheckOneYear > 0}">
+                            <label for="lessThanOneYear">1년 미만</label>
+                        </div>
+
+                    </div>
+                </form>
+
+                <form id="vacationTypeForm" class="vacationTypeForm">
+                    <div class="vacationType_click">
+                        <div>
+                            <p style="font-weight: 550;">휴가 종류 생성</p>
+                        </div>
+
+                        <div class="addVacationType_submit" style="text-align: center; margin-top: 20px;">
+                            <button type="submit">등록</button>
+                        </div>
+
+                    </div>
+
+
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <div id="vacationTypeFormContainer" class ="vacationTypeFormContainer">
+                        <div class="input-group">
+                            <label for="vacationType">휴가 종류</label>
+                            <input type="text" id="vacationType" name="vacationType" placeholder="휴가 종류 입력">
+                        </div>
+                        <div class="input-group">
+                            <label for="vacationValue">휴가 값</label>
+                            <input type="number" id="vacationValue" name="vacationValue" placeholder="휴가 값 입력">
+                        </div>
+
+                    </div>
+
+                </form>
+                <div class="vacationTableArea">
+
+                    <table class="vacationTable" style="border: 1px solid black;">
+                        <thead>
+                        <tr style="background-color: #dddddd5e;">
+                            <td>휴가 종류</td>
+                            <td>휴가 값 (일)</td>
+                            <td>버튼</td>
+                        </tr>
+                        </thead>
+                        <tbody th:each="list : ${vacationTypeList}">
+                        <tr th:if="${list.vacation_type_status != 1}">
+                            <td th:text="${list.vacation_type_name}"></td> <!-- 휴가 종류 -->
+                            <td th:text="${list.vacation_type_calculate}"></td> <!-- 휴가 값 -->
+                            <input type="hidden" id="vacationTypeName" th:value="${list.vacation_type_name}" />
+                            <input type="hidden" id="vacationTypeNo" th:value="${list.vacation_type_no}" />
+                            <input type="hidden" id="vacationTypeCal" th:value="${list.vacation_type_calculate}" />
+                            <td>
+                                <button type="button" class="edit-btn">수정</button>
+                                <button type="button" class="delete-btn">삭제</button>
+                            </td>
+                        </tr>
+                        <tr class="edit-row" style="display: none;">
+                            <td colspan="3">
+                                <form id ="editVacationType">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+
+                                    <input type="hidden" id="editVacationTypeNo" th:value="${list.vacation_type_no}" />
+                                    <input type="text" id="editVacationTypeName" th:value="${list.vacation_type_name}" readonly/>
+
+                                    <input type="number" id="editVacationTypeCalculate" th:value="${list.vacation_type_calculate}" />
+
+                                    <button type="button" class="save-btn">저장</button>
+                                    <button type="button" class="cancel-btn">취소</button>
+
+
+                                </form>
+                            </td>
+
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script th:src="@{/js/admin/vacation/addVacation.js}"></script>
+</th:block>
+</html>

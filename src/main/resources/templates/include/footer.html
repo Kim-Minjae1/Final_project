@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+ <meta charset="UTF-8">
+<th:block th:fragment="footerLayout"> 
+	<link th:href="@{/css/include/footer.css}" rel="stylesheet" type="text/css">
+	  <footer>
+        <div id="footer_wrap"> 
+            <div class="footer_section footer_logo">
+                <!-- <img th:src="@{/img/linkoffice_logo.png}" alt="LinkOffice Logo" class="footer_logo_img"/> -->
+                <div class = "footer_logo_text">LINKOFFICE</div>
+            </div> 
+ 
+            <div class="footer_section footer_copyright">
+                <span>Copyright ⓒ LINKOFFICE. All rights reserved</span>
+            </div>
+
+        </div>
+    </footer>  	
+</th:block> 
+</html>

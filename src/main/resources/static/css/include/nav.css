@@ -1,0 +1,192 @@
+@charset "UTF-8";
+
+nav {
+    width: 200px;
+    background-color: #ffffff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #00000024;
+}
+
+
+#nav_wrap {
+    width: 100%;
+    background-color: #ffffff;
+
+}
+
+#nav_wrap > ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#nav_wrap > ul > li {
+    position: relative;
+   /* border-bottom: 1px solid #ddd;*/
+
+}
+
+#nav_wrap > ul > li:hover,
+#nav_wrap > ul > li:hover > a {
+    background-color: #ddd;
+}
+
+#nav_wrap > ul > li.active,
+#nav_wrap > ul > li.active > a {
+    background-color: #ccc;
+    color: #000;
+}
+
+#nav_wrap > ul > li.active:hover,
+#nav_wrap > ul > li.active > a:hover {
+    background-color: #ccc;
+}
+
+#nav_wrap > ul > li > a {
+    display: block;
+    padding: 10px;
+    margin-left: 5%;
+    text-decoration: none;
+    color: #333;
+    background-color: #ffffff;
+    padding: 13px;
+}
+
+#nav_wrap > ul > li > a:hover {
+    background-color: #ddd;
+}
+/* single-menu 링크 스타일 */
+.single-menu-active {
+    background-color: #28a745; /* single-menu에 대한 다른 배경색 */
+    color: #ffffff; /* 텍스트 색상 */
+}
+.dropdown {
+    display: none;
+    background-color: white;
+}
+
+.dropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown li {
+    background-color: #d9d9d929;
+}
+.dropdown.show {
+    display: block;
+}
+ .dropdown li a {
+    display: block;
+    padding: 10px;
+    margin-left: 15%;
+    text-decoration: none;
+    color: #333;
+    padding: 13px;
+}
+
+.dropdown li a:hover {
+    color: #007BFF;
+}
+.dropdown a.active {
+    color:  #007BFF;
+}
+.active-link {
+    color: #ff5722;
+}
+.dropdown-toggle.active-toggle {
+    color: yourActiveColor;
+    font-weight: bold;
+}
+
+.active-link {
+    color: #007bff;
+}
+#nav_wrap > ul > li.active {
+    border-bottom: none;
+}
+.dropdown-toggle {
+    padding: 10px;
+    display: block;
+}
+
+.dropdown-toggle:hover,
+.dropdown > ul > li:hover > .dropdown-toggle {
+   color: #007BFF;
+}
+
+.dropdown > ul > li:hover > ul {
+    display: block;
+}
+.dropdown > ul > li > ul > li {
+    background-color: transparent;
+}
+#notificationContainer {
+    position: fixed;
+    z-index: 1000;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+}
+
+.notification-modal {
+    position: relative;
+    width: 340px;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.notification-modal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.notification-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification-modal-content strong {
+    font-size: 16px;
+    color: #333;
+}
+
+.notification-modal-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.close-notification-modal {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-notification-modal:hover {
+    color: #333;
+}
+
+.notification-time {
+    float: right;
+    font-size: 10px;
+    color: gray;
+    margin-top: 5px;
+}

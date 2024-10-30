@@ -1,0 +1,187 @@
+.create_inventory {
+	 position: relative;
+    height:700px;
+	width: 1250px;
+	margin:-10px auto;
+	padding: 70px 70px 70px;
+	box-sizing: border-box;
+	background-color: #ffffff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+}
+
+#openModalBtn, #openRegisterModalBtn {
+	background-color: #0056b3;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 5px 10px;
+	cursor: pointer;
+	margin-left:10px;
+}
+
+#openModalBtn:hover, #openRegisterModalBtn:hover {
+	background-color: #003a82;
+}
+
+.form-container {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.form-group {
+	margin:20px 30px;
+}
+
+.form-group label {
+	display: inline-block;
+	font-weight: bold;
+	margin-bottom: 10px;
+	width: 150px;
+}
+
+.form-group input[type="text"], .form-group select, .form-group input[type="date"] {
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-group input[type="text"]:disabled {
+	background-color: #f3f3f3;
+}
+
+.register-button {
+	text-align: right;
+	margin-top: 110px;
+}
+
+
+.register-button .confirm-btn {
+	background-color: #0056b3; 
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.register-button:hover .confirm-btn:hover {
+	background-color: #003a82;
+}
+
+.cancel-btn {
+	background-color: #f8f9fa; 
+	color: black;
+	padding: 10px 20px;
+	border : 1px solid #ddd;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.cancel-btn:hover {
+	background-color: #e9ecef;
+}
+
+
+
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.modal-select .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 20%;
+	text-align: center;
+	max-height: 400px;
+	overflow-y: auto;
+	border-radius: 8px;
+}
+
+
+.modal-register .modal-content {
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #aaa;
+	width: 20%;
+	text-align: left;
+	max-height: 500px;
+	overflow-y: auto;
+	border-radius: 8px;
+}
+
+
+.category-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.category-item label {
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+
+.modal-buttons {
+	margin-top: 20px;
+	float: right;
+}
+
+.modal-buttons button {
+	padding: 10px 20px;
+	margin: 5px;
+}
+
+.confirm-button, .confirm-register {
+	background-color: #0056b3;
+	color: white;
+	border: none;
+	border-radius: 4px;
+}
+
+.confirm-button:hover, .confirm-register:hover {
+	background-color: #003a82;
+}
+
+.cancel-button, .cancel-register {
+	background-color: #f8f9fa;
+	color: black;
+	border : 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.cancel-button:hover{
+	background-color: #e9ecef;
+}
+
+ .cancel-register:hover{
+	background-color: #e9ecef;
+}
+
+
+.close, .closeRegisterModal {
+	color: #a1a1a1;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+	margin: 8px;
+}
+
+.close:hover, .close:focus, .closeRegisterModal:hover,
+	.closeRegisterModal:focus {
+	color: black;
+	cursor:pointer;
+}

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     layout:decorate="~{include/layout}"> 
+    <th:block layout:fragment="content">
+        <link th:href="@{/css/employee/schedule/employeeSchedule.css}" rel="stylesheet" type="text/css"> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.12/jstree.min.js"></script>
+	    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+	    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/google-calendar@6.1.15/index.global.min.js'></script>
+		<section>
+			<input type="hidden" id="memberNo" th:value="${memberNo}"> 
+			<input type="hidden" id="departmentNo" th:value="${memberdto[0].department_no}">  
+			
+			<div class="employee_section">
+			    <div id="header">
+				    <div class="search-container "> 
+	       			    <select id="searchCategory">
+					        <option value="all">전체</option>
+					        <option value="content">내용</option>
+					        <option value="categoryName">카테고리</option>
+					    </select>
+					    <input type="text" id="searchInput" placeholder="검색어를 입력하세요." />
+					    <input type="date" id="searchstartDate" placeholder="시작일" />
+					    <input type="date" id="searchendDate" placeholder="종료일" />
+					    <button id="searchButton">검색</button>
+				    </div>
+				</div>
+			    <div class="bottom_area">
+			        <div class="schedule-filters">
+			          <button id="addEventBtn">일정 등록</button> 
+			           <div class="department-checkbox">
+					    	<input type="checkbox" id="all_company_schedule" class="all-checkbox" data-department-no="1">
+					    	<label for="all_company_schedule">전사 일정</label>
+						    <div id="departmentCheckboxes">  
+						    </div>
+				      </div>
+			        </div>
+			        <div id="calendar"></div>
+			    </div>
+			</div> 
+	    
+	    <!-- 등록 모달 -->
+		<div id="eventModal" class="modal">
+		    <div class="modal-content" id="create_employee_schedule">
+		        <span class="add_close close" id="closeModalBtn">&times;</span>
+		        <h2 class="modal-title" id="modal-title"> 일정 등록</h2>
+		        <hr class="create_hr">
+		        <form id="eventForm">
+		            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		            <input type="hidden" id="eventId">
+		            <input type="hidden" id="isRecurring"> 
+		            
+		            <div class="form-group">
+		                <label for="eventTitle">일정 제목</label>
+		                <input type="text" id="eventTitle" name="title">
+		            </div>
+		            
+		            <div class="form-group">
+		                <label for="category">카테고리</label>
+		                <select id="category" name="category">
+		                    <option value="">카테고리</option>	
+		                </select> 
+		            </div>
+		            
+		            <div class="form-group">
+		                <label for="eventDate">날짜</label>
+		                <input type="date" id="eventDate" name="date">
+		            </div>
+		
+		            <div class="form-group" id="timeGroup">
+		                <label for="startTime">시작 시간</label>
+		                <input type="time" id="startTime" name="start_time">
+		            </div>
+		
+		            <div class="form-group" id="endTimeGroup">
+		                <label for="endTime">종료 시간</label>
+		                <input type="time" id="endTime" name="end_time">
+		            </div>
+	   	            
+	   	            <div class="form-group" id="endDateGroup" style="display:none;">
+		                <label for="endDate">종료 날짜</label>
+		                <input type="date" id="endDate" name="endDate">
+		            </div>
+		            
+		            <div class="form-group">
+		                <label for="allDay">종일</label>
+		                <input type="checkbox" id="allDay" name="allDay">
+		            </div> 
+		            
+		            <div class="form-group">
+		                <label for="repeatOption">반복</label>
+		                <select id="repeatOption" name="repeat">
+		                    <option value="0">반복 없음</option>	
+		                </select>
+		            </div>
+		
+		            <div class="form-group" id="repeatEndGroup" style="display:none;">  
+		                <label for="repeatEndDate">반복 종료일</label>
+		                <input type="date" id="repeatEndDate" name="repeatEndDate">
+		            </div>
+		            
+		            <div class="form-group">
+		                <label for="description">내용</label>
+		                <textarea id="description" name="description"></textarea>
+		            </div>  
+		            
+		            <div class="form-group">
+		                <label for="department_schedule">부서 일정</label>
+		                <input type="checkbox" id="department_schedule" name="department_schedule">
+		            </div>  
+		            
+	            	<div class="form-group">
+	                    <label>참여자</label>
+	                	<button type="button" id="openOrganizationChartButton" class="modal_btn participate_btn">참여자 추가</button> 
+	                </div>  
+           	        <div class="form-group">
+           	        	<label></label>
+	                  	<div class="selected-participants-container"></div>
+	                </div>   
+	                <input type="hidden" name="selectedMembers" id="selectedMembers" />
+		            
+		            <div class="button-group">
+		                <button type="submit" class="modal_in_btn" id="create_modal_submit">저장</button>
+		                <button type="button" id="closeModalBtn2" class="cancel_in_btn">취소</button>
+		            </div>
+		        </form>
+		    </div>
+		</div>  
+		
+		
+		<!-- 조직도 모달 -->
+        <div class="participate_modal" id="organizationChartModal" tabindex="-1" role="dialog" aria-labelledby="organizationChartModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="participate_modal-content">
+                    <form>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <div class="participate_modal-header">
+                            <div class="participate_organizationchart_title" id="organizationChartModalLabel">조직도</div>
+                            <span class="chart_close" id="chart_close"data-dismiss="modal" aria-label="Close">&times;</span>
+                        </div>
+                        <div class="participate_modal-body"> 
+                            <div id="selected-members"> </div>
+                            <input type="text" id="organization_search" placeholder="검색어를 입력하세요." class="organization_search">
+                            <div id="organization-chart"></div>
+                            <button id="participate_confirmButton" type="button" class="participate_modal_btn">확인</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 상세보기 -->
+		<div id="eventViewModal" class="event_view_modal" style="display: none;">
+		    <div class="event_modal-content" id="event_modal_vacation"> 
+		    	<input type="hidden" id="eventId">
+		    	<input type="hidden" id="isException">
+		    	<input type="hidden" id="isRecurring_view">
+			    <div class="modal-schedule-button">
+			    	<span class="modal-schedule-button-two">
+			            <button id="editEventBtn"><i class="fa-solid fa-pencil"></i></button> 
+			            <button id="deleteEventBtn"><i class="fa-regular fa-trash-can"></i></button> 
+		            </span>
+		            <span class="schedule_close" id="closeScheduleModalBtn">&times;</span>
+		        </div>
+		        <div>
+		        	<div class="modal-header">
+		        		<div class="category_department_container">
+				            <div id="eventViewCategory"></div>
+				            <div id="departmentName"></div>
+				        </div>
+			            <div id="eventViewTitle"></div>	        	
+		        	</div>
+		            <div id="eventViewDateRange"></div>
+		            <div id="eventViewComment"></div>
+		        </div>
+		        
+		        <div class="participate_area"> 
+		        	<div id="par_create_name"></div>
+		            <div id="par_join">[참여자]</div>
+	            	<div id="par_join_name"></div>
+		            <div id="meeting_name"></div>
+		        </div> 
+		        
+		        <div class="modal-body">
+		            <hr class="event_view_hr" id="eventViewHr"> 
+		            <div id="eventViewRepeatInfo"></div>
+		            <div id="eventViewCreatedDate"></div> 
+		        </div> 
+		    </div>
+		</div> 
+		
+		<!-- 반복 일정 -->
+		<div id="eventRepeatModal" class="event_repeat_modal" style="display: none;">
+		    <div class="event_repeat-content"> 
+		    	<div class="event_repeat_title" id="event_repeat_title">반복 일정 수정</div>
+			    <div>
+				    <input type="radio" id="editThisEvent" name="repeatEditOption" value=1>
+				    <label for="editThisEvent">이 일정</label>
+			    </div>
+			    <div>
+				    <input type="radio" id="editFutureEvents" name="repeatEditOption" value=2>
+				    <label for="editFutureEvents">이 일정 및 향후 일정</label>
+				</div>
+				<div>
+				    <input type="radio" id="editAllEvents" name="repeatEditOption" value=3>
+				    <label for="editAllEvents">모든 일정</label>
+			    </div>
+			    <div class="event_repeat_btns">
+			    	<button id="event_repeat_modal_btn">확인</button>
+			    	<button id="event_repeat_close_btn">취소</button>
+			    </div> 
+		    </div>
+		</div>
+		
+        <script th:src="@{/js/employee/schedule/employeeSchedule.js}"></script>
+    </th:block>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+<meta charset="UTF-8">
+<th:block layout:fragment="content" th:each="member : ${memberDto}">
+<meta name="_csrf" th:content="${_csrf.token}">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <!-- Quill 에디터 스타일시트 -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link th:href="@{/css/admin/notice/notice_create.css}" rel="stylesheet" type="text/css">
+
+    <section>    
+        <div id="member_no" style="display: none;" th:text="${member.member_no}"></div>
+        <div class="create_notice">
+            <form id="noticeAddFrm" method="POST" th:action="@{/notice/create}" enctype="multipart/form-data">
+                <!-- CSRF 토큰 -->
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" id="csrfToken" />
+                <!-- 제목 -->
+                <div class="header">
+                    <label id="titleLabel">제목 :</label> 
+                    <span id="importantLabel" style="color: red; display: none;">&lt;중요&gt;</span> 
+                    <input type="text" id="title" name="notice_title" required>
+                    <div class="important-box">
+                        <label>중요</label> 
+                        <input type="checkbox" id="important" name="notice_important_checkbox">
+                        <!-- 체크 안 했을 때 기본값으로 0을 넘기기 위해 숨겨진 input 추가 -->
+                        <input type="hidden" id="notice_important" name="notice_importance" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" th:value="${manager}" id="manager" name="manager" readonly>
+                </div>
+                <div class="info" style="display: none;">
+                    <label style="display: none;">작성일자 :</label> 
+                    <input type="date" id="date" name="notice_create_date" required style="display: none;">
+                </div>
+
+                <!-- 파일 업로드 - 이미지 파일만 허용 -->
+                <input type="file" name="file" id="fileInput" accept="image/*">
+                
+                <!-- Quill 에디터 영역 -->
+                <div id="editor"></div>
+
+                <!-- Quill 에디터 내용을 저장할 hidden input -->
+                <input type="hidden" id="noticeContent" name="notice_content">
+
+                <div class="buttons">
+                    <button type="submit" class="confirm-btn">등록</button>
+                    <button type="button" class="cancel-btn" onclick="window.history.back()">취소</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Quill 에디터 스크립트 -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <script>
+    const location_text = document.getElementById('header_location_text');
+    location_text.innerHTML = '공지사항&emsp;&gt;&emsp;공지사항 작성';
+    
+    window.onload = function() {
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        var todayFormatted = yyyy + '-' + mm + '-' + dd;
+
+        document.getElementById('date').value = todayFormatted;
+
+        document.getElementById('date').setAttribute('min', todayFormatted);
+        document.getElementById('date').setAttribute('max', todayFormatted);
+    };
+
+    // Quill 에디터 설정
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'color': [] }, { 'background': [] }],
+                ['clean']
+            ]
+        }
+    });
+
+    var checkbox = document.getElementById('important');
+    var hiddenImportantInput = document.getElementById('notice_important');
+    var importantLabel = document.getElementById('importantLabel'); 
+
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            hiddenImportantInput.value = "1";
+            importantLabel.style.display = "inline"; 
+        } else {
+            hiddenImportantInput.value = "0";
+            importantLabel.style.display = "none"; 
+        }
+    });
+
+    function checkImportantNoticeCount() {
+        return fetch('/notice/important/count', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            return data.count;  
+        })
+        .catch(error => {
+            console.error("Error checking important notice count:", error);
+            return 0;  
+        });
+    }
+
+    // 파일 확장자 확인 함수 (이미지 파일만 허용)
+    function validateFileType(fileInput) {
+        const allowedExtensions = ['image/jpeg', 'image/png', 'image/gif'];
+        const file = fileInput.files[0];
+
+        if (file && !allowedExtensions.includes(file.type)) {
+            Swal.fire({
+                icon: 'error',
+                text: '이미지 파일만 업로드할 수 있습니다 (JPG, PNG, GIF)',
+                confirmButtonColor: '#0056b3',
+                confirmButtonText: '확인'
+            });
+            fileInput.value = ''; 
+            return false;
+        }
+        return true;
+    }
+
+    const fileInput = document.getElementById('fileInput');
+    fileInput.addEventListener('change', function() {
+        validateFileType(fileInput);
+    });
+
+    const form = document.getElementById("noticeAddFrm");
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const importantCount = await checkImportantNoticeCount();
+        const isImportantChecked = document.getElementById('important').checked;
+
+        if (isImportantChecked && importantCount >= 3) {
+            Swal.fire({
+                icon: 'warning',
+                text: '중요 공지사항은 최대 3개까지만 등록 가능합니다.',
+                confirmButtonColor: '#0056b3',
+                confirmButtonText: '확인'
+            });
+            return; 
+        }
+
+        if (!validateFileType(fileInput)) {
+            return;  
+        }
+
+        var content = quill.root.innerHTML;
+        document.getElementById('noticeContent').value = content;
+
+        const payload = new FormData(form);
+        const csrfToken = document.getElementById('csrfToken').value;
+        payload.append('_csrf', csrfToken);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: payload
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.res_code === '200') {
+                Swal.fire({
+                    icon: 'success',
+                    text: data.res_msg,
+                    confirmButtonColor: '#0056b3',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    alarmSocket.send(JSON.stringify({
+                        type: 'noticeAlarm',  
+                        managerNo: document.getElementById('manager').value  
+                    }));
+                    location.href = '/admin/notice/list';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    text: data.res_msg,
+                    confirmButtonColor: '#0056b3',
+                    confirmButtonText: '확인'
+                });
+            }
+        });
+    });
+    </script>
+</th:block>
+</html>

@@ -1,0 +1,126 @@
+@charset "UTF-8";
+
+.approval_list {
+	margin: auto;
+    width: 1250px;
+    height: 700px; 
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.search_sort_container {
+    margin-bottom: 20px;
+}
+
+select, .search_text {
+    padding: 10px 18px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    transition: border-color 0.3s;
+}
+
+select:focus, .search_text:focus {
+    outline: none;
+    border-color: #0056b3;
+}
+
+select {
+    width: 100px;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23333" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+.search_text {
+    width: 150px;
+}
+
+.search_button {
+    padding: 10px 25px;
+    background-color: #0056b3;
+    color:white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    font-size: 13px;
+}
+
+.search_button:hover {
+    background-color: #003a82;
+}
+
+.search_button:active {
+    transform: scale(0.98);
+}
+
+#sort {
+	float: right;
+}
+
+.approval_list_table {
+	background-color: #ffffff;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.approval_list_table th, .approval_list_table td {
+	padding: 18px 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+}
+
+.approval_list_table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+.approval_list_table tr:last-child td {
+    border-bottom: none;
+}
+
+.approval_list_table tbody tr {
+	font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.approval_list_table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.pagination {
+    margin-top:40px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 8px 13px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 4px;
+}
+
+.pagination button:hover {
+    background-color: #e9ecef;
+}
+
+.pagination button.active {
+    background-color: #0056b3;
+    color: white;
+    border-color: #0056b3;
+}

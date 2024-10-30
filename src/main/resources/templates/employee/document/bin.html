@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{include/layout}">
+    <meta charset="UTF-8">
+    <th:block layout:fragment="content" th:each="member : ${memberdto}">
+    <link th:href="@{/css/employee/document/bin.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <section>
+        	<div id="mem_no" style="display: none;" th:text="${member.member_no}"></div>
+        	<div id="dept_no" style="display: none;" th:text="${member.department_no}"></div>
+            <div class="document_folder_list">
+                <div class="document_file_div">
+	                <div class="document_file_list" style="display: none;">
+	                	<div class="document_search">
+	                		<div class="search_range">
+	                			<div class="range_calendar">
+	                				<input type="date" id="start_date">
+	                				<span id="wave">~</span>
+	                				<input type="date" id="end_date">
+	                			</div>       
+	                		</div>
+	                		<div class="search_name">
+	                			<input type="text" id="file_name_input" placeholder="검색어를 입력하세요."> 
+	                		</div> 		
+	                	</div>
+	                	<div class="upper_list_div">
+	                		<div class="select_button">
+	                			<input type="button" id="select_delete" value="선택 영구 삭제"> 
+	                		</div>
+	                		<div class="upload_and_sort">
+	                			<input type="button" id="update_button" value="선택 복구">
+	                			<select id="sort_select">
+	                				<option value="latest">최신순</option>
+	                				<option value="oldest">과거순</option>
+	                			</select>
+	                		</div>
+	                	</div>
+	                	<div class="table_div">
+		                	<table class="file_table">
+		                		<thead class="table_head">
+		                            <tr>
+		                            	<th style="width: 5%"><input type="checkbox" id="select_all"></th>
+		                                <th style="width: 40%">파일명</th>
+		                                <th style="width: 10%">문서함</th>
+		                                <th style="width: 15%">삭제일</th>
+		                                <th style="width: 12%">용량</th>
+		                                <th style="width: 8%">복구</th>
+		                                <th style="width: 10%">영구 삭제</th>
+		                            </tr>
+		                        </thead>
+		                        <tbody id="file_table_body">
+		                            <!-- 리스트는 AJAX로 불러옴 -->
+		                        </tbody>
+		                	</table>
+	                	</div>
+                        <div class="pagination_div">
+                        	<div class="pagination" id="pagination">
+                            	<!-- 페이지 버튼 ajax -->
+                            </div>
+                        </div>
+	                </div>
+                </div>
+        	</div>
+        </section>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    	<script src="/js/employee/document/bin.js"></script>
+    </th:block>
+</html>

@@ -1,0 +1,278 @@
+#surveyForm {
+    position: relative;
+    width: 1250px;
+   height: auto;
+    min-height: 700px;
+    margin: -10px auto;
+    padding: 70px 30px 70px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding-left: 180px;
+    padding-right: 180px;
+}
+
+#surveyForm select {
+    border-radius: 5px; 
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
+#surveyForm input[type="text"],
+#surveyForm input[type="date"],
+#surveyForm textarea {
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#surveyForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+#surveyForm button {
+    width: auto;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#openChart {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+}
+
+#openChart:hover {
+    background-color: #003a82;
+}
+
+#addQuestionButton {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+}
+
+#addQuestionButton:hover {
+    background-color: #003a82;
+}
+
+#surveyForm .btn-submit {
+    background-color: #0056b3;
+}
+
+#surveyForm .btn-submit:hover {
+    background-color: #003a82;
+}
+
+/* 취소 버튼 */
+#surveyForm .btn-cancel {
+    background-color: #f8f9fa;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+#surveyForm .btn-cancel:hover {
+    background-color: #e9ecef;
+}
+
+/* 삭제 버튼 */
+#surveyForm .btn-delete {
+    background-color: #dc3545;
+}
+
+#surveyForm .btn-delete:hover {
+    background-color: #c82333;
+}
+
+#surveyForm .ok-btn {
+    background-color: #0056b3;
+    border: none;
+    color: white;
+}
+
+#surveyForm .ok-btn:hover {
+    background-color: #003a82;
+}
+
+#surveyForm .cancel-btn {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+}
+
+#surveyForm .cancel-btn:hover {
+    background-color: #e9ecef;
+}
+
+/* 버튼을 오른쪽 정렬하는 CSS 추가 */
+.button-container {
+    text-align: right;
+}
+
+/* 질문 리스트 영역 */
+.question-item {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 질문 텍스트 필드와 유형 선택 */
+.question-item input[type="text"],
+.question-item select {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width: 500px;
+    padding: 8px;
+}
+
+/* 보기 추가 버튼 스타일 */
+.option-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-input input[type="text"] {
+    margin-right: 10px;
+}
+
+/* 보기 삭제 버튼 */
+.remove-option {
+    background: none !important;
+    border: none !important;
+    color: red !important;
+    font-size: 20px !important;
+    cursor: pointer !important;
+    margin-left: 10px !important;
+    position: relative !important;
+    top: -9px !important;
+}
+
+.remove-option:hover {
+    color: darkred !important;
+}
+
+/* 질문 삭제 버튼 (빨간 X 표시, 위치 고정) */
+.remove-question {
+    background: none !important;
+    border: none !important;
+    color: red !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+}
+
+.remove-question:hover {
+    color: darkred !important;
+}
+
+/* 질문 리스트 아이템 간의 공백 */
+.question-item + .question-item {
+    margin-top: 20px !important;
+}
+
+/* 선택된 사원 표시 부분 */
+#selected-members-outside {
+    margin-top: 10px !important;
+    font-weight: bold !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 15px !important;
+}
+
+#selected-members-outside div {
+    padding: 8px 12px !important;
+    background-color: #f5f5f5 !important;
+    border-radius: 15px !important;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1) !important;
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+    transition: background-color 0.3s ease !important;
+}
+
+#selected-members-outside div:hover {
+    background-color: #e0e0e0 !important;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+}
+
+.date-inputs input[type="date"] {
+    margin-right: 3px;
+}
+
+.date-inputs span {
+    margin: 0 8px;
+    transform: translateY(-10px);
+}
+#surveyForm .btn-primary {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#surveyForm .btn-primary:hover {
+    background-color: #003a82;
+    color: white;
+}
+.add-option-btn {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-option-btn:hover {
+    background-color: #003a82;
+    color: white;
+}
+.btn-primary {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #003a82;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: #003a82;
+    color: white;
+}
